@@ -268,6 +268,7 @@ module.exports = {
 				config.output.publicPath = '/' + dist + '/_nuxt/';
 			}
 			return config;
-		}
+		},
+		standalone: true,
 	}
 };

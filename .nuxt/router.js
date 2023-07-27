@@ -5,6 +5,8 @@ import { interopDefault } from './utils'
 import scrollBehavior from './router.scrollBehavior.js'
 
 const _d9f1d560 = () => interopDefault(import('../pages/account_auth.vue' /* webpackChunkName: "pages/account_auth" */))
+const _5823fdb6 = () => interopDefault(import('../pages/data_visualization.vue' /* webpackChunkName: "pages/data_visualization" */))
+const _38206b48 = () => interopDefault(import('../pages/data_visualization_v.vue' /* webpackChunkName: "pages/data_visualization_v" */))
 const _67a1770a = () => interopDefault(import('../pages/login_page.vue' /* webpackChunkName: "pages/login_page" */))
 const _4fa8d19c = () => interopDefault(import('../pages/login_page_auth.vue' /* webpackChunkName: "pages/login_page_auth" */))
 const _24ae3f7e = () => interopDefault(import('../pages/wizard.vue' /* webpackChunkName: "pages/wizard" */))
@@ -144,6 +146,14 @@ export const routerOptions = {
     path: "/account_auth",
     component: _d9f1d560,
     name: "account_auth"
+  }, {
+    path: "/data_visualization",
+    component: _5823fdb6,
+    name: "data_visualization"
+  }, {
+    path: "/data_visualization_v",
+    component: _38206b48,
+    name: "data_visualization_v"
   }, {
     path: "/login_page",
     component: _67a1770a,

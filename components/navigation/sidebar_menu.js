@@ -29,6 +29,11 @@ export const menuEntries = [
 			},
 			{
 				id: uniqueID(),
+				title: "Consult",
+				page: "/data_visualization"
+			},
+			{
+				id: uniqueID(),
 				title: "Dashboard 1",
 				page: "/dashboard/v1"
 			},

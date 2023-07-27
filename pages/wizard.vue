@@ -1,6 +1,9 @@
 <template>
 	<div id="sc-page-wrapper">
 		<div id="sc-page-content">
+			<h3 class="uk-margin-bottom">
+				Data for Analysis
+			</h3>
 			<div class="uk-flex-center uk-grid" data-uk-grid>
 				<div class="uk-width-4-5@l">
 					<ScCard>

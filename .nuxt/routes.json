@@ -7,6 +7,20 @@
     "_name": "_d9f1d560"
   },
   {
+    "name": "data_visualization",
+    "path": "/data_visualization",
+    "component": "/home/win7/Project/Nuxt/meta_net/pages/data_visualization.vue",
+    "chunkName": "pages/data_visualization",
+    "_name": "_5823fdb6"
+  },
+  {
+    "name": "data_visualization_v",
+    "path": "/data_visualization_v",
+    "component": "/home/win7/Project/Nuxt/meta_net/pages/data_visualization_v.vue",
+    "chunkName": "pages/data_visualization_v",
+    "_name": "_38206b48"
+  },
+  {
     "name": "login_page",
     "path": "/login_page",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/login_page.vue",

@@ -21,6 +21,13 @@
     "_name": "_38206b48"
   },
   {
+    "name": "data_visualization copy",
+    "path": "/data_visualization%20copy",
+    "component": "/home/win7/Project/Nuxt/meta_net/pages/data_visualization copy.vue",
+    "chunkName": "pages/data_visualization copy",
+    "_name": "_6f794140"
+  },
+  {
     "name": "login_page",
     "path": "/login_page",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/login_page.vue",

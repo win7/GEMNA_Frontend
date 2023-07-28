@@ -127,7 +127,7 @@ module.exports = {
 		[
 			'nuxt-sweetalert2',
 			{
-			  confirmButtonColor: '#FFFFFF'
+			  confirmButtonColor: '#00838f'
 			}
 		]
 	],

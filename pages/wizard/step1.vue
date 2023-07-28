@@ -18,12 +18,18 @@
 				<!-- <ScInput type="file" v-model.trim="form.raw_data" name="form.raw_data" :error-state="$v.form.raw_data.$error" :validator="$v.form.raw_data">
 					<!- - <label>First Name *</label> - ->
 				</ScInput> -->
-				<input type="file" @change="handleArchivoSeleccionado" />
+				<input class="uk-button uk-button-default" type="file" @change="handleArchivoSeleccionado" /> 
 				<!-- <ul class="sc-vue-errors">
 					<li v-if="!$v.form.raw_data.required">
 						Field is required
 					</li>
 				</ul> -->
+				<!-- <div data-uk-form-custom>
+					<input type="file">
+					<button class="uk-button uk-button-default" type="button" @click="handleArchivoSeleccionado">
+						Load
+					</button>
+				</div> -->
 			</div>
 		</div>
 	</div>

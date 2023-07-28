@@ -5,40 +5,105 @@
 				Data Visualization
 			</h3>
 
-			<div class="uk-grid" data-uk-grid>
-				<div class="uk-width-xxlarge">
+			<div class="uk-child-width-1-4@xl uk-child-width-1-2@s uk-grid" data-uk-grid>
+				<div>
+					<ScCard>
+						<nuxt-link to="/plugins/data_grid" class="sc-padding sc-padding-medium-ends uk-flex uk-flex-middle">
+							<div class="uk-flex-1">
+								<ScCardTitle>
+									Data Grid
+								</ScCardTitle>
+								<p class="sc-color-secondary uk-margin-remove uk-text-medium">
+									Display and Edit Data
+								</p>
+							</div>
+							<div class="md-bg-amber-600 uk-flex uk-flex-middle sc-padding-medium sc-padding-small-ends sc-round">
+								<i class="mdi mdi-grid md-color-white"></i>
+							</div>
+						</nuxt-link>
+					</ScCard>
+				</div>
+				<div>
+					<ScCard>
+						<nuxt-link to="/pages/mailbox" class="sc-padding sc-padding-medium-ends uk-flex uk-flex-middle">
+							<div class="uk-flex-1">
+								<ScCardTitle>
+									Mailbox
+								</ScCardTitle>
+								<p class="sc-color-secondary uk-margin-remove uk-text-medium">
+									Check Your Mail
+								</p>
+							</div>
+							<div class="md-bg-green-600 uk-flex uk-flex-middle sc-padding-medium sc-padding-small-ends sc-round">
+								<i class="mdi mdi-email-outline md-color-white"></i>
+							</div>
+						</nuxt-link>
+					</ScCard>
+				</div>
+				<div>
+					<ScCard>
+						<nuxt-link to="/pages/task_board" class="sc-padding sc-padding-medium-ends uk-flex uk-flex-middle">
+							<div class="uk-flex-1">
+								<ScCardTitle>
+									Task Board
+								</ScCardTitle>
+								<p class="sc-color-secondary uk-margin-remove uk-text-medium">
+									Get Things Done
+								</p>
+							</div>
+							<div class="md-bg-red-600 uk-flex uk-flex-middle sc-padding-medium sc-padding-small-ends sc-round">
+								<i class="mdi mdi-bug md-color-white"></i>
+							</div>
+						</nuxt-link>
+					</ScCard>
+				</div>
+				<div>
+					<ScCard>
+						<nuxt-link to="/pages/chat" class="sc-padding sc-padding-medium-ends uk-flex uk-flex-middle">
+							<div class="uk-flex-1">
+								<ScCardTitle>
+									Chat
+								</ScCardTitle>
+								<p class="sc-color-secondary uk-margin-remove uk-text-medium">
+									Get in Touch with Friends
+								</p>
+							</div>
+							<div class="md-bg-deep-purple-600 uk-flex uk-flex-middle sc-padding-medium sc-padding-small-ends sc-round">
+								<i class="mdi mdi-message-outline md-color-white"></i>
+							</div>
+						</nuxt-link>
+					</ScCard>
+				</div>
+			</div>
+
+			<div class="uk-child-width-1-3@l uk-child-width-1-2@m uk-grid" data-uk-grid>
+				<div>
 					<ScCard>
 						<ScCardTitle>
-							Consult
+							Revenue
 						</ScCardTitle>
 						<ScCardBody>
-							<div class="sc-bordesr sc-rounds sc-paddinpg">
-								<div class="uk-child-width-1-2@s uk-margin uk-grid" data-uk-grid>
-									<div>
-										<ScInput v-model.trim="form.id" name="id" :error-state="$v.form.id.$error" :validator="$v.form.id">
-											<label>Id *</label>
-										</ScInput>
-										<ul class="sc-vue-errors">
-											<li v-if="!$v.form.id.required">
-												Field is required
-											</li>
-										</ul>
-									</div>
-									<div>
-										<button class="sc-button sc-button-primary" :disabled="submitStatus === 'PENDING'" @click="submitForm($event)">
-											Search
-										</button>
-										<!-- <ScInput type="file" v-model.trim="form.raw_data" name="form.raw_data" :error-state="$v.form.raw_data.$error" :validator="$v.form.raw_data">
-											<!- - <label>First Name *</label> - ->
-										</ScInput> -->
-										<!-- <ul class="sc-vue-errors">
-											<li v-if="!$v.form.raw_data.required">
-												Field is required
-											</li>
-										</ul> -->
-									</div>
-								</div>
-							</div>
+							<div id="container"></div>
+						</ScCardBody>
+					</ScCard>
+				</div>
+				<div>
+					<ScCard>
+						<ScCardTitle>
+							Email Subscribers
+						</ScCardTitle>
+						<ScCardBody>
+							
+						</ScCardBody>
+					</ScCard>
+				</div>
+				<div>
+					<ScCard>
+						<ScCardTitle>
+							Returns
+						</ScCardTitle>
+						<ScCardBody>
+							
 						</ScCardBody>
 					</ScCard>
 				</div>
@@ -48,9 +113,9 @@
 				<div class="uk-width-2-3@l">
 					<ScCard>
 						<ScCardTitle>
-							Changes Detection
+							Sales report
 						</ScCardTitle>
-						<!-- <div class="sc-padding sc-padding-medium-ends md-bg-grey-100">
+						<div class="sc-padding sc-padding-medium-ends md-bg-grey-100">
 							<div class=" uk-flex-middle uk-grid-small uk-grid" data-uk-grid>
 								<div class="uk-flex-1">
 									<div class="uk-button-group sc-button-group-outline">
@@ -77,7 +142,7 @@
 									</a>
 								</div>
 							</div>
-						</div> -->
+						</div>
 						<ScCardContent>
 							<div class="sc-padding-medium">
 								<div id="graphs"></div>
@@ -169,25 +234,15 @@
 
 <script>
 import { scColors } from '~/assets/js/utils';
-import ScInput from '~/components/Input'
 import * as d3 from 'd3';
-// import {Swatches} from "@d3/color-legend"
-
 import moment from '~/plugins/moment'
-import { validationMixin } from 'vuelidate'
-import { required, minLength, email } from 'vuelidate/lib/validators'
-
-import swal from 'sweetalert2'
 
 export default {
-	name: 'Data',
+	name: 'DashboardV2',
 	components: {
-		BillboardChart: process.client ? () => import('~/components/billboard-charts') : null,
-		ScInput,
+		BillboardChart: process.client ? () => import('~/components/billboard-charts') : null
 	},
-	mixins: [validationMixin],
 	data: () => ({
-		submitStatus: null,
 		appMounted: false,
 		activePeriod: 'months',
 		salesReportChart: '',
@@ -268,10 +323,7 @@ export default {
 				user: "Addie Wade",
 				quantity: 3
 			}
-		],
-		form: {
-			id: "",
-		}
+		]
 	}),
 	computed: {
 		revenueChart () {
@@ -759,53 +811,17 @@ export default {
 		this.salesReportChart = this.salesReportDataMonths;
 	},
 	mounted () {
-		/* setTimeout(() => {
+		setTimeout(() => {
 			this.appMounted = true;
 			console.log(this);
-		}, 200); */
+		}, 200);
 
-		// this.test_d3();
+		this.test_d3();
 
 		this.test_graph1();
 
 	},
-	validations: {
-		form: {
-			id: {
-				required,
-			}
-		}
-	},
 	methods: {
-		async submitForm (e) {
-			e.preventDefault();
-			this.$v.$touch();
-			if (this.$v.$invalid) {
-				this.submitStatus = 'ERROR'
-			} else {
-				this.submitStatus = 'PENDING';
-
-				await this.$axios.get(`/api/experiments/${this.form.id}/`).then((response) => {
-					console.log(response.data);		
-					if (response.status === 200) {
-						swal.fire(
-							response.data.message,
-							``,
-							'success'
-						);
-					}
-				}).catch((error) => {
-					console.log(error.response);
-					swal.fire(
-						error.response.data.message,
-						'',
-						'error'
-					);
-				});
-			}
-			this.submitStatus = 'OK'
-		},
-
 		setChartPeriod (period) {
 			if(period === 'hours') {
 				this.salesReportChart = this.salesReportDataHours
@@ -1018,12 +1034,12 @@ export default {
 			}
 
 			const suits = [
-				{source: "Microsoft", target: "Amazon", type: "NP"},
-				{source: "Microsoft", target: "HTC", type: "NP"},
-				{source: "Samsung", target: "Apple", type: "NP"},
-				{source: "Motorola", target: "Apple", type: "nP"},
-				{source: "Nokia", target: "Apple", type: "nP"},
-				{source: "HTC", target: "Apple", type: "pn"}
+				{source: "Microsoft", target: "Amazon", type: "licensing"},
+				{source: "Microsoft", target: "HTC", type: "licensing"},
+				{source: "Samsung", target: "Apple", type: "suit"},
+				{source: "Motorola", target: "Apple", type: "suit"},
+				{source: "Nokia", target: "Apple", type: "resolved"},
+				{source: "HTC", target: "Apple", type: "suit"}
 			]
 			const width = 928;
 			const height = 600;
@@ -1102,7 +1118,7 @@ export default {
 			// return Object.assign(svg.node(), {scales: {color}});
 
 			// graphs.append(svg.node(), {scales: {color}});
-			graphs.append(Object.assign(svg.node(), {scales: {color}}));
+			graphs.append(svg.node(), {scales: {color}});
 
 		}
 	}

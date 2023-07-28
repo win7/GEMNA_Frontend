@@ -25,5 +25,5 @@ VueSweetalert2.install = function(Vue, options) {
 }
 
 Vue.use(VueSweetalert2, {
-  "confirmButtonColor": "#FFFFFF"
+  "confirmButtonColor": "#00838f"
 })

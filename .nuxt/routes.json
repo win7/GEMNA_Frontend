@@ -21,11 +21,18 @@
     "_name": "_38206b48"
   },
   {
-    "name": "data_visualization copy",
-    "path": "/data_visualization%20copy",
-    "component": "/home/win7/Project/Nuxt/meta_net/pages/data_visualization copy.vue",
-    "chunkName": "pages/data_visualization copy",
-    "_name": "_6f794140"
+    "name": "data_visualization_v1",
+    "path": "/data_visualization_v1",
+    "component": "/home/win7/Project/Nuxt/meta_net/pages/data_visualization_v1.vue",
+    "chunkName": "pages/data_visualization_v1",
+    "_name": "_cbd9d9f6"
+  },
+  {
+    "name": "data_visualization_v22",
+    "path": "/data_visualization_v22",
+    "component": "/home/win7/Project/Nuxt/meta_net/pages/data_visualization_v22.vue",
+    "chunkName": "pages/data_visualization_v22",
+    "_name": "_abc860c8"
   },
   {
     "name": "login_page",

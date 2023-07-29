@@ -56,7 +56,7 @@ export default {
 	}),
 	head () {
 		return {
-			'title': 'Scutum Admin - ' + this.$route.path
+			'title': 'MetaNet - ' + this.$route.path
 		}
 	},
 	computed: {

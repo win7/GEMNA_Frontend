@@ -44,72 +44,45 @@
 				</div>
 			</div>
 
-			<div class="uk-child-width-1-2@l uk-child-width-1-2@m uk-grid" data-uk-grid>
-				<div>
+			<div class="uk-child-width-1-3@l uk-child-width-1-2@m uk-grid" data-uk-grid>
+				<div v-for="item in changes">
 					<ScCard>
 						<ScCardTitle>
-							Graphs Details
+							{{ item.name }}
 						</ScCardTitle>
 						<ScCardBody>
-							<div class="uk-overflow-auto">
-								<table class="uk-table uk-table-striped">
-									<thead>
-										<tr>
-											<th class="uk-text-nowrap">
-												Group
-											</th>
-											<th class="uk-text-nowrap">
-												Nodes
-											</th>
-											<th class="uk-text-nowrap">
-												Edges
-											</th>
-											<th class="uk-text-nowrap">
-												Density
-											</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr v-for="item in graph_details">
-											<td> {{ item.name }} </td>
-											<td> {{ item.nodes }} </td>
-											<td> {{ item.edges }} </td>
-											<td> {{ item.density }} </td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-						</ScCardBody>
-					</ScCard>
-				</div>
-				<div>
-					<ScCard>
-						<ScCardTitle>
-							Labels
-						</ScCardTitle>
-						<ScCardBody>
-							<div class="uk-overflow-auto">
-								<table class="uk-table uk-table-striped">
-									<thead>
-										<tr>
-											<th class="uk-text-nowrap">
-												Group
-											</th>
-											<th v-for="item in labels" class="uk-text-nowrap">
-												{{ item }}
-											</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr v-for="item1 in graph_details">
-											<td> {{ item1.name }} </td>
-											<td v-for="item2 in item1.labels">
-												{{ item2.count }}
-											</td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
+							<ul class="uk-list uk-list-divider">
+								<li class="sc-list-group">
+									<div class="sc-list-addon">
+										<!-- <i class="mdi mdi-phone"></i> -->
+										Num. of Nodes
+									</div>
+									<div class="sc-list-body">
+										<div class="sc-list-body-inner">
+											{{ item.nodes }}
+										</div>
+									</div>
+								</li>
+								<li class="sc-list-group">
+									<div class="sc-list-addon">
+										Num. of edges
+									</div>
+									<div class="sc-list-body">
+										{{ item.edges }}
+									</div>
+								</li>
+								<li class="sc-list-group">
+									<div class="sc-list-addon">
+										Density
+									</div>
+									<div class="sc-list-body">
+										{{ item.density }}
+									</div>
+								</li>
+							</ul>
+							<!-- <svg v-bind:id="`${item.name}`"></svg> -->
+							<!-- <div v-bind:id="item.name"></div> -->
+							<svg id="Starved_FCSglc"></svg>
 						</ScCardBody>
 					</ScCard>
 				</div>
@@ -253,7 +226,6 @@ import swal from 'sweetalert2'
 export default {
 	name: 'Data',
 	components: {
-		Datatable: process.client ? () => import('~/components/datatables/Datatables') : null,
 		BillboardChart: process.client ? () => import('~/components/billboard-charts') : null,
 		ScInput,
 	},
@@ -344,9 +316,7 @@ export default {
 		form: {
 			id: "8b095006-af13-4ee5-8f3e-252f6e19b0ed",
 		},
-		changes: [1, 3, 7],
-		graph_details: [],
-		labels: ['PP', 'Pp', 'PN', 'Pn', 'P?', 'pP', 'pp', 'pN', 'pn', 'p?', 'NP', 'Np', 'NN', 'Nn', 'N?', 'nP', 'np', 'nN', 'nn', 'n?', '?P', '?p', '?N', '?n'],
+		changes: [],
 	}),
 	computed: {
 		revenueChart () {
@@ -871,13 +841,12 @@ export default {
 						console.log(response.data.data[0]["labels"]);
 						// const suits = response.data.data["Starved-DMA"];
 						// this.test_graph1(suits);
-						this.graph_details = response.data.data;
-						
-						/* for (let k = 0; k < this.changes.length; k++) {
+						this.changes = response.data.data;
+						for (let k = 0; k < this.changes.length; k++) {
 							console.log(this.changes[k]["name"], this.changes[k]["labels"])
-							// this.show_labels(this.changes[k]["name"], this.changes[k]["labels"]);
+							this.show_labels(this.changes[k]["name"], this.changes[k]["labels"]);
 							// this.test_bar();
-						} */
+						}
 						
 						// this.test_bar();
 					}
@@ -1346,8 +1315,3 @@ export default {
 }
 </script>
 
-<style lang="scss">
-@import "~scss/common/md_colors";
-@import "~scss/common/variables_mixins";
-@import "~scss/plugins/datatables";
-</style>

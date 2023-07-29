@@ -7,7 +7,8 @@ import scrollBehavior from './router.scrollBehavior.js'
 const _d9f1d560 = () => interopDefault(import('../pages/account_auth.vue' /* webpackChunkName: "pages/account_auth" */))
 const _5823fdb6 = () => interopDefault(import('../pages/data_visualization.vue' /* webpackChunkName: "pages/data_visualization" */))
 const _38206b48 = () => interopDefault(import('../pages/data_visualization_v.vue' /* webpackChunkName: "pages/data_visualization_v" */))
-const _6f794140 = () => interopDefault(import('../pages/data_visualization copy.vue' /* webpackChunkName: "pages/data_visualization copy" */))
+const _cbd9d9f6 = () => interopDefault(import('../pages/data_visualization_v1.vue' /* webpackChunkName: "pages/data_visualization_v1" */))
+const _abc860c8 = () => interopDefault(import('../pages/data_visualization_v22.vue' /* webpackChunkName: "pages/data_visualization_v22" */))
 const _67a1770a = () => interopDefault(import('../pages/login_page.vue' /* webpackChunkName: "pages/login_page" */))
 const _4fa8d19c = () => interopDefault(import('../pages/login_page_auth.vue' /* webpackChunkName: "pages/login_page_auth" */))
 const _24ae3f7e = () => interopDefault(import('../pages/wizard.vue' /* webpackChunkName: "pages/wizard" */))
@@ -156,9 +157,13 @@ export const routerOptions = {
     component: _38206b48,
     name: "data_visualization_v"
   }, {
-    path: "/data_visualization%20copy",
-    component: _6f794140,
-    name: "data_visualization copy"
+    path: "/data_visualization_v1",
+    component: _cbd9d9f6,
+    name: "data_visualization_v1"
+  }, {
+    path: "/data_visualization_v22",
+    component: _abc860c8,
+    name: "data_visualization_v22"
   }, {
     path: "/login_page",
     component: _67a1770a,

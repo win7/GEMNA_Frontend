@@ -35,8 +35,16 @@
 									</div>
 								</fieldset>
 								<div class="uk-margin-top">
-									<button class="sc-button sc-button-primary" :disabled="submitStatus1 === 'PENDING'" @click="submitForm1($event)">
+									<!-- <button class="sc-button sc-button-primary" :disabled="submitStatus1 === 'PENDING'" @click="submitForm1($event)">
 										Search
+									</button> -->
+									<button class="sc-button sc-button-primary" :class="{'sc-button-progress-overlay': submitStatus1 === 'PENDING'}" :disabled="submitStatus1 === 'PENDING'" @click="submitForm1($event)">
+										<span>Search</span>
+										<transition name="scale-up">
+											<span v-show="submitStatus1 === 'PENDING'" class="sc-button-progress-layer">
+												<ScProgressCircular></ScProgressCircular>
+											</span>
+										</transition>
 									</button>
 								</div>
 							</form>
@@ -216,8 +224,13 @@
 									</div>
 								</fieldset>
 								<div class="uk-margin-top">
-									<button class="sc-button sc-button-primary" :disabled="submitStatus2 === 'PENDING'" @click="submitForm2($event)">
-										Plot
+									<button class="sc-button sc-button-primary" :class="{'sc-button-progress-overlay': submitStatus2 === 'PENDING'}" :disabled="submitStatus2 === 'PENDING'" @click="submitForm2($event)">
+										<span>Plot</span>
+										<transition name="scale-up">
+											<span v-show="submitStatus2 === 'PENDING'" class="sc-button-progress-layer">
+												<ScProgressCircular></ScProgressCircular>
+											</span>
+										</transition>
 									</button>
 								</div>
 							</form>
@@ -242,10 +255,7 @@ import { required, minLength, email } from 'vuelidate/lib/validators';
 
 import swal from 'sweetalert2';
 
-require('~/plugins/jquery');
-if(process.client) {
-	require('~/assets/js/vendor/jquery.quicksearch.js');
-}
+import { ScProgressCircular } from '~/components/progress'
 
 export default {
 	name: 'DataVisualization',
@@ -253,6 +263,7 @@ export default {
 		ScInput,
 		Select2: process.client ? () => import('~/components/Select2') : null,
 		// MultiSelect: process.client ? () => import('~/components/Multiselect') : null
+		ScProgressCircular
 	},
 	mixins: [validationMixin],
 	data: () => ({
@@ -498,7 +509,7 @@ export default {
 			node.append("circle")
 				.attr("stroke", "white")
 				.attr("stroke-width", 1.5)
-				.attr("r", 4);
+				.attr("r", 6);
 
 			node.append("text")
 				.attr("x", 8)

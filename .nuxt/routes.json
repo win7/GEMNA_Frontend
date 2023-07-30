@@ -28,11 +28,18 @@
     "_name": "_cbd9d9f6"
   },
   {
-    "name": "data_visualization_v22",
-    "path": "/data_visualization_v22",
-    "component": "/home/win7/Project/Nuxt/meta_net/pages/data_visualization_v22.vue",
-    "chunkName": "pages/data_visualization_v22",
-    "_name": "_abc860c8"
+    "name": "data_visualization_v2",
+    "path": "/data_visualization_v2",
+    "component": "/home/win7/Project/Nuxt/meta_net/pages/data_visualization_v2.vue",
+    "chunkName": "pages/data_visualization_v2",
+    "_name": "_cbbdaaf4"
+  },
+  {
+    "name": "data_visualization_v3",
+    "path": "/data_visualization_v3",
+    "component": "/home/win7/Project/Nuxt/meta_net/pages/data_visualization_v3.vue",
+    "chunkName": "pages/data_visualization_v3",
+    "_name": "_cba17bf2"
   },
   {
     "name": "login_page",

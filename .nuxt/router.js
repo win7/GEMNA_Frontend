@@ -8,7 +8,8 @@ const _d9f1d560 = () => interopDefault(import('../pages/account_auth.vue' /* web
 const _5823fdb6 = () => interopDefault(import('../pages/data_visualization.vue' /* webpackChunkName: "pages/data_visualization" */))
 const _38206b48 = () => interopDefault(import('../pages/data_visualization_v.vue' /* webpackChunkName: "pages/data_visualization_v" */))
 const _cbd9d9f6 = () => interopDefault(import('../pages/data_visualization_v1.vue' /* webpackChunkName: "pages/data_visualization_v1" */))
-const _abc860c8 = () => interopDefault(import('../pages/data_visualization_v22.vue' /* webpackChunkName: "pages/data_visualization_v22" */))
+const _cbbdaaf4 = () => interopDefault(import('../pages/data_visualization_v2.vue' /* webpackChunkName: "pages/data_visualization_v2" */))
+const _cba17bf2 = () => interopDefault(import('../pages/data_visualization_v3.vue' /* webpackChunkName: "pages/data_visualization_v3" */))
 const _67a1770a = () => interopDefault(import('../pages/login_page.vue' /* webpackChunkName: "pages/login_page" */))
 const _4fa8d19c = () => interopDefault(import('../pages/login_page_auth.vue' /* webpackChunkName: "pages/login_page_auth" */))
 const _24ae3f7e = () => interopDefault(import('../pages/wizard.vue' /* webpackChunkName: "pages/wizard" */))
@@ -161,9 +162,13 @@ export const routerOptions = {
     component: _cbd9d9f6,
     name: "data_visualization_v1"
   }, {
-    path: "/data_visualization_v22",
-    component: _abc860c8,
-    name: "data_visualization_v22"
+    path: "/data_visualization_v2",
+    component: _cbbdaaf4,
+    name: "data_visualization_v2"
+  }, {
+    path: "/data_visualization_v3",
+    component: _cba17bf2,
+    name: "data_visualization_v3"
   }, {
     path: "/login_page",
     component: _67a1770a,

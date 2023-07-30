@@ -56,7 +56,7 @@ export default {
 	}),
 	head () {
 		return {
-			'title': 'MetaNet - ' + this.$route.path
+			'title': 'MetaNet' // - ' + this.$route.path
 		}
 	},
 	computed: {

@@ -247,7 +247,7 @@
 import { scColors } from '~/assets/js/utils';
 import ScInput from '~/components/Input';
 import * as d3 from 'd3';
-// import {Swatches} from "@d3/color-legend"
+
 
 import moment from '~/plugins/moment';
 import { validationMixin } from 'vuelidate';
@@ -277,7 +277,7 @@ export default {
 		},
 		form2: {
 			id: "",
-			nodes: ["100.00072", "128.89351", "132.88524"],
+			nodes: ["100.00072", "128.89351", "132.88524", "135.54123", "152.99445"],
 			group: "FCSglc-DMA"
 		},
 
@@ -453,7 +453,7 @@ export default {
 					.on("end", dragended);
 			}
 
-			const width = 928;
+			const width = 800;
 			const height = 600;
 			const types = Array.from(new Set(suits.map(d => d.label)));
 			const nodes = Array.from(new Set(suits.flatMap(l => [l.source, l.target])), id => ({id}));
@@ -473,6 +473,35 @@ export default {
 				.attr("height", height)
 				.attr("style", "max-width: 100%; height: auto; font: 12px sans-serif;");
 			
+
+			// var keys = ["Mister A", "Brigitte", "Eleonore", "Another friend", "Batman"]
+			/* var color = d3.scaleOrdinal()
+				.domain(keys)
+				.range(d3.schemeSet1); */
+			var size = 20
+			svg.selectAll("mydots")
+			.data(types)
+			.enter()
+			.append("rect")
+				.attr("x", -width/2)
+				.attr("y", function(d,i){ return -height/2 + i*(size+5)}) // 100 is where the first dot appears. 25 is the distance between dots
+				.attr("width", size)
+				.attr("height", size)
+				.style("fill", function(d){ return color(d)})
+
+			// Add one dot in the legend for each name.
+			svg.selectAll("mylabels")
+			.data(types)
+			.enter()
+			.append("text")
+				.attr("x", -width/2 + size*1.2)
+				.attr("y", function(d,i){ return -height/2  + i*(size+5) + (size/2)}) // 100 is where the first dot appears. 25 is the distance between dots
+				.style("fill", function(d){ return color(d)})
+				.text(function(d){ return d})
+				.attr("text-anchor", "left")
+				.style("alignment-baseline", "middle")
+
+
 			// Per-type markers, as they don't inherit styles.
 			svg.append("defs").selectAll("marker")
 				.data(types)

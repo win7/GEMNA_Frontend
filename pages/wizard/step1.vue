@@ -1,46 +1,59 @@
 <template>
-	<div class="sc-border sc-round sc-padding md-bg-grey-50">
-		<div class="uk-child-width-1-2@s uk-margin uk-grid" data-uk-grid>
-			<div>
-				<ScInput v-model.trim="form.email" name="email" :error-state="$v.form.email.$error" :validator="$v.form.email">
-					<label>Email *</label>
-				</ScInput>
-				<ul class="sc-vue-errors">
-					<li v-if="!$v.form.email.required">
-						Field is required
-					</li>
-					<li v-if="!$v.form.email.email">
-						This value should be a valid email
-					</li>
-				</ul>
-			</div>
-			<div>
-				<!-- <ScInput type="file" v-model.trim="form.raw_data" name="form.raw_data" :error-state="$v.form.raw_data.$error" :validator="$v.form.raw_data">
-					<!- - <label>First Name *</label> - ->
-				</ScInput> -->
-				<input class="uk-button uk-button-default" type="file" @change="handleArchivoSeleccionado" /> 
-				<!-- <ul class="sc-vue-errors">
-					<li v-if="!$v.form.raw_data.required">
-						Field is required
-					</li>
-				</ul> -->
-				<!-- <div data-uk-form-custom>
-					<input type="file">
-					<button class="uk-button uk-button-default" type="button" @click="handleArchivoSeleccionado">
-						Load
-					</button>
+	<form>
+		<fieldset class="uk-fieldset md-bg-grey-100 sc-padding">
+			<!-- <p class="sc-text-semibold uk-text-large uk-margin-remove-top">
+				Personal info
+			</p> -->
+			<div class="uk-child-width-1-2@m uk-grid" data-uk-grid>
+				<div>
+					<label class="uk-form-label">
+						Email
+					</label>
+					<div class="uk-form-controls">
+						<ScInput v-model.trim="form.email" :error-state="$v.form.email.$error" :validator="$v.form.email" mode="outline"></ScInput>
+						<ul class="sc-vue-errors">
+							<li v-if="!$v.form.email.required">
+								Field is required
+							</li>
+							<li v-if="!$v.form.email.email">
+								This value should be a valid email
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div>
+					<label class="uk-form-label">
+						Raw data
+					</label>
+					<div class="uk-form-controls">
+						<ScInput type="file" :error-state="$v.form.raw_data.$error" :validator="$v.form.raw_data" @change="loadFile" mode="outline"></ScInput>
+						<ul class="sc-vue-errors">
+							<li v-if="!$v.form.raw_data.required">
+								Field is required
+							</li>
+						</ul>
+					</div>
+				</div>
+				<!-- <div>
+					<label class="uk-form-label">
+						File
+					</label>
+					<div class="uk-form-controls">
+						<!- - <ScInput v-model.trim="form.raw_data" :error-state="$v.form.raw_data.$error" :validator="$v.form.raw_data" mode="outline" type="file" @change="loadFile"></ScInput> - ->
+						<input class="uk-button uk-button-default" type="file" @change="loadFile" />
+						<ul class="sc-vue-errors">
+							<li v-if="!$v.form.raw_data.required">
+								Field is required
+							</li>
+						</ul>
+					</div>
 				</div> -->
 			</div>
-		</div>
-	</div>
+		</fieldset>
+	</form>
 </template>
 
 <script>
-import { scHelpers } from "~/assets/js/utils";
-const { uniqueID } = scHelpers;
-
-const countries = require('~/data/common/countries.json');
-const usCities = require('~/data/common/us_cities.json');
 
 import ScInput from '~/components/Input'
 import PrettyRadio from 'pretty-checkbox-vue/radio';
@@ -68,20 +81,7 @@ export default {
 		}
 	}),
 	computed: {
-		countries () {
-			return countries.map(function (obj) {
-				obj.id = obj.id || obj.code;
-				obj.text = obj.text || obj.name;
-				return obj;
-			});
-		},
-		usCities () {
-			return usCities.map(function (obj) {
-				obj.id = obj.id || obj.rank;
-				obj.text = obj.text || obj.city;
-				return obj;
-			});
-		}
+
 	},
 	validations: {
 		form: {
@@ -95,7 +95,7 @@ export default {
 		}
 	},
 	methods: {
-		handleArchivoSeleccionado(event) {
+		loadFile(event) {
 			this.form.raw_data = event.target.files[0];
 			this.form.file_name = this.form.raw_data.name;
 		},
@@ -104,23 +104,6 @@ export default {
 			var isValid = !this.$v.form.$invalid;
 			this.$emit('on-validate', this.$data.form, isValid);
 			return isValid
-		},
-		addAddress (e) {
-			e.preventDefault();
-			this.form.addresses.push({
-				id: uniqueID(10),
-				billingAddress: '',
-				zipCode: '',
-				city: '',
-				country: '',
-			});
-		},
-		removeAddress (e, id) {
-			e.preventDefault();
-			var index = this.form.addresses.map(function (item) {
-				return item.id
-			}).indexOf(id);
-			this.form.addresses.splice(index, 1);
 		},
 	}
 }

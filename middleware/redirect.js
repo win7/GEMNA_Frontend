@@ -1,7 +1,7 @@
 export default function ({ route, redirect }) {
-	if (route.path === '/') {
+	/* if (route.path === '/') {
 		redirect('/dashboard/v1')
-	}
+	} */
 	if (route.path === '/forms' || route.path === '/forms/') {
 		redirect('/forms/regular_elements')
 	}

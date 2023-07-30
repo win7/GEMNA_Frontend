@@ -7,9 +7,9 @@ export const menuEntries = [
 	},
 	{
 		id: uniqueID(),
-		title: "Chat",
+		title: "Explined",
 		icon: "mdi mdi-message-outline",
-		page: "/pages/chat"
+		page: "/index"
 	},
 	{
 		section_title: "Menu"

@@ -176,7 +176,7 @@
 									<!-- <p class="sc-text-semibold uk-text-large uk-margin-remove-top">
 										Personal info
 									</p> -->
-									<div class="uk-child-width-1-2@m uk-grid" data-uk-grid>
+									<div class="uk-child-width-1-1@m uk-grid" data-uk-grid>
 										<div>
 											<label class="uk-form-label">
 												Metabolities
@@ -246,16 +246,12 @@
 
 import { scColors } from '~/assets/js/utils';
 import ScInput from '~/components/Input';
-import * as d3 from 'd3';
-
-
-import moment from '~/plugins/moment';
 import { validationMixin } from 'vuelidate';
 import { required, minLength, email } from 'vuelidate/lib/validators';
+import { ScProgressCircular } from '~/components/progress'
 
 import swal from 'sweetalert2';
-
-import { ScProgressCircular } from '~/components/progress'
+import * as d3 from 'd3';
 
 export default {
 	name: 'DataVisualization',
@@ -263,7 +259,7 @@ export default {
 		ScInput,
 		Select2: process.client ? () => import('~/components/Select2') : null,
 		// MultiSelect: process.client ? () => import('~/components/Multiselect') : null
-		ScProgressCircular
+		ScProgressCircular,
 	},
 	mixins: [validationMixin],
 	data: () => ({
@@ -314,7 +310,7 @@ export default {
 
 		// this.test_d3();
 
-		// this.test_graph1();
+		// this.show_graph();
 
 	},
 	validations: {
@@ -406,7 +402,7 @@ export default {
 						);
 						// console.log(response.data.data[0]["labels"]);
 						const suits = response.data.data;
-						this.test_graph1(suits);
+						this.show_graph(suits);
 					}
 				}).catch((error) => {
 					console.log(error.response);
@@ -427,7 +423,7 @@ export default {
 				A${r},${r} 0 0,1 ${d.target.x},${d.target.y}
 			`;
 		},
-		test_graph1 (suits) {
+		show_graph (suits) {
 			const drag = simulation => {
 				
 				function dragstarted(event, d) {
@@ -483,7 +479,7 @@ export default {
 			.data(types)
 			.enter()
 			.append("rect")
-				.attr("x", -width/2)
+				.attr("x", -width/2 + 8)
 				.attr("y", function(d,i){ return -height/2 + i*(size+5)}) // 100 is where the first dot appears. 25 is the distance between dots
 				.attr("width", size)
 				.attr("height", size)
@@ -494,7 +490,7 @@ export default {
 			.data(types)
 			.enter()
 			.append("text")
-				.attr("x", -width/2 + size*1.2)
+				.attr("x", -width/2 + 8 + size*1.2)
 				.attr("y", function(d,i){ return -height/2  + i*(size+5) + (size/2)}) // 100 is where the first dot appears. 25 is the distance between dots
 				.style("fill", function(d){ return color(d)})
 				.text(function(d){ return d})

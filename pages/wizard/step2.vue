@@ -1,36 +1,41 @@
 <template>
-	<div class="sc-border sc-round sc-padding md-bg-grey-50">
-		<div class="uk-child-width-1-2@s uk-margin uk-grid" data-uk-grid>
-			<div>
-				<label class="uk-form-label">
-					Method
-				</label>
-				<div class="uk-form-controls">
-					<client-only>
-						<Select2
-							v-model="form.method"
-							:options="methods"
-							:settings="{ 'width': '100%', 'placeholder': 'Select a city...' }"
-						></Select2>
-					</client-only>
+	<form>
+		<fieldset class="uk-fieldset md-bg-grey-100 sc-padding">
+			<!-- <p class="sc-text-semibold uk-text-large uk-margin-remove-top">
+				Personal info
+			</p> -->
+			<div class="uk-child-width-1-2@m uk-grid" data-uk-grid>
+				<div>
+					<label class="uk-form-label">
+						Method
+					</label>
+					<div class="uk-form-controls">
+						<client-only>
+							<Select2
+								v-model="form.method"
+								:options="methods"
+								:settings="{ 'width': '100%', 'placeholder': 'Select a city...' }"
+							></Select2>
+						</client-only>
+					</div>
+				</div>
+				<div>
+					<label class="uk-form-label">
+						Data variation
+					</label>
+					<div class="uk-form-controls">
+						<client-only>
+							<Select2
+								v-model="form.option"
+								:options="options"
+								:settings="{ 'width': '100%', 'placeholder': 'Select a city...' }"
+							></Select2>
+						</client-only>
+					</div>
 				</div>
 			</div>
-			<div>
-				<label class="uk-form-label">
-					Data variation
-				</label>
-				<div class="uk-form-controls">
-					<client-only>
-						<Select2
-							v-model="form.option"
-							:options="options"
-							:settings="{ 'width': '100%', 'placeholder': 'Select a city...' }"
-						></Select2>
-					</client-only>
-				</div>
-			</div>
-		</div>
-	</div>
+		</fieldset>
+	</form>
 </template>
 
 <script>

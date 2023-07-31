@@ -3,13 +3,13 @@ const { uniqueID } = scHelpers;
 
 export const menuEntries = [
 	{
-		section_title: "Applications"
+		section_title: "Home"
 	},
 	{
 		id: uniqueID(),
-		title: "Explined",
+		title: "Explained",
 		icon: "mdi mdi-message-outline",
-		page: "/index"
+		page: "/"
 	},
 	{
 		section_title: "Menu"
@@ -32,16 +32,6 @@ export const menuEntries = [
 				title: "Consult",
 				page: "/data_visualization"
 			},
-			{
-				id: uniqueID(),
-				title: "Dashboard 1",
-				page: "/dashboard/v1"
-			},
-			{
-				id: uniqueID(),
-				title: "Dashboard 2",
-				page: "/dashboard/v2"
-			}
 		]
 	},
 ];

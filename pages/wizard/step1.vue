@@ -26,7 +26,7 @@
 						Raw data
 					</label>
 					<div class="uk-form-controls">
-						<ScInput type="file" :error-state="$v.form.raw_data.$error" :validator="$v.form.raw_data" @change="loadFile" mode="outline"></ScInput>
+						<input type="file" :error-state="$v.form.raw_data.$error" :validator="$v.form.raw_data" @change="loadFile" mode="outline"></input>
 						<ul class="sc-vue-errors">
 							<li v-if="!$v.form.raw_data.required">
 								Field is required

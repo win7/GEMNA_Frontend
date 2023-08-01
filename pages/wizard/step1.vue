@@ -26,7 +26,13 @@
 						Raw data
 					</label>
 					<div class="uk-form-controls">
-						<input type="file" :error-state="$v.form.raw_data.$error" :validator="$v.form.raw_data" @change="loadFile" mode="outline"></input>
+						<input type="file" :error-state="$v.form.raw_data.$error" :validator="$v.form.raw_data" @change="loadFile" mode="outline"/>
+						<!-- <ScInput @change="loadFile"
+							name="raw_data"
+							type="file"
+							:error-state="$v.form.raw_data.$error"
+							:validator="$v.form.raw_data"
+						></ScInput> -->
 						<ul class="sc-vue-errors">
 							<li v-if="!$v.form.raw_data.required">
 								Field is required
@@ -75,10 +81,9 @@ export default {
 	mixins: [validationMixin],
 	data: () => ({
 		form: {
-			email: "",
+			email: "fff@ggg.ocm",
 			raw_data: "",
 			file_name: "",
-			properties: []
 		}
 	}),
 	computed: {
@@ -116,7 +121,7 @@ export default {
 						}
 					}
 				});
-				that.form.properties = properties;
+				that.$store.commit('updateProperties', properties);
 			};
 			reader.readAsText(this.form.raw_data);
 		},

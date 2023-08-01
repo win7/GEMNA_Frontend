@@ -23,7 +23,8 @@ export const state = () => ({
 	vxFullWidthActive: false,
 	vxActiveLocale: 'en',
 	vxPageOverlay: false,
-	vxLayoutBoxedActive: false
+	vxLayoutBoxedActive: false,
+	properties: []
 });
 
 export const mutations = {
@@ -96,7 +97,10 @@ export const mutations = {
 	},
 	toggleLayoutBoxed (state, active) {
 		state.vxLayoutBoxedActive = active
-	}
+	},
+	updateProperties(state, newData) {
+		state.properties = newData;
+	  },
 };
 
 export const getters = {

@@ -58,7 +58,7 @@ export default {
 	},
 	data: () => ({
 		finalModel: {
-			email: ""
+			
 		}
 	}),
 	computed: {
@@ -73,9 +73,6 @@ export default {
 			if(isValid){
 				this.finalModel = Object.assign({}, this.finalModel, model)
 			}
-		},
-		onComplete_ () {
-			alert('Done!');
 		},
 		async onComplete () {
 			let form = new FormData();

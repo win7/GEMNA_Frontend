@@ -14,9 +14,15 @@
 							<Select2
 								v-model="form.method"
 								:options="methods"
-								:settings="{ 'width': '100%', 'placeholder': 'Select a city...' }"
+								:settings="{'width': '100%', 'placeholder': 'Select a method...'}"
+								:error-state="$v.form.method.$error"
 							></Select2>
 						</client-only>
+						<ul class="sc-vue-errors">
+							<li v-if="!$v.form.method.required">
+								Field is required
+							</li>
+						</ul>
 					</div>
 				</div>
 				<div>
@@ -28,9 +34,51 @@
 							<Select2
 								v-model="form.option"
 								:options="options"
-								:settings="{ 'width': '100%', 'placeholder': 'Select a city...' }"
+								:settings="{'width': '100%', 'placeholder': 'Select a data variation...'}"
+								:error-state="$v.form.option.$error"
 							></Select2>
 						</client-only>
+						<ul class="sc-vue-errors">
+							<li v-if="!$v.form.option.required">
+								Field is required
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="uk-child-width-1-2@s uk-grid" data-uk-grid>
+				<div>
+					<label class="uk-form-label">
+						Control
+					</label>
+					<div class="uk-form-controls">
+						<client-only>
+							<Select2
+								v-model="form.control"
+								:options="controls"
+								:settings="{'width': '100%', 'placeholder': 'Select control...', 'closeOnSelect': true}"
+								multiple
+								:error-state="$v.form.control.$error"
+							></Select2>
+						</client-only>
+						<ul class="sc-vue-errors">
+							<li v-if="!$v.form.control.required">
+								Field is required
+							</li>
+						</ul>						
+					</div>
+				</div>
+				<div>
+					<label class="uk-form-label">
+						Range
+					</label>
+					<div class="uk-form-controls">
+						<ScInput v-model.trim="form.range" :error-state="$v.form.range.$error" :validator="$v.form.range" mode="outline" type="number"></ScInput>
+						<ul class="sc-vue-errors">
+							<li v-if="!$v.form.range.required">
+								Field is required
+							</li>
+						</ul>
 					</div>
 				</div>
 			</div>
@@ -40,10 +88,7 @@
 
 <script>
 import { scHelpers } from "~/assets/js/utils";
-const { uniqueID } = scHelpers;
 
-const countries = require('~/data/common/countries.json');
-const usCities = require('~/data/common/us_cities.json');
 const methods = [{"id": "dgi", "name": "DGI"}, {"id": "vgae", "name": "VGAE"}];
 const options = [{"id": "none", "name": "none"}, {"id": "str", "name": "str"}, {"id": "dyn", "name": "dyn"}];
 
@@ -65,11 +110,14 @@ export default {
 		Select2: process.client ? () => import('~/components/Select2') : null
 	},
 	mixins: [validationMixin],
+
 	data: () => ({
 		form: {
-			method: "dgi",
+			method: "",
 			dimension: 3,
-			option: "dyn",
+			option: "",
+			control: [],
+			range: null
 		},
 	}),
 	computed: {
@@ -87,20 +135,23 @@ export default {
 				return obj;
 			});
 		},
-		countries () {
-			return countries.map(function (obj) {
-				obj.id = obj.id || obj.code;
-				obj.text = obj.text || obj.name;
-				return obj;
+		controls () {
+			// console.log(this.$store.state.properties);
+			let list = []
+			this.$store.state.properties.forEach(item => {
+				list.push({
+					id: item,
+					text: item
+				})
 			});
+			return list;
 		},
-		usCities () {
-			return usCities.map(function (obj) {
-				obj.id = obj.id || obj.rank;
-				obj.text = obj.text || obj.city;
-				return obj;
-			});
-		}
+	},
+	created () {
+		
+	},
+	mounted () {
+		
 	},
 	validations: {
 		form: {
@@ -112,6 +163,12 @@ export default {
 			},
 			option: {
 				required
+			},
+			control: {
+				required
+			},
+			range: {
+				required
 			}
 		}
 	},
@@ -122,24 +179,8 @@ export default {
 			this.$emit('on-validate', this.$data.form, isValid);
 			return isValid
 		},
-		addAddress (e) {
-			e.preventDefault();
-			this.userData.addresses.push({
-				id: uniqueID(10),
-				billingAddress: '',
-				zipCode: '',
-				city: '',
-				country: '',
-			});
-		},
-		removeAddress (e, id) {
-			e.preventDefault();
-			var index = this.userData.addresses.map(function (item) {
-				return item.id
-			}).indexOf(id);
-			this.userData.addresses.splice(index, 1);
-		},
-	}
+	},
+	
 }
 </script>
 

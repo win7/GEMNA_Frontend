@@ -21,10 +21,18 @@
 			<span v-if="data.option">
 				{{ getOption(data.option) }}
 			</span><br>
-
 			<span class="uk-text-muted uk-text-default">
 				Dimension:
 			</span> {{ data.dimension }}<br>
+			<span class="uk-text-muted uk-text-default">
+				Control:
+			</span>
+			<span v-if="data.control">
+				{{ getControl(data.control) }}
+			</span><br>
+			<span class="uk-text-muted uk-text-default">
+				Range:
+			</span> {{ data.range }}<br>
 			<br>
 			<span class="uk-text-muted uk-text-default">
 				Email:
@@ -57,6 +65,9 @@ export default {
 				return obj.id == id
 			});
 			return result[0].name;
+		},
+		getControl (control) {
+			return control.join(", ")
 		}
 	}
 }

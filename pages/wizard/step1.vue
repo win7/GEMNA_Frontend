@@ -4,7 +4,7 @@
 			<!-- <p class="sc-text-semibold uk-text-large uk-margin-remove-top">
 				Personal info
 			</p> -->
-			<div class="uk-child-width-1-2@m uk-grid" data-uk-grid>
+			<div class="uk-child-width-1-2@s uk-grid" data-uk-grid>
 				<div>
 					<label class="uk-form-label">
 						Email
@@ -78,6 +78,7 @@ export default {
 			email: "",
 			raw_data: "",
 			file_name: "",
+			properties: []
 		}
 	}),
 	computed: {
@@ -98,6 +99,26 @@ export default {
 		loadFile(event) {
 			this.form.raw_data = event.target.files[0];
 			this.form.file_name = this.form.raw_data.name;
+			const that = this;
+			const reader = new FileReader();
+			const properties = [];
+			reader.onload = function(e) {
+				const contents = e.target.result;
+				const lines = contents.split("\n");
+				const first_line = lines[0];
+				const list_aux = first_line.split("|");
+				
+				list_aux.forEach(item => {
+					if (item.includes("_")){
+						const aux = item.split("_");
+						if (!properties.includes(aux[0])) {
+							properties.push(aux[0]);
+						}
+					}
+				});
+				that.form.properties = properties;
+			};
+			reader.readAsText(this.form.raw_data);
 		},
 		validate () {
 			this.$v.form.$touch();

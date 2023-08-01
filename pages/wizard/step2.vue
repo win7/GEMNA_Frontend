@@ -4,7 +4,7 @@
 			<!-- <p class="sc-text-semibold uk-text-large uk-margin-remove-top">
 				Personal info
 			</p> -->
-			<div class="uk-child-width-1-2@m uk-grid" data-uk-grid>
+			<div class="uk-child-width-1-2@s uk-grid" data-uk-grid>
 				<div>
 					<label class="uk-form-label">
 						Method

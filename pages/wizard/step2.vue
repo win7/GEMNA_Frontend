@@ -56,9 +56,10 @@
 							<Select2
 								v-model="form.control"
 								:options="controls"
-								:settings="{'width': '100%', 'placeholder': 'Select control...', 'closeOnSelect': true}"
+								:settings="{ 'width': '100%', 'placeholder': 'Select control...' }"
+								:error-state="$v.form.control.$error" 
+								:validator="$v.form.control"
 								multiple
-								:error-state="$v.form.control.$error"
 							></Select2>
 						</client-only>
 						<ul class="sc-vue-errors">

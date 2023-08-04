@@ -12,6 +12,19 @@
 							Consult
 						</ScCardTitle>
 						<ScCardBody>
+							<div id="my_dataviz"></div>
+						</ScCardBody>
+					</ScCard>
+				</div>
+			</div>
+
+			<div class="uk-grid" data-uk-grid>
+				<div class="uk-width-xxlarge">
+					<ScCard>
+						<ScCardTitle>
+							Consult
+						</ScCardTitle>
+						<ScCardBody>
 							<form>
 								<fieldset class="uk-fieldset md-bg-grey-100 sc-padding">
 									<!-- <p class="sc-text-semibold uk-text-large uk-margin-remove-top">
@@ -191,13 +204,12 @@
 														:validator="$v.form2.nodes"
 														multiple
 													></Select2>
-													<ul class="sc-vue-errors">
-														<li v-if="!$v.form2.nodes.required">
-															Field is required
-														</li>
-													</ul>
 												</client-only>
-												
+												<ul class="sc-vue-errors">
+													<li v-if="!$v.form2.nodes.required">
+														Field is required
+													</li>
+												</ul>
 											</div>
 										</div>
 										<div>
@@ -213,12 +225,12 @@
 														:error-state="$v.form2.group.$error" 
 														:validator="$v.form2.group"
 													></Select2>
-													<ul class="sc-vue-errors">
-														<li v-if="!$v.form2.group.required">
-															Field is required
-														</li>
-													</ul>
 												</client-only>
+												<ul class="sc-vue-errors">
+													<li v-if="!$v.form2.group.required">
+														Field is required
+													</li>
+												</ul>
 											</div>
 										</div>
 									</div>
@@ -252,6 +264,7 @@ import { ScProgressCircular } from '~/components/progress'
 
 import swal from 'sweetalert2';
 import * as d3 from 'd3';
+// import * as clustergrammer from 'clustergrammer';
 
 export default {
 	name: 'DataVisualization',
@@ -269,18 +282,18 @@ export default {
 		submitStatus2: null,
 
 		form1: {
-			id: "8b095006-af13-4ee5-8f3e-252f6e19b0ed",
+			id: "e6609b8a-f965-4ff8-b07d-b37a8c1c6291",
 		},
 		form2: {
-			id: "",
-			nodes: ["100.00072", "128.89351", "132.88524", "135.54123", "152.99445"],
-			group: "FCSglc-DMA"
+			id: "e6609b8a-f965-4ff8-b07d-b37a8c1c6291",
+			nodes: ["74.0249", "129.0192"], // ["100.00072", "128.89351", "132.88524", "135.54123", "152.99445"],
+			group: "WT-pck1", // "FCSglc-DMA"
 		},
 
 		graph_details: [],
 		graph_nodes: [],
 		labels: ['PP', 'Pp', 'PN', 'Pn', 'P?', 'pP', 'pp', 'pN', 'pn', 'p?', 'NP', 'Np', 'NN', 'Nn', 'N?', 'nP', 'np', 'nN', 'nn', 'n?', '?P', '?p', '?N', '?n'],
-		options: [], // [{value: "1", text: "aa"}, {value: "2", text: "bb"}],
+		options: [],
 		groups: [],
 	}),
 	computed: {
@@ -310,8 +323,10 @@ export default {
 
 		// this.test_d3();
 
-		// this.show_graph();
+		// this.metabolomic_network();
 
+		// this.test1();
+		// this.test2();
 	},
 	validations: {
 		form1: {
@@ -401,8 +416,11 @@ export default {
 							'success'
 						);
 						// console.log(response.data.data[0]["labels"]);
-						const suits = response.data.data;
-						this.show_graph(suits);
+						const suits = response.data.data.changes_sub;
+						this.metabolomic_network(suits);
+
+						const changes = response.data.data.changes;
+						this.heatmap_changes(changes);
 					}
 				}).catch((error) => {
 					console.log(error.response);
@@ -415,7 +433,6 @@ export default {
 			}
 			this.submitStatus2 = 'OK'
 		},
-
 		linkArc(d) {
 			const r = Math.hypot(d.target.x - d.source.x, d.target.y - d.source.y);
 			return `
@@ -423,7 +440,7 @@ export default {
 				A${r},${r} 0 0,1 ${d.target.x},${d.target.y}
 			`;
 		},
-		show_graph (suits) {
+		metabolomic_network (suits) {
 			const drag = simulation => {
 				
 				function dragstarted(event, d) {
@@ -450,7 +467,7 @@ export default {
 			}
 
 			const width = 800;
-			const height = 600;
+			const height = 400;
 			const types = Array.from(new Set(suits.map(d => d.label)));
 			const nodes = Array.from(new Set(suits.flatMap(l => [l.source, l.target])), id => ({id}));
 			const links = suits.map(d => Object.create(d))
@@ -463,17 +480,14 @@ export default {
 				.force("x", d3.forceX())
 				.force("y", d3.forceY());
 
+			d3.select("svg").remove();
+
 			const svg = d3.create("svg")
 				.attr("viewBox", [-width / 2, -height / 2, width, height])
 				.attr("width", width)
 				.attr("height", height)
 				.attr("style", "max-width: 100%; height: auto; font: 12px sans-serif;");
 			
-
-			// var keys = ["Mister A", "Brigitte", "Eleonore", "Another friend", "Batman"]
-			/* var color = d3.scaleOrdinal()
-				.domain(keys)
-				.range(d3.schemeSet1); */
 			var size = 20
 			svg.selectAll("mydots")
 			.data(types)
@@ -557,6 +571,498 @@ export default {
 			// graphs.append(svg.node(), {scales: {color}});
 			graphs.append(Object.assign(svg.node(), {scales: {color}}));
 		},
+		heatmap_changes (data) {
+			// set the dimensions and margins of the graph
+			var margin = {top: 0, right: 0, bottom: 5, left: 0},
+			width = 800 - margin.left - margin.right,
+			height = 800 - margin.top - margin.bottom;
+
+			// append the svg object to the body of the page
+			var svg = d3.select("#my_dataviz")
+			.append("svg")
+			.attr("width", width + margin.left + margin.right)
+			.attr("height", height + margin.top + margin.bottom)
+			.append("g")
+			.attr("transform",
+					"translate(" + margin.left + "," + margin.top + ")");
+
+			const source = [...new Set(data.map(obj => obj.source))];
+			const target = [...new Set(data.map(obj => obj.target))];
+
+			console.log(source);
+			console.log(target);
+
+			// Build X scales and axis:
+			var x = d3.scaleBand()
+				.range([ 0, width ])
+				.domain(source)
+				.padding(0.05);
+			svg.append("g")
+				.style("font-size", 15)
+				.attr("transform", "translate(0," + height + ")")
+				.call(d3.axisBottom(x).tickSize(0))
+				.select(".domain").remove()
+
+			// Build Y scales and axis:
+			var y = d3.scaleBand()
+				.range([ height, 0 ])
+				.domain(target)
+				.padding(0.05);
+			svg.append("g")
+				.style("font-size", 15)
+				.call(d3.axisLeft(y).tickSize(0))
+				.select(".domain").remove()
+
+			// Build color scale
+			var myColor = d3.scaleSequential()
+				.interpolator(d3.interpolateInferno)
+				.domain([1,100])
+
+			// create a tooltip
+			var tooltip = d3.select("#my_dataviz")
+				.append("div")
+				.style("opacity", 0)
+				.attr("class", "tooltip")
+				.style("background-color", "white")
+				.style("border", "solid")
+				.style("border-width", "2px")
+				.style("border-radius", "5px")
+				.style("padding", "5px")
+
+			// Three function that change the tooltip when user hover / move / leave a cell
+			var mouseover = function(d) {
+				tooltip
+				.style("opacity", 1)
+				d3.select(this)
+				.style("stroke", "black")
+				.style("opacity", 1)
+			}
+			var mousemove = function(d) {
+				tooltip
+				.html("The exact value of<br>this cell is: " + d.weight1)
+				.style("left", (d3.mouse(this)[0]+70) + "px")
+				.style("top", (d3.mouse(this)[1]) + "px")
+			}
+			var mouseleave = function(d) {
+				tooltip
+				.style("opacity", 0)
+				d3.select(this)
+				.style("stroke", "none")
+				.style("opacity", 0.8)
+			}
+
+			// add the squares
+			svg.selectAll()
+				.data(data, function(d) {return d.source+':'+d.target;})
+				.enter()
+				.append("rect")
+				.attr("x", function(d) { return x(d.source) })
+				.attr("y", function(d) { return y(d.target) })
+				.attr("rx", 4)
+				.attr("ry", 4)
+				.attr("width", x.bandwidth() )
+				.attr("height", y.bandwidth() )
+				.style("fill", function(d) { return myColor(d.weight1*100)} )
+				.style("stroke-width", 4)
+				.style("stroke", "none")
+				.style("opacity", 0.8)
+				//on("mouseover", mouseover)
+				//.on("mousemove", mousemove)
+				//.on("mouseleave", mouseleave)
+		},
+		test1 () {
+			// set the dimensions and margins of the graph
+			var margin = {top: 80, right: 25, bottom: 30, left: 40},
+			width = 450 - margin.left - margin.right,
+			height = 450 - margin.top - margin.bottom;
+
+			// append the svg object to the body of the page
+			var svg = d3.select("#my_dataviz")
+			// const svg = d3.create("svg")
+			.append("svg")
+			.attr("width", width + margin.left + margin.right)
+			.attr("height", height + margin.top + margin.bottom)
+			.append("g")
+			.attr("transform",
+					"translate(" + margin.left + "," + margin.top + ")");
+
+			//Read the data
+			//d3.csv("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/heatmap_data.csv", function(data) {
+			// console.log(data);
+			let data = [
+				{ group: "A", variable: "v1", value: "30" },
+				{ group: "A", variable: "v2", value: "30" },
+				{ group: "A", variable: "v3", value: "30" },
+				{ group: "A", variable: "v4", value: "14" },
+				{ group: "A", variable: "v5", value: "59" },
+				{ group: "A", variable: "v6", value: "52" },
+				{ group: "A", variable: "v7", value: "88" },
+				{ group: "A", variable: "v8", value: "20" },
+				{ group: "A", variable: "v9", value: "99" },
+				{ group: "A", variable: "v10", value: "30" },
+				{ group: "B", variable: "v1", value: "37" },
+				{ group: "B", variable: "v2", value: "50" },
+				{ group: "B", variable: "v3", value: "81" },
+				{ group: "B", variable: "v4", value: "79" },
+				{ group: "B", variable: "v5", value: "84" },
+				{ group: "B", variable: "v6", value: "91" },
+				{ group: "B", variable: "v7", value: "82" },
+				{ group: "B", variable: "v8", value: "89" },
+				{ group: "B", variable: "v9", value: "6" },
+				{ group: "B", variable: "v10", value: "67" },
+				{ group: "C", variable: "v1", value: "96" },
+				{ group: "C", variable: "v2", value: "13" },
+				{ group: "C", variable: "v3", value: "98" },
+				{ group: "C", variable: "v4", value: "10" },
+				{ group: "C", variable: "v5", value: "86" },
+				{ group: "C", variable: "v6", value: "23" },
+				{ group: "C", variable: "v7", value: "74" },
+				{ group: "C", variable: "v8", value: "47" },
+				{ group: "C", variable: "v9", value: "73" },
+				{ group: "C", variable: "v10", value: "40" },
+				{ group: "D", variable: "v1", value: "75" },
+				{ group: "D", variable: "v2", value: "18" },
+				{ group: "D", variable: "v3", value: "92" },
+				{ group: "D", variable: "v4", value: "43" },
+				{ group: "D", variable: "v5", value: "16" },
+				{ group: "D", variable: "v6", value: "27" },
+				{ group: "D", variable: "v7", value: "76" },
+				{ group: "D", variable: "v8", value: "24" },
+				{ group: "D", variable: "v9", value: "1" },
+				{ group: "D", variable: "v10", value: "87" },
+				{ group: "E", variable: "v1", value: "44" },
+				{ group: "E", variable: "v2", value: "29" },
+				{ group: "E", variable: "v3", value: "58" },
+				{ group: "E", variable: "v4", value: "55" },
+				{ group: "E", variable: "v5", value: "65" },
+				{ group: "E", variable: "v6", value: "56" },
+				{ group: "E", variable: "v7", value: "9" },
+				{ group: "E", variable: "v8", value: "78" },
+				{ group: "E", variable: "v9", value: "49" },
+				{ group: "E", variable: "v10", value: "36" },
+				{ group: "F", variable: "v1", value: "35" },
+				{ group: "F", variable: "v2", value: "80" },
+				{ group: "F", variable: "v3", value: "8" },
+				{ group: "F", variable: "v4", value: "46" },
+				{ group: "F", variable: "v5", value: "48" },
+				{ group: "F", variable: "v6", value: "100" },
+				{ group: "F", variable: "v7", value: "17" },
+				{ group: "F", variable: "v8", value: "41" },
+				{ group: "F", variable: "v9", value: "33" },
+				{ group: "F", variable: "v10", value: "11" },
+				{ group: "G", variable: "v1", value: "77" },
+				{ group: "G", variable: "v2", value: "62" },
+				{ group: "G", variable: "v3", value: "94" },
+				{ group: "G", variable: "v4", value: "15" },
+				{ group: "G", variable: "v5", value: "69" },
+				{ group: "G", variable: "v6", value: "63" },
+				{ group: "G", variable: "v7", value: "61" },
+				{ group: "G", variable: "v8", value: "54" },
+				{ group: "G", variable: "v9", value: "38" },
+				{ group: "G", variable: "v10", value: "93" },
+				{ group: "H", variable: "v1", value: "39" },
+				{ group: "H", variable: "v2", value: "26" },
+				{ group: "H", variable: "v3", value: "90" },
+				{ group: "H", variable: "v4", value: "83" },
+				{ group: "H", variable: "v5", value: "31" },
+				{ group: "H", variable: "v6", value: "2" },
+				{ group: "H", variable: "v7", value: "51" },
+				{ group: "H", variable: "v8", value: "28" },
+				{ group: "H", variable: "v9", value: "42" },
+				{ group: "H", variable: "v10", value: "7" },
+				{ group: "I", variable: "v1", value: "5" },
+				{ group: "I", variable: "v2", value: "60" },
+				{ group: "I", variable: "v3", value: "21" },
+				{ group: "I", variable: "v4", value: "25" },
+				{ group: "I", variable: "v5", value: "3" },
+				{ group: "I", variable: "v6", value: "70" },
+				{ group: "I", variable: "v7", value: "34" },
+				{ group: "I", variable: "v8", value: "68" },
+				{ group: "I", variable: "v9", value: "57" },
+				{ group: "I", variable: "v10", value: "32" },
+				{ group: "J", variable: "v1", value: "19" },
+				{ group: "J", variable: "v2", value: "85" },
+				{ group: "J", variable: "v3", value: "53" },
+				{ group: "J", variable: "v4", value: "45" },
+				{ group: "J", variable: "v5", value: "71" },
+				{ group: "J", variable: "v6", value: "64" },
+				{ group: "J", variable: "v7", value: "4" },
+				{ group: "J", variable: "v8", value: "12" },
+				{ group: "J", variable: "v9", value: "97" },
+				{ group: "J", variable: "v10", value: "30" }
+			];
+  
+			// Labels of row and columns -> unique identifier of the column called 'group' and 'variable'
+			var myGroups = [ "A", "B", "C", "D", "E", "F", "G", "H", "I", "J" ]; // d3.map(data, function(d){return d.group;}).keys()
+			var myVars = [ "v1", "v2", "v3", "v4", "v5", "v6", "v7", "v8", "v9", "v10" ]; // d3.map(data, function(d){return d.variable;}).keys()
+			
+			console.log(data);
+			console.log(myGroups);
+			console.log(myVars);
+
+			// Build X scales and axis:
+			var x = d3.scaleBand()
+				.range([ 0, width ])
+				.domain(myGroups)
+				.padding(0.05);
+			svg.append("g")
+				.style("font-size", 15)
+				.attr("transform", "translate(0," + height + ")")
+				.call(d3.axisBottom(x).tickSize(0))
+				.select(".domain").remove()
+
+			// Build Y scales and axis:
+			var y = d3.scaleBand()
+				.range([ height, 0 ])
+				.domain(myVars)
+				.padding(0.05);
+			svg.append("g")
+				.style("font-size", 15)
+				.call(d3.axisLeft(y).tickSize(0))
+				.select(".domain").remove()
+
+			// Build color scale
+			var myColor = d3.scaleSequential()
+				.interpolator(d3.interpolateInferno)
+				.domain([1,100])
+
+			// create a tooltip
+			var tooltip = d3.select("#my_dataviz")
+			// var tooltip = d3.create("svg")
+				.append("div")
+				.style("opacity", 0)
+				.attr("class", "tooltip")
+				.style("background-color", "white")
+				.style("border", "solid")
+				.style("border-width", "2px")
+				.style("border-radius", "5px")
+				.style("padding", "5px")
+
+			// Three function that change the tooltip when user hover / move / leave a cell
+			var mouseover = function(d) {
+				tooltip
+				.style("opacity", 1)
+				d3.select(this)
+				.style("stroke", "black")
+				.style("opacity", 1)
+			}
+			var mousemove = function(d) {
+				tooltip
+				.html("The exact value of<br>this cell is: " + d.value)
+				.style("left", (d3.mouse(this)[0]+70) + "px")
+				.style("top", (d3.mouse(this)[1]) + "px")
+			}
+			var mouseleave = function(d) {
+				tooltip
+				.style("opacity", 0)
+				d3.select(this)
+				.style("stroke", "none")
+				.style("opacity", 0.8)
+			}
+
+			// add the squares
+			svg.selectAll()
+				.data(data, function(d) {return d.group+':'+d.variable;})
+				.enter()
+				.append("rect")
+				.attr("x", function(d) { return x(d.group) })
+				.attr("y", function(d) { return y(d.variable) })
+				.attr("rx", 4)
+				.attr("ry", 4)
+				.attr("width", x.bandwidth() )
+				.attr("height", y.bandwidth() )
+				.style("fill", function(d) { return myColor(d.value)} )
+				.style("stroke-width", 4)
+				.style("stroke", "none")
+				.style("opacity", 0.8)
+				.on("mouseover", mouseover)
+				.on("mousemove", mousemove)
+				.on("mouseleave", mouseleave)
+		},
+		test2 () {
+			// set the dimensions and margins of the graph
+			var margin = {top: 30, right: 30, bottom: 30, left: 30},
+			width = 450 - margin.left - margin.right,
+			height = 450 - margin.top - margin.bottom;
+
+			// append the svg object to the body of the page
+			var svg = d3.select("#my_dataviz")
+			.append("svg")
+			.attr("width", width + margin.left + margin.right)
+			.attr("height", height + margin.top + margin.bottom)
+			.append("g")
+			.attr("transform",
+					"translate(" + margin.left + "," + margin.top + ")");
+
+			// Labels of row and columns
+			var myGroups = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"]
+			var myVars = ["v1", "v2", "v3", "v4", "v5", "v6", "v7", "v8", "v9", "v10"]
+
+			// Build X scales and axis:
+			var x = d3.scaleBand()
+			.range([ 0, width ])
+			.domain(myGroups)
+			.padding(0.01);
+			svg.append("g")
+			.attr("transform", "translate(0," + height + ")")
+			.call(d3.axisBottom(x))
+
+			// Build X scales and axis:
+			var y = d3.scaleBand()
+			.range([ height, 0 ])
+			.domain(myVars)
+			.padding(0.01);
+			svg.append("g")
+			.call(d3.axisLeft(y));
+
+			// Build color scale
+			var myColor = d3.scaleLinear()
+			.range(["white", "#69b3a2"])
+			.domain([1,100])
+
+			//Read the data
+			d3.csv("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/heatmap_data.csv", function(data1) {
+				let data = [
+				{ group: "A", variable: "v1", value: "30" },
+				{ group: "A", variable: "v2", value: "95" },
+				{ group: "A", variable: "v3", value: "22" },
+				{ group: "A", variable: "v4", value: "14" },
+				{ group: "A", variable: "v5", value: "59" },
+				{ group: "A", variable: "v6", value: "52" },
+				{ group: "A", variable: "v7", value: "88" },
+				{ group: "A", variable: "v8", value: "20" },
+				{ group: "A", variable: "v9", value: "99" },
+				{ group: "B", variable: "v1", value: "37" },
+				{ group: "B", variable: "v2", value: "50" },
+				{ group: "B", variable: "v3", value: "81" },
+				{ group: "B", variable: "v4", value: "79" },
+				{ group: "B", variable: "v5", value: "84" },
+				{ group: "B", variable: "v6", value: "91" },
+				{ group: "B", variable: "v7", value: "82" },
+				{ group: "B", variable: "v8", value: "89" },
+				{ group: "B", variable: "v9", value: "6" },
+				{ group: "B", variable: "v10", value: "67" },
+				{ group: "C", variable: "v1", value: "96" },
+				{ group: "C", variable: "v2", value: "13" },
+				{ group: "C", variable: "v3", value: "98" },
+				{ group: "C", variable: "v4", value: "10" },
+				{ group: "C", variable: "v5", value: "86" },
+				{ group: "C", variable: "v6", value: "23" },
+				{ group: "C", variable: "v7", value: "74" },
+				{ group: "C", variable: "v8", value: "47" },
+				{ group: "C", variable: "v9", value: "73" },
+				{ group: "C", variable: "v10", value: "40" },
+				{ group: "D", variable: "v1", value: "75" },
+				{ group: "D", variable: "v2", value: "18" },
+				{ group: "D", variable: "v3", value: "92" },
+				{ group: "D", variable: "v4", value: "43" },
+				{ group: "D", variable: "v5", value: "16" },
+				{ group: "D", variable: "v6", value: "27" },
+				{ group: "D", variable: "v7", value: "76" },
+				{ group: "D", variable: "v8", value: "24" },
+				{ group: "D", variable: "v9", value: "1" },
+				{ group: "D", variable: "v10", value: "87" },
+				{ group: "E", variable: "v1", value: "44" },
+				{ group: "E", variable: "v2", value: "29" },
+				{ group: "E", variable: "v3", value: "58" },
+				{ group: "E", variable: "v4", value: "55" },
+				{ group: "E", variable: "v5", value: "65" },
+				{ group: "E", variable: "v6", value: "56" },
+				{ group: "E", variable: "v7", value: "9" },
+				{ group: "E", variable: "v8", value: "78" },
+				{ group: "E", variable: "v9", value: "49" },
+				{ group: "E", variable: "v10", value: "36" },
+				{ group: "F", variable: "v1", value: "35" },
+				{ group: "F", variable: "v2", value: "80" },
+				{ group: "F", variable: "v3", value: "8" },
+				{ group: "F", variable: "v4", value: "46" },
+				{ group: "F", variable: "v5", value: "48" },
+				{ group: "F", variable: "v6", value: "100" },
+				{ group: "F", variable: "v7", value: "17" },
+				{ group: "F", variable: "v8", value: "41" },
+				{ group: "F", variable: "v9", value: "33" },
+				{ group: "F", variable: "v10", value: "11" },
+				{ group: "G", variable: "v1", value: "77" },
+				{ group: "G", variable: "v2", value: "62" },
+				{ group: "G", variable: "v3", value: "94" },
+				{ group: "G", variable: "v4", value: "15" },
+				{ group: "G", variable: "v5", value: "69" },
+				{ group: "G", variable: "v6", value: "63" },
+				{ group: "G", variable: "v7", value: "61" },
+				{ group: "G", variable: "v8", value: "54" },
+				{ group: "G", variable: "v9", value: "38" },
+				{ group: "G", variable: "v10", value: "93" },
+				{ group: "H", variable: "v1", value: "39" },
+				{ group: "H", variable: "v2", value: "26" },
+				{ group: "H", variable: "v3", value: "90" },
+				{ group: "H", variable: "v4", value: "83" },
+				{ group: "H", variable: "v5", value: "31" },
+				{ group: "H", variable: "v6", value: "2" },
+				{ group: "H", variable: "v7", value: "51" },
+				{ group: "H", variable: "v8", value: "28" },
+				{ group: "H", variable: "v9", value: "42" },
+				{ group: "H", variable: "v10", value: "7" },
+				{ group: "I", variable: "v1", value: "5" },
+				{ group: "I", variable: "v2", value: "60" },
+				{ group: "I", variable: "v3", value: "21" },
+				{ group: "I", variable: "v4", value: "25" },
+				{ group: "I", variable: "v5", value: "3" },
+				{ group: "I", variable: "v6", value: "70" },
+				{ group: "I", variable: "v7", value: "34" },
+				{ group: "I", variable: "v8", value: "68" },
+				{ group: "I", variable: "v9", value: "57" },
+				{ group: "I", variable: "v10", value: "32" },
+				{ group: "J", variable: "v1", value: "19" },
+				{ group: "J", variable: "v2", value: "85" },
+				{ group: "J", variable: "v3", value: "53" },
+				{ group: "J", variable: "v4", value: "45" },
+				{ group: "J", variable: "v5", value: "71" },
+				{ group: "J", variable: "v6", value: "64" },
+				{ group: "J", variable: "v7", value: "4" },
+				{ group: "J", variable: "v8", value: "12" },
+				{ group: "J", variable: "v9", value: "97" },
+				{ group: "J", variable: "v10", value: "72" }
+			];
+			// create a 	tooltip
+			var tooltip = d3.select("#my_dataviz")
+				.append("div")
+				.style("opacity", 0)
+				.attr("class", "tooltip")
+				.style("background-color", "white")
+				.style("border", "solid")
+				.style("border-width", "2px")
+				.style("border-radius", "5px")
+				.style("padding", "5px")
+
+			// Three function that change the tooltip when user hover / move / leave a cell
+			var mouseover = function(d) {
+				tooltip.style("opacity", 1)
+			}
+			var mousemove = function(d) {
+				tooltip
+				.html("The exact value of<br>this cell is: " + d.value)
+				.style("left", (d3.mouse(this)[0]+70) + "px")
+				.style("top", (d3.mouse(this)[1]) + "px")
+			}
+			var mouseleave = function(d) {
+				tooltip.style("opacity", 0)
+			}
+
+			// add the squares
+			svg.selectAll()
+				.data(data, function(d) {return d.group+':'+d.variable;})
+				.enter()
+				.append("rect")
+				.attr("x", function(d) { return x(d.group) })
+				.attr("y", function(d) { return y(d.variable) })
+				.attr("width", x.bandwidth() )
+				.attr("height", y.bandwidth() )
+				.style("fill", function(d) { return myColor(d.value)} )
+				.on("mouseover", mouseover)
+				.on("mousemove", mousemove)
+				.on("mouseleave", mouseleave)
+			})
+		}
 	}
 }
 </script>

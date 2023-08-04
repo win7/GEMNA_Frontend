@@ -39,7 +39,11 @@ module.exports = {
 			}
 		],
 		script: [
-			{ src: (process.env.NODE_ENV !== 'production' || !serveFromSubFolder ? '' : '/' + dist ) + '/vendor/uikit.min.js'}
+			{ src: (process.env.NODE_ENV !== 'production' || !serveFromSubFolder ? '' : '/' + dist ) + '/vendor/uikit.min.js'},
+			
+			// { src: 'https://d3js.org/d3.v4.js'},
+			// { src: 'https://d3js.org/d3-scale-chromatic.v1.min.js'},
+			// { src: 'https://cdn.jsdelivr.net/npm/clustergrammer@1.19.5/clustergrammer.node.min.js'}
 		],
 		link: [
 			{ rel: 'icon', type: 'image/x-icon', href: (process.env.NODE_ENV !== 'production' || !serveFromSubFolder ? '' :  '/' + dist ) + '/favicon.ico'},
@@ -50,7 +54,9 @@ module.exports = {
 			/// fonts
 			{ rel: 'stylesheet', href: (process.env.NODE_ENV !== 'production' || !serveFromSubFolder ? '' : '/' + dist) + '/fonts/roboto_base64.css' },
 			{ rel: 'stylesheet', href: (process.env.NODE_ENV !== 'production' || !serveFromSubFolder ? '' : '/' + dist) + '/fonts/sourceCodePro_base64.css' },
-			{ rel: 'stylesheet', href: (process.env.NODE_ENV !== 'production' || !serveFromSubFolder ? '' : '/' + dist) + '/fonts/mdi/css/materialdesignicons.css' }
+			{ rel: 'stylesheet', href: (process.env.NODE_ENV !== 'production' || !serveFromSubFolder ? '' : '/' + dist) + '/fonts/mdi/css/materialdesignicons.css' },
+
+			// { rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/npm/clustergrammer@1.19.5/css/custom.min.css' }
 		]
 	},
 	/*
@@ -129,7 +135,9 @@ module.exports = {
 			{
 			  confirmButtonColor: '#00838f'
 			}
-		]
+		],
+		// 'd3',
+		//'clustergrammer',
 	],
 	/*
 	** Axios module configuration

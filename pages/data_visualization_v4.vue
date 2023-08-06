@@ -12,10 +12,13 @@
 							Consult
 						</ScCardTitle>
 						<ScCardBody>
-							<!-- <div id="my_dataviz" style="border: 1px solid #333;"></div>
-							<div id="clustergrammer-container"></div> -->
+							<div id="my_dataviz" style="border: 1px solid #333;"></div>
+							<div id="clustergrammer-container"></div>
 
 							<div class="uk-height-large uk-flex uk-flex-center uk-flex-middle" id="main"></div>
+
+							<div id="chart-container" style="width: 800px; height: 600px;"></div>
+
 						</ScCardBody>
 					</ScCard>
 				</div>
@@ -177,7 +180,6 @@
 						<ScCardContent>
 							<div class="sc-padding-medium">
 								<div id="graphs" style="border: 1px solid #333;"></div>
-								<div id="chart-container" style="width: 800px; height: 600px;"></div>
 							</div>
 						</ScCardContent>
 					</ScCard>
@@ -334,9 +336,7 @@ export default {
 		// this.test1();
 		// this.test2();
 		// this.test3();
-		// this.test4();
-		this.metabolomic_network([]);
-		// this.testok();
+		this.test4();
 
 	},
 	validations: {
@@ -361,18 +361,6 @@ export default {
 		
 	},
 	methods: {
-		// Function to set edge color based on tags
-		getEdgeColor(link) {
-			// Define a mapping between tags and colors
-			const colorMapping = {
-				'Tag 1': 'blue',
-				'Tag 2': 'green',
-				// Add more tag-color mappings as needed
-			};
-			
-			// Return the color for the link based on its tag
-			return colorMapping[link.tag];
-		},
 		async submitForm1 (e) {
 			e.preventDefault();
 			this.$v.form1.$touch();
@@ -442,8 +430,8 @@ export default {
 						const suits = response.data.data.changes_sub;
 						this.metabolomic_network(suits);
 
-						// const changes = response.data.data.changes;
-						// this.heatmap_changes(changes);
+						const changes = response.data.data.changes;
+						this.heatmap_changes(changes);
 					}
 				}).catch((error) => {
 					console.log(error.response);
@@ -456,198 +444,148 @@ export default {
 			}
 			this.submitStatus2 = 'OK'
 		},
-		testok () {
-			var chartContainer = document.getElementById('main');
-var myChart = echarts.init(chartContainer);
-
-// Sample data for the graph nodes and edges
-var nodes = [
-  { name: 'Node A' },
-  { name: 'Node B' },
-  { name: 'Node C' },
-];
-
-var edges = [
-  { source: 'Node A', target: 'Node B', value: 5, label: 'Edge Label 1' },
-  { source: 'Node B', target: 'Node C', value: 8, label: 'Edge Label 2' },
-  { source: 'Node C', target: 'Node A', value: 3, label: 'Edge Label 3' },
-];
-
-// ECharts option object
-var option = {
-  series: [
-    {
-      type: 'graph',
-	  layout: 'force',
-	  roam: true,
-      data: nodes,
-      links: edges,
-      edgeSymbol: ['none', 'arrow'], // Optional: Arrow symbol for directed edges
-      edgeSymbolSize: 8, // Optional: Arrow size for directed edges
-      label: {
-        show: true, // Show the edge labels
-        position: 'middle', // Position of the edge labels (middle of the edge)
-        fontSize: 12, // Font size for the edge labels
-        color: '#333', // Font color for the edge labels
-        formatter: function (params) {
-          // Custom formatter function for the edge labels
-          return params.data.label; // Use the 'label' property from the edge data
-        },
-      },
-      lineStyle: {
-        // Set the line style for the edges
-        width: 2,
-      },
-    },
-  ],
-  legend: {
-    data: edges.map((edge) => edge.label), // Use the edge labels as legend data
-    formatter: function (name) {
-      // Custom legend formatter
-      var edge = edges.find((edge) => edge.label === name);
-      return `{line|${name}}`;
-    },
-    textStyle: {
-      rich: {
-        line: {
-          width: 30,
-        },
-      },
-    },
-  },
-};
-
-// Set the option to the chart and render it
-myChart.setOption(option);
-
-		},
-		legendFormatter(edges, name) {
-			// Find the edge label that corresponds to the legend item
-			var edge = edges.find((edge) => edge.label === name);
-			if (edge) {
-				// Return the custom legend label using the edge label and source/target nodes
-				return `${edge.label} (${edge.source} ➔ ${edge.target})`;
-			}
-			return name; // Use the default legend label if no edge label found
+		linkArc(d) {
+			const r = Math.hypot(d.target.x - d.source.x, d.target.y - d.source.y);
+			return `
+				M${d.source.x},${d.source.y}
+				A${r},${r} 0 0,1 ${d.target.x},${d.target.y}
+			`;
 		},
 		metabolomic_network (suits) {
-			/* const types = Array.from(new Set(suits.map(d => d.label)));
+			const drag = simulation => {
+				
+				function dragstarted(event, d) {
+					if (!event.active) simulation.alphaTarget(0.3).restart();
+					d.fx = d.x;
+					d.fy = d.y;
+				}
+				
+				function dragged(event, d) {
+					d.fx = event.x;
+					d.fy = event.y;
+				}
+				
+				function dragended(event, d) {
+					if (!event.active) simulation.alphaTarget(0);
+					d.fx = null;
+					d.fy = null;
+				}
+				
+				return d3.drag()
+					.on("start", dragstarted)
+					.on("drag", dragged)
+					.on("end", dragended);
+			}
+
+			const width = 800;
+			const height = 400;
+			const types = Array.from(new Set(suits.map(d => d.label)));
 			const nodes = Array.from(new Set(suits.flatMap(l => [l.source, l.target])), id => ({id}));
 			const links = suits.map(d => Object.create(d))
 
-			console.log(types);
-			console.log(nodes);
-			console.log(links); */
-			const colors = [{id: "NP", color: "#FF00FF"}, {id: "PN", color: "#3FFF00"}];//, "#00FFFF", "#FFF700", "#FF0000", "#0000FF", "#006600",
-          							//'#00CC96', '#AB63FA', '#FFA15A', '#19D3F3', '#FF6692', '#B6E880', '#FF97FF', 'black',"gray"];
+			const color = d3.scaleOrdinal(types, d3.schemeCategory10);
+
+			const simulation = d3.forceSimulation(nodes)
+				.force("link", d3.forceLink(links).id(d => d.id))
+				.force("charge", d3.forceManyBody().strength(-400))
+				.force("x", d3.forceX())
+				.force("y", d3.forceY());
+
+			d3.select("svg").remove();
+
+			const svg = d3.create("svg")
+				.attr("viewBox", [-width / 2, -height / 2, width, height])
+				.attr("width", width)
+				.attr("height", height)
+				.attr("style", "max-width: 100%; height: auto; font: 12px sans-serif;");
 			
-			const labels = [{name: "NP", color:"red"}, {name: "PN", color: "blue"}];
-			const nodes = [
-				{id: "1", name: "A", value: 10},
-				{id: "2", name: "B", value: 11},
-				{id: "3", name: "C", value: 12},
-			]
+			var size = 20
+			svg.selectAll("mydots")
+			.data(types)
+			.enter()
+			.append("rect")
+				.attr("x", -width/2 + 8)
+				.attr("y", function(d,i){ return -height/2 + i*(size+5)}) // 100 is where the first dot appears. 25 is the distance between dots
+				.attr("width", size)
+				.attr("height", size)
+				.style("fill", function(d){ return color(d)})
 
-			const links = [
-				{source: '1', target: '2', label: "NP", value: "NP"},
-				{source: '2', target: '3', label: "PN", value: "PN"},
-				{source: '3', target: '1', label: "NP", value: "NP"}
-			]
-			const graph = {
-				labels: labels,
-				nodes: nodes,
-				links: links
-			}
-			console.log(graph);
+			// Add one dot in the legend for each name.
+			svg.selectAll("mylabels")
+			.data(types)
+			.enter()
+			.append("text")
+				.attr("x", -width/2 + 8 + size*1.2)
+				.attr("y", function(d,i){ return -height/2  + i*(size+5) + (size/2)}) // 100 is where the first dot appears. 25 is the distance between dots
+				.style("fill", function(d){ return color(d)})
+				.text(function(d){ return d})
+				.attr("text-anchor", "left")
+				.style("alignment-baseline", "middle")
 
-			graph.links.forEach(function (edge) {
-				edge.lineStyle = {
-					// Set the line style for Series 1
-					color: colors.find(obj => obj.id === edge.label).color,
-					width: 2, // Line width
-					type: 'solid', // Line type ('solid', 'dashed', 'dotted', etc.),
-				},
-				edge.label = {
-            		show: true,
-					formatter: function(edge) {
-						console.log(7, edge);
-						return edge.value;//.label + ' ' + edge.data;
-					}
-          		}
+
+			// Per-type markers, as they don't inherit styles.
+			svg.append("defs").selectAll("marker")
+				.data(types)
+				.join("marker")
+				.attr("id", d => `arrow-${d}`)
+				.attr("viewBox", "0 -5 10 10")
+				.attr("refX", 15)
+				.attr("refY", -0.5)
+				.attr("markerWidth", 6)
+				.attr("markerHeight", 6)
+				.attr("orient", "auto")
+				.append("path")
+				.attr("fill", color)
+				.attr("d", "M0,-5L10,0L0,5");
+
+			const link = svg.append("g")
+				.attr("fill", "none")
+				.attr("stroke-width", 1.5)
+				.selectAll("path")
+				.data(links)
+				.join("path")
+				.attr("stroke", d => color(d.label))
+				.attr("marker-end", d => `url(${new URL(`#arrow-${d.label}`, location)})`);
+
+			const node = svg.append("g")
+				.attr("fill", "currentColor")
+				.attr("stroke-linecap", "round")
+				.attr("stroke-linejoin", "round")
+				.selectAll("g")
+				.data(nodes)
+				.join("g")
+				.call(drag(simulation));
+
+			node.append("circle")
+				.attr("stroke", "white")
+				.attr("stroke-width", 1.5)
+				.attr("r", 6);
+
+			node.append("text")
+				.attr("x", 8)
+				.attr("y", "0.31em")
+				.text(d => d.id)
+				.clone(true).lower()
+				.attr("fill", "none")
+				.attr("stroke", "white")
+				.attr("stroke-width", 3);
+
+			simulation.on("tick", () => {
+				link.attr("d", this.linkArc);
+				node.attr("transform", d => `translate(${d.x},${d.y})`);
 			});
 
-			var chartDom = document.getElementById('main');
-			var myChart = echarts.init(chartDom);
-			var option;
+			// invalidation.then(() => simulation.stop());
 
-			myChart.hideLoading();
-			/* graph.nodes.forEach(function (node) {
-				node.symbolSize = 10;
-			}); */
-			option = {
-				/* title: {
-					text: 'Les Miserables',
-					subtext: 'Default layout',
-					top: 'bottom',
-					left: 'right'
-				}, */
-				tooltip: {},
-				/* legend: 
-				{
-					// selectedMode: 'single',
-					/ * data: graph.links.map(function (a) {
-						return a.name;
-					}), * /
-					data: graph.labels
-				}, */
-				animationDuration: 1500,
-				animationEasingUpdate: 'quinticInOut',
-				series: [
-					{
-						// name: 'Les Miserables',
-						type: 'graph',
-						layout: 'force',
+			// return Object.assign(svg.node(), {scales: {color}});
 
-						nodes: graph.nodes,
-						links: graph.links,
-						categories: graph.labels,
-						
-						force: {
-							edgeLength: 100,
-							repulsion: 20,
-							gravity: 0.2
-						},
-						roam: true,
-						draggable: true,
-						label: {
-							show: true,
-							position: 'right',
-							formatter: '{b}'
-						},
-						itemStyle: {
-							color: "gray"
-						},
-						lineStyle: {
-							// color: "label",
-							curveness: 0.3,
-							width: 2
-						},
-						edgeSymbol: ['circle', 'arrow'],
-						edgeSymbolSize: [4, 10],
-						emphasis: {
-							focus: 'adjacency',
-							lineStyle: {
-								width: 10
-							}
-						}
-					}
-				]
-			};
-			myChart.setOption(option);
+			// graphs.append(svg.node(), {scales: {color}});
+			graphs.append(Object.assign(svg.node(), {scales: {color}}));
 		},
 		heatmap_changes (data) {
 			// set the dimensions and margins of the graph
 			
+
 			const source = [...new Set(data.map(obj => obj.source))];
 			const target = [...new Set(data.map(obj => obj.target))];
 

@@ -176,8 +176,9 @@
 						</div> -->
 						<ScCardContent>
 							<div class="sc-padding-medium">
-								<div id="graphs" style="border: 1px solid #333;"></div>
-								<div id="chart-container" style="width: 800px; height: 600px;"></div>
+								<!-- <div id="graphs" style="border: 1px solid #333;"></div>
+								<div id="chart-container" style="width: 800px; height: 600px;"></div> -->
+							<div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle" id="metabolomic-network"></div>
 							</div>
 						</ScCardContent>
 					</ScCard>
@@ -292,7 +293,7 @@ export default {
 		},
 		form2: {
 			id: "e6609b8a-f965-4ff8-b07d-b37a8c1c6291",
-			nodes: ["74.0249", "129.0192"], // ["100.00072", "128.89351", "132.88524", "135.54123", "152.99445"],
+			nodes: ["74.0249", "129.0192", "130.0875"], // ["100.00072", "128.89351", "132.88524", "135.54123", "152.99445"],
 			group: "WT-pck1", // "FCSglc-DMA"
 		},
 
@@ -335,7 +336,7 @@ export default {
 		// this.test2();
 		// this.test3();
 		// this.test4();
-		this.metabolomic_network([]);
+		// this.metabolomic_network([]);
 		// this.testok();
 
 	},
@@ -439,6 +440,7 @@ export default {
 							'success'
 						);
 						// console.log(response.data.data[0]["labels"]);
+						// const suits = response.data.data.changes_sub;
 						const suits = response.data.data.changes_sub;
 						this.metabolomic_network(suits);
 
@@ -531,52 +533,36 @@ myChart.setOption(option);
 			return name; // Use the default legend label if no edge label found
 		},
 		metabolomic_network (suits) {
-			/* const types = Array.from(new Set(suits.map(d => d.label)));
-			const nodes = Array.from(new Set(suits.flatMap(l => [l.source, l.target])), id => ({id}));
-			const links = suits.map(d => Object.create(d))
+			const colors = [{id: "PP", color: "#FF00FF"}, {id: "Pp", color: "#3FFF00"}, {id: "PN", color: "#00FFFF"},
+							{id: "Pn", color: "#FFF700"}, {id: "pP", color: "#FF0000"}, {id: "pp", color: "#0000FF"},
+							{id: "pN", color: "#006600"}, {id: "pn", color: "#00CC96"}, {id: "NP", color: "#AB63FA"},
+							{id: "Np", color: "#FF28FF"}, {id: "NN", color: "#B6E880"}, {id: "Nn", color: "##FF97FF"},
+							{id: "nP", color: "#FFA15A"}, {id: "np", color: "#19D3F3"}, {id: "nN", color: "#FF6692"},
+							{id: "nn", color: "gray"}];
 
-			console.log(types);
-			console.log(nodes);
-			console.log(links); */
-			const colors = [{id: "NP", color: "#FF00FF"}, {id: "PN", color: "#3FFF00"}];//, "#00FFFF", "#FFF700", "#FF0000", "#0000FF", "#006600",
-          							//'#00CC96', '#AB63FA', '#FFA15A', '#19D3F3', '#FF6692', '#B6E880', '#FF97FF', 'black',"gray"];
-			
-			const labels = [{name: "NP", color:"red"}, {name: "PN", color: "blue"}];
-			const nodes = [
-				{id: "1", name: "A", value: 10},
-				{id: "2", name: "B", value: 11},
-				{id: "3", name: "C", value: 12},
-			]
+			const labels = Array.from(new Set(suits.map(d => d.label)));
+			const nodes = Array.from(new Set(suits.flatMap(l => [l.source, l.target])), id => ({id: id, name: id}));
+			const links = suits.map(obj => ({ ...obj, value: obj.label }))
 
-			const links = [
-				{source: '1', target: '2', label: "NP", value: "NP"},
-				{source: '2', target: '3', label: "PN", value: "PN"},
-				{source: '3', target: '1', label: "NP", value: "NP"}
-			]
-			const graph = {
-				labels: labels,
-				nodes: nodes,
-				links: links
-			}
-			console.log(graph);
+			// console.log(11, labels);
+			// console.log(22, nodes);
+			// console.log(33, links);
 
-			graph.links.forEach(function (edge) {
+			links.forEach(function (edge) {
 				edge.lineStyle = {
-					// Set the line style for Series 1
 					color: colors.find(obj => obj.id === edge.label).color,
 					width: 2, // Line width
 					type: 'solid', // Line type ('solid', 'dashed', 'dotted', etc.),
 				},
 				edge.label = {
-            		show: true,
+					show: true,
 					formatter: function(edge) {
-						console.log(7, edge);
-						return edge.value;//.label + ' ' + edge.data;
+						return edge.value;
 					}
-          		}
+				}
 			});
 
-			var chartDom = document.getElementById('main');
+			var chartDom = document.getElementById('metabolomic-network');
 			var myChart = echarts.init(chartDom);
 			var option;
 
@@ -608,14 +594,14 @@ myChart.setOption(option);
 						type: 'graph',
 						layout: 'force',
 
-						nodes: graph.nodes,
-						links: graph.links,
-						categories: graph.labels,
+						data: nodes,
+						links: links,
+						categories: labels,
 						
 						force: {
 							edgeLength: 100,
-							repulsion: 20,
-							gravity: 0.2
+							repulsion: 1000,
+							gravity: 0.5
 						},
 						roam: true,
 						draggable: true,

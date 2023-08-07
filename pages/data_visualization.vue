@@ -141,50 +141,7 @@
 			</div>
 
 			<div class="uk-grid" data-uk-grid v-if="flag">
-				<div class="uk-width-2-3@l">
-					<ScCard>
-						<ScCardTitle>
-							Interpretation
-						</ScCardTitle>
-						<!-- <div class="sc-padding sc-padding-medium-ends md-bg-grey-100">
-							<div class=" uk-flex-middle uk-grid-small uk-grid" data-uk-grid>
-								<div class="uk-flex-1">
-									<div class="uk-button-group sc-button-group-outline">
-										<button class="sc-button sc-button-default sc-button-outline sc-button-small" :class="{'uk-active': activePeriod === 'hours'}" @click="setChartPeriod('hours')">
-											Hours
-										</button>
-										<button class="sc-button sc-button-default sc-button-outline sc-button-small" :class="{'uk-active': activePeriod === 'week'}" @click="setChartPeriod('week')">
-											Week
-										</button>
-										<button class="sc-button sc-button-default sc-button-outline sc-button-small" :class="{'uk-active': activePeriod === 'months'}" @click="setChartPeriod('months')">
-											Months
-										</button>
-										<button class="sc-button sc-button-default sc-button-outline sc-button-small" :class="{'uk-active': activePeriod === 'year'}" @click="setChartPeriod('year')">
-											Years
-										</button>
-									</div>
-								</div>
-								<div class="uk-flex uk-width-auto@s">
-									<a id="sc-chart-reload" href="javascript:void(0)">
-										<i class="mdi mdi-reload sc-color-secondary sc-icon-square"></i>
-									</a>
-									<a id="sc-chart-save-image" href="javascript:void(0)">
-										<i class="mdi mdi-floppy sc-color-secondary sc-icon-square"></i>
-									</a>
-								</div>
-							</div>
-						</div> -->
-						<ScCardContent>
-							<div class="sc-padding-medium">
-								<!-- <div id="graphs" style="border: 1px solid #333;"></div>
-								<div id="chart-container" style="width: 800px; height: 600px;"></div> -->
-								<div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle" id="metabolomic-network"></div>
-								<div class="uk-height-large uk-flex uk-flex-center uk-flex-middle" id="heat-map"></div>
-							</div>
-						</ScCardContent>
-					</ScCard>
-				</div>
-				<div class="uk-width-1-3@l">
+				<div class="uk-width-1-4@l">
 					<ScCard>
 						<ScCardTitle>
 							Queries
@@ -253,6 +210,51 @@
 								</div>
 							</form>
 						</ScCardBody>
+					</ScCard>
+				</div>
+
+				<div class="uk-width-3-4@l">
+					<ScCard>
+						<ScCardTitle>
+							Interpretation
+						</ScCardTitle>
+						<!-- <div class="sc-padding sc-padding-medium-ends md-bg-grey-100">
+							<div class=" uk-flex-middle uk-grid-small uk-grid" data-uk-grid>
+								<div class="uk-flex-1">
+									<div class="uk-button-group sc-button-group-outline">
+										<button class="sc-button sc-button-default sc-button-outline sc-button-small" :class="{'uk-active': activePeriod === 'hours'}" @click="setChartPeriod('hours')">
+											Hours
+										</button>
+										<button class="sc-button sc-button-default sc-button-outline sc-button-small" :class="{'uk-active': activePeriod === 'week'}" @click="setChartPeriod('week')">
+											Week
+										</button>
+										<button class="sc-button sc-button-default sc-button-outline sc-button-small" :class="{'uk-active': activePeriod === 'months'}" @click="setChartPeriod('months')">
+											Months
+										</button>
+										<button class="sc-button sc-button-default sc-button-outline sc-button-small" :class="{'uk-active': activePeriod === 'year'}" @click="setChartPeriod('year')">
+											Years
+										</button>
+									</div>
+								</div>
+								<div class="uk-flex uk-width-auto@s">
+									<a id="sc-chart-reload" href="javascript:void(0)">
+										<i class="mdi mdi-reload sc-color-secondary sc-icon-square"></i>
+									</a>
+									<a id="sc-chart-save-image" href="javascript:void(0)">
+										<i class="mdi mdi-floppy sc-color-secondary sc-icon-square"></i>
+									</a>
+								</div>
+							</div>
+						</div> -->
+						<ScCardContent>
+							<div class="sc-padding-medium">
+								<!-- <div id="graphs" style="border: 1px solid #333;"></div>
+								<div id="chart-container" style="width: 800px; height: 600px;"></div> -->
+								<div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle" id="metabolomic-network"></div>
+								<div class="uk-height-large uk-flex uk-flex-center uk-flex-middle" id="degree-network"></div>
+								<div class="uk-height-large uk-flex uk-flex-center uk-flex-middle" id="heat-map"></div>
+							</div>
+						</ScCardContent>
 					</ScCard>
 				</div>
 			</div>
@@ -448,6 +450,9 @@ export default {
 						// console.log(Object.keys(changes));
 						// console.log(Object.values(changes));
 						this.heatmap_changes(changes);
+
+						const deegres = response.data.data.degrees;
+						this.degree_network(deegres);
 					}
 				}).catch((error) => {
 					console.log(error.response);
@@ -576,8 +581,8 @@ myChart.setOption(option);
 				title: {
 					// text: 'Les Miserables',
 					subtext: 'Changes',
-					top: 'bottom',
-					left: 'right'
+					top: 'top',
+					left: 'center'
 				},
 				tooltip: {},
 				/* legend: 
@@ -713,18 +718,62 @@ myChart.setOption(option);
 						type: 'heatmap',
 						data: data,
 						emphasis: {
-							itemStyle: {
-							borderColor: '#333',
-							borderWidth: 1
+								itemStyle: {
+								borderColor: '#333',
+								borderWidth: 1
 							}
 						},
-						progressive: 1000,
+						//progressive: 1000,
 						animation: false
 					}
 				]
 			};
 			
 			option && myChart.setOption(option);			
+		},
+		degree_network (list) {
+			var chartDom = document.getElementById('degree-network');
+			var myChart = echarts.init(chartDom);
+			var option;
+
+			var x = list.map(d => d[0]);
+			var y = list.map(d => d[1]);
+
+			option = {
+				title: {
+					// text: 'Les Miserables',
+					subtext: 'Degrees',
+					top: 'top',
+					left: 'center'
+				},
+				tooltip: {
+					trigger: 'axis',
+					axisPointer: {
+						type: 'shadow'
+					}
+				},
+				xAxis: {
+					type: 'category',
+					data: x
+				},
+				yAxis: {
+					type: 'value'
+				},
+				series: [
+					{
+						name: 'Degree',
+						data: y,
+						type: 'bar'
+					}
+				],
+				dataZoom: [{
+					type: 'slider', // Use a slider type dataZoom for zooming
+					start: 0,       // Initial zoom starting position
+					end: 50,        // Initial zoom ending position
+				}]
+			};
+
+			option && myChart.setOption(option);
 		},
 		test1 () {
 			// set the dimensions and margins of the graph

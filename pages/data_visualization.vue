@@ -5,7 +5,7 @@
 				Data Visualization
 			</h3>
 
-			<div class="uk-grid" data-uk-grid>
+			<!-- <div class="uk-grid" data-uk-grid>
 				<div class="uk-width-xxlarge">
 					<ScCard>
 						<ScCardTitle>
@@ -13,13 +13,13 @@
 						</ScCardTitle>
 						<ScCardBody>
 							<!-- <div id="my_dataviz" style="border: 1px solid #333;"></div>
-							<div id="clustergrammer-container"></div> -->
+							<div id="clustergrammer-container"></div> -- >
 
 							<div class="uk-height-large uk-flex uk-flex-center uk-flex-middle" id="main"></div>
 						</ScCardBody>
 					</ScCard>
 				</div>
-			</div>
+			</div> -->
 
 			<div class="uk-grid" data-uk-grid>
 				<div class="uk-width-xxlarge">
@@ -144,7 +144,7 @@
 				<div class="uk-width-2-3@l">
 					<ScCard>
 						<ScCardTitle>
-							Changes Detection
+							Interpretation
 						</ScCardTitle>
 						<!-- <div class="sc-padding sc-padding-medium-ends md-bg-grey-100">
 							<div class=" uk-flex-middle uk-grid-small uk-grid" data-uk-grid>
@@ -433,14 +433,14 @@ export default {
 			} else {
 				this.submitStatus2 = 'PENDING';
 				await this.$axios.post("/api/experiments-consult/", this.form2).then((response) => {
-					console.log(1, response.data);		
+					console.log(1, response.data);
 					if (response.status === 200) {
 						swal.fire(
 							response.data.message,
 							``,
 							'success'
 						);
-
+						
 						const suits = response.data.data.changes_sub;
 						this.metabolomic_network(suits);
 
@@ -573,12 +573,12 @@ myChart.setOption(option);
 				node.symbolSize = 10;
 			}); */
 			option = {
-				/* title: {
-					text: 'Les Miserables',
-					subtext: 'Default layout',
+				title: {
+					// text: 'Les Miserables',
+					subtext: 'Changes',
 					top: 'bottom',
 					left: 'right'
-				}, */
+				},
 				tooltip: {},
 				/* legend: 
 				{
@@ -649,7 +649,7 @@ myChart.setOption(option);
 			let xData = Object.keys(matrix);
 			let yData = Object.keys(matrix);
 
-			function generateData(theta, min, max) {
+			function generateData() {
 				let data = [];
 				let list = Object.values(matrix);
 				for (let i = 0; i < list.length; i++) {
@@ -663,54 +663,65 @@ myChart.setOption(option);
 				}
 				return data;
 			}
-			let data = generateData(2, -5, 5);
-			console.log(xData);
+			let data = generateData();
+			// console.log(xData);
 			option = {
-			tooltip: {},
-			xAxis: {
-				type: 'category',
-				data: xData
-			},
-			yAxis: {
-				type: 'category',
-				data: yData
-			},
-			visualMap: {
-				min: 0,
-				max: 1,
-				calculable: true,
-				realtime: false,
-				inRange: {
-				color: [
-					'#313695',
-					'#4575b4',
-					'#74add1',
-					'#abd9e9',
-					'#e0f3f8',
-					'#ffffbf',
-					'#fee090',
-					'#fdae61',
-					'#f46d43',
-					'#d73027',
-					'#a50026'
-				]
-				}
-			},
-			series: [
-				{
-				name: 'Gaussian',
-				type: 'heatmap',
-				data: data,
-				emphasis: {
-					itemStyle: {
-					borderColor: '#333',
-					borderWidth: 1
+				title: {
+					// text: 'Les Miserables',
+					subtext: 'Heatmap',
+					top: 'top',
+					left: 'center'
+				},
+				tooltip: {
+					position: 'top'
+				},
+				xAxis: {
+					type: 'category',
+					data: xData
+				},
+				yAxis: {
+					type: 'category',
+					data: yData
+				},
+				visualMap: {
+					min: -1,
+					max: 1,
+					calculable: true,
+					orient: 'horizontal',
+    				left: 'center',
+    				//bottom: '15%',
+					realtime: false,
+					inRange: {
+						color: [
+							'#313695',
+							'#4575b4',
+							'#74add1',
+							'#abd9e9',
+							'#e0f3f8',
+							'#ffffbf',
+							'#fee090',
+							'#fdae61',
+							'#f46d43',
+							'#d73027',
+							'#a50026'
+						]
 					}
 				},
-				progressive: 1000,
-				animation: false
-				}
-			]
+				series: [
+					{
+						name: 'Correlation',
+						type: 'heatmap',
+						data: data,
+						emphasis: {
+							itemStyle: {
+							borderColor: '#333',
+							borderWidth: 1
+							}
+						},
+						progressive: 1000,
+						animation: false
+					}
+				]
 			};
 			
 			option && myChart.setOption(option);			

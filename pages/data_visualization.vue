@@ -680,6 +680,10 @@ myChart.setOption(option);
 				tooltip: {
 					position: 'top'
 				},
+				grid: {
+					// height: '80%',
+					top: '15%'
+				},
 				xAxis: {
 					type: 'category',
 					data: xData
@@ -694,7 +698,7 @@ myChart.setOption(option);
 					calculable: true,
 					orient: 'horizontal',
     				left: 'center',
-    				//bottom: '15%',
+    				bottom: '84%',					
 					realtime: false,
 					inRange: {
 						color: [
@@ -723,8 +727,26 @@ myChart.setOption(option);
 								borderWidth: 1
 							}
 						},
-						//progressive: 1000,
+						// progressive: 1000,
 						animation: false
+					}
+				],
+				/* dataZoom: [{
+					type: 'inside', // Use inside type dataZoom for zooming within the chart area
+					xAxisIndex: 0,  // Specify the index of the xAxis component
+					filterMode: 'none', // Keep the original data range
+				}], */
+				dataZoom: [
+					{
+						type: 'slider', // Use slider type dataZoom for horizontal zooming
+						xAxisIndex: 0,
+						filterMode: 'none',
+					},
+					{
+						type: 'slider', // Use slider type dataZoom for vertical zooming
+						yAxisIndex: 0,
+						filterMode: 'none',
+						orient: 'vertical', // Set orientation to vertical
 					}
 				]
 			};
@@ -768,8 +790,8 @@ myChart.setOption(option);
 				],
 				dataZoom: [{
 					type: 'slider', // Use a slider type dataZoom for zooming
-					start: 0,       // Initial zoom starting position
-					end: 50,        // Initial zoom ending position
+					// start: 0,       // Initial zoom starting position
+					// end: 10,        // Initial zoom ending position
 				}]
 			};
 

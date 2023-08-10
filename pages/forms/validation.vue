@@ -169,7 +169,7 @@
 
 <script>
 import { validationMixin } from 'vuelidate'
-import { required, minLength, email, sameAs } from 'vuelidate/lib/validators'
+import { required, minLength, email, sameAs, between } from 'vuelidate/lib/validators'
 
 import customValidators from '~/plugins/vuelidateValidators'
 import ScInput from '~/components/Input'

@@ -49,6 +49,19 @@
 			<div class="uk-child-width-1-2@s uk-grid" data-uk-grid>
 				<div>
 					<label class="uk-form-label">
+						Embeddings dimension
+					</label>
+					<div class="uk-form-controls">
+						<ScInput v-model.trim="form.dimension" :error-state="$v.form.dimension.$error" :validator="$v.form.dimension" mode="outline" type="number"></ScInput>
+						<ul class="sc-vue-errors">
+							<li v-if="!$v.form.dimension.required">
+								Field is required
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div>
+					<label class="uk-form-label">
 						Control
 					</label>
 					<div class="uk-form-controls">
@@ -64,6 +77,26 @@
 						</client-only>
 						<ul class="sc-vue-errors">
 							<li v-if="!$v.form.control.required">
+								Field is required
+							</li>
+						</ul>						
+					</div>
+				</div>
+			</div>
+			<div class="uk-child-width-1-2@s uk-grid" data-uk-grid>
+				<div>
+					<label class="uk-form-label">
+						Transformation (log10)
+					</label>
+					<div class="uk-form-controls">
+						<Select2
+							v-model="form.transformation"
+							:options="transformations"
+							:settings="{'width': '100%', 'placeholder': 'Select a transformation...'}"
+							:error-state="$v.form.transformation.$error"
+						></Select2>
+						<ul class="sc-vue-errors">
+							<li v-if="!$v.form.transformation.required">
 								Field is required
 							</li>
 						</ul>						
@@ -92,6 +125,7 @@ import { scHelpers } from "~/assets/js/utils";
 
 const methods = [{"id": "dgi", "name": "DGI"}, {"id": "vgae", "name": "VGAE"}];
 const options = [{"id": "none", "name": "none"}, {"id": "str", "name": "str"}, {"id": "dyn", "name": "dyn"}];
+const transformations = [{"id": "true", "name": "Yes"}, {"id": "false", "name": "No"}];
 
 import ScInput from '~/components/Input'
 import PrettyRadio from 'pretty-checkbox-vue/radio';
@@ -115,10 +149,11 @@ export default {
 	data: () => ({
 		form: {
 			method: "",
-			dimension: 3,
+			dimension: "3",
 			option: "",
 			control: [],
-			range: null
+			range: null,
+			transformation: null
 		},
 	}),
 	computed: {
@@ -147,6 +182,13 @@ export default {
 			});
 			return list;
 		},
+		transformations () {
+			return transformations.map(function (obj) {
+				obj.id = obj.id || obj.code;
+				obj.text = obj.text || obj.name;
+				return obj;
+			});
+		},
 	},
 	created () {
 		
@@ -169,6 +211,9 @@ export default {
 				required
 			},
 			range: {
+				required
+			},
+			transformation: {
 				required
 			}
 		}

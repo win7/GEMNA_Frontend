@@ -252,7 +252,7 @@
 								<div id="chart-container" style="width: 800px; height: 600px;"></div> -->
 								<div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle" id="metabolomic-network"></div>
 								<div class="uk-height-large uk-flex uk-flex-center uk-flex-middle" id="degree-network"></div>
-								<div class="uk-height-large uk-flex uk-flex-center uk-flex-middle" id="heat-map"></div>
+								<div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle" id="heat-map"></div>
 							</div>
 						</ScCardContent>
 					</ScCard>
@@ -446,10 +446,8 @@ export default {
 						const suits = response.data.data.changes_sub;
 						this.metabolomic_network(suits);
 
-						const changes = response.data.data.changes;
-						// console.log(Object.keys(changes));
-						// console.log(Object.values(changes));
-						this.heatmap_changes(changes);
+						const biocyc = response.data.data.biocyc;
+						this.heatmap_biocyc(biocyc);
 
 						const deegres = response.data.data.degrees;
 						this.degree_network(deegres);
@@ -638,7 +636,7 @@ myChart.setOption(option);
 			};
 			myChart.setOption(option);
 		},
-		heatmap_changes (matrix) {
+		heatmap_biocyc (matrix) {
 			// set the dimensions and margins of the graph
 			
 			/* const source = [...new Set(data.map(obj => obj.source))];
@@ -651,25 +649,19 @@ myChart.setOption(option);
 			var myChart = echarts.init(chartDom);
 			var option;
 
-			let xData = Object.keys(matrix);
-			let yData = Object.keys(matrix);
-
-			function generateData() {
-				let data = [];
-				let list = Object.values(matrix);
-				for (let i = 0; i < list.length; i++) {
-					const aux = list[i];
-					for (let j = 0; j < list.length; j++) {
-						// let x = (max - min) * i / 200 + min;
-						// let y = (max - min) * j / 100 + min;
-						data.push([i, j, aux[j]]);
-						// data.push([i, j, normalDist(theta, x) * normalDist(theta, y)]);
-					}
-				}
-				return data;
+			let yData = ["Before", "After"]; // Object.keys(matrix[0]);
+			let xData = []; // Object.keys(matrix);
+			
+			let data = [];
+			for (let i = 0; i < matrix.length; i++) {
+				xData.push(i);
+				data.push([i, 0, matrix[i].Before]);
+				data.push([i, 1, matrix[i].After]);
 			}
-			let data = generateData();
-			// console.log(xData);
+	
+			var minValue = Math.min.apply(null, data.map(item => item[2]));
+			var maxValue = Math.max.apply(null, data.map(item => item[2]));
+
 			option = {
 				title: {
 					// text: 'Les Miserables',
@@ -681,8 +673,8 @@ myChart.setOption(option);
 					position: 'top'
 				},
 				grid: {
-					// height: '80%',
-					top: '15%'
+					// height: '50%',
+					// top: '15%'
 				},
 				xAxis: {
 					type: 'category',
@@ -693,12 +685,12 @@ myChart.setOption(option);
 					data: yData
 				},
 				visualMap: {
-					min: -1,
-					max: 1,
+					min: minValue,
+					max: maxValue,
 					calculable: true,
-					orient: 'horizontal',
-    				left: 'center',
-    				bottom: '84%',					
+					orient: 'vertical',
+    				left: 'right',
+    				// bottom: '84%',					
 					realtime: false,
 					inRange: {
 						color: [
@@ -721,6 +713,9 @@ myChart.setOption(option);
 						name: 'Correlation',
 						type: 'heatmap',
 						data: data,
+						label: {
+							show: false
+						},
 						emphasis: {
 								itemStyle: {
 								borderColor: '#333',
@@ -742,12 +737,12 @@ myChart.setOption(option);
 						xAxisIndex: 0,
 						filterMode: 'none',
 					},
-					{
+					/* {
 						type: 'slider', // Use slider type dataZoom for vertical zooming
 						yAxisIndex: 0,
 						filterMode: 'none',
 						orient: 'vertical', // Set orientation to vertical
-					}
+					} */
 				]
 			};
 			

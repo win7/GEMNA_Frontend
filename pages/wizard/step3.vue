@@ -31,6 +31,9 @@
 				{{ getControl(data.control) }}
 			</span><br>
 			<span class="uk-text-muted uk-text-default">
+				Tranformation:
+			</span> {{ data.transformation }}<br>
+			<span class="uk-text-muted uk-text-default">
 				Range:
 			</span> {{ data.range }}<br>
 			<br>

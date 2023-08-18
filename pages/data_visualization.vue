@@ -155,28 +155,6 @@
 									<div class="uk-child-width-1-1@m uk-grid" data-uk-grid>
 										<div>
 											<label class="uk-form-label">
-												Metabolities
-											</label>
-											<div class="uk-form-controls">
-												<client-only>
-													<Select2
-														v-model="form2.nodes"
-														:options="usNodes"
-														:settings="{ 'width': '100%', 'placeholder': 'Select metabolities...' }"
-														:error-state="$v.form2.nodes.$error" 
-														:validator="$v.form2.nodes"
-														multiple
-													></Select2>
-												</client-only>
-												<ul class="sc-vue-errors">
-													<li v-if="!$v.form2.nodes.required">
-														Field is required
-													</li>
-												</ul>
-											</div>
-										</div>
-										<div>
-											<label class="uk-form-label">
 												Group
 											</label>
 											<div class="uk-form-controls">
@@ -191,6 +169,70 @@
 												</client-only>
 												<ul class="sc-vue-errors">
 													<li v-if="!$v.form2.group.required">
+														Field is required
+													</li>
+												</ul>
+											</div>
+										</div>
+										<div>
+											<label class="uk-form-label">
+												By
+											</label>
+											<div class="uk-form-controls">
+												<span class="uk-margin-right">
+													<PrettyRadio
+														v-model="form2.type"
+														:error-state="$v.form2.type.$error" :validator="$v.form2.type"
+														value="id"
+														class="p-radio"
+													>
+														Alignment ID
+													</PrettyRadio>
+												</span>
+												<span class="uk-margin-right">
+													<PrettyRadio
+														v-model="form2.type"
+														:error-state="$v.form2.type.$error" :validator="$v.form2.type"
+														value="mz"
+														class="p-radio"
+													>
+														Average Mz
+													</PrettyRadio>
+												</span>
+												<span>
+													<PrettyRadio
+														v-model="form2.type"
+														:error-state="$v.form2.type.$error" :validator="$v.form2.type"
+														value="name"
+														class="p-radio"
+													>
+														Metabolite name
+													</PrettyRadio>
+												</span>
+												<ul class="sc-vue-errors">
+													<li v-if="!$v.form2.type.required">
+														Field is required
+													</li>
+												</ul>
+											</div>
+										</div>
+										<div>
+											<label class="uk-form-label">
+												Alignment ID
+											</label>
+											<div class="uk-form-controls">
+												<client-only>
+													<Select2
+														v-model="form2.nodes"
+														:options="usNodes"
+														:settings="{ 'width': '100%', 'placeholder': 'Select alignment id...' }"
+														:error-state="$v.form2.nodes.$error" 
+														:validator="$v.form2.nodes"
+														multiple
+													></Select2>
+												</client-only>
+												<ul class="sc-vue-errors">
+													<li v-if="!$v.form2.nodes.required">
 														Field is required
 													</li>
 												</ul>
@@ -266,6 +308,9 @@
 
 import { scColors } from '~/assets/js/utils';
 import ScInput from '~/components/Input';
+import PrettyCheck from 'pretty-checkbox-vue/check';
+import PrettyRadio from 'pretty-checkbox-vue/radio';
+
 import { validationMixin } from 'vuelidate';
 import { required, minLength, email } from 'vuelidate/lib/validators';
 import { ScProgressCircular } from '~/components/progress'
@@ -280,6 +325,8 @@ export default {
 	name: 'DataVisualization',
 	components: {
 		ScInput,
+		PrettyCheck,
+		PrettyRadio,
 		Select2: process.client ? () => import('~/components/Select2') : null,
 		// MultiSelect: process.client ? () => import('~/components/Multiselect') : null
 		ScProgressCircular,
@@ -292,12 +339,13 @@ export default {
 		submitStatus2: null,
 
 		form1: {
-			id: "e6609b8a-f965-4ff8-b07d-b37a8c1c6291",
+			id: "f02f05f8-bdce-4511-a746-a1e680da9e19",
 		},
 		form2: {
-			id: "e6609b8a-f965-4ff8-b07d-b37a8c1c6291",
-			nodes: ["74.0249", "129.0192", "130.0875"], // ["100.00072", "128.89351", "132.88524", "135.54123", "152.99445"],
+			id: "f02f05f8-bdce-4511-a746-a1e680da9e19",
+			nodes: ["10", "174", "465", "1005", "3212"], // ["74.0249", "129.0192", "130.0875"], // ["100.00072", "128.89351", "132.88524", "135.54123", "152.99445"],
 			group: "WT-pck1", // "FCSglc-DMA"
+			type: "id"
 		},
 
 		graph_details: [],
@@ -358,6 +406,9 @@ export default {
 			},
 			group: {
 				required,
+			},
+			type: {
+				required
 			}
 		}
 	},
@@ -433,6 +484,7 @@ export default {
 				this.submitStatus2 = 'ERROR'
 
 			} else {
+				console.log(this.form2);
 				this.submitStatus2 = 'PENDING';
 				await this.$axios.post("/api/experiments-consult/", this.form2).then((response) => {
 					console.log(1, response.data);
@@ -583,6 +635,10 @@ myChart.setOption(option);
 					left: 'center'
 				},
 				tooltip: {},
+				grid: {
+					// height: '50%',
+					// top: '15%'
+				},
 				/* legend: 
 				{
 					// selectedMode: 'single',
@@ -649,12 +705,14 @@ myChart.setOption(option);
 			var myChart = echarts.init(chartDom);
 			var option;
 
-			let yData = ["Before", "After"]; // Object.keys(matrix[0]);
+			// let group = this.form2.group.split("-");
+			// let yData = [group[0] + " (before)", group[1] + " (after)"]; // Object.keys(matrix[0]);
+			let yData = this.form2.group.split("-");
 			let xData = []; // Object.keys(matrix);
 			
 			let data = [];
 			for (let i = 0; i < matrix.length; i++) {
-				xData.push(i);
+				xData.push(matrix[i].ID);
 				data.push([i, 0, matrix[i].Before]);
 				data.push([i, 1, matrix[i].After]);
 			}
@@ -670,7 +728,13 @@ myChart.setOption(option);
 					left: 'center'
 				},
 				tooltip: {
-					position: 'top'
+					position: 'top',
+					trigger: 'item', // Tooltip trigger on data item
+					formatter: function(params) {
+						// Customize the tooltip content
+						// console.log(params);
+						return 'Name: ' + params.name + '<br/> Value: ' + params.value[2];
+					}
 				},
 				grid: {
 					// height: '50%',
@@ -764,9 +828,12 @@ myChart.setOption(option);
 					left: 'center'
 				},
 				tooltip: {
-					trigger: 'axis',
-					axisPointer: {
-						type: 'shadow'
+					position: 'top',
+					trigger: 'item', // Tooltip trigger on data item
+					formatter: function(params) {
+						// Customize the tooltip content
+						// console.log(params);
+						return 'Name: ' + params.name + '<br/> Value: ' + params.value;
 					}
 				},
 				xAxis: {
@@ -1319,5 +1386,6 @@ myChart.setOption(option);
 </script>
 
 <style lang="scss">
-@import "~scss/common/md_colors";
+	@import "~scss/common/md_colors";
+	@import '~scss/vue/_pretty_checkboxes';
 </style>

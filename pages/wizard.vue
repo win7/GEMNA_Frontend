@@ -81,6 +81,7 @@ export default {
 			form.append('data_variation', this.finalModel.option);
 			form.append('dimension', this.finalModel.dimension);
 			form.append('control', this.finalModel.control.join(","));
+			form.append('transformation', this.finalModel.transformation);
 			form.append('range', this.finalModel.range);
 			form.append('email', this.finalModel.email);
 			

@@ -296,7 +296,7 @@
 							<div class="sc-padding-medium">
 								<!-- <div id="graphs" style="border: 1px solid #333;"></div>
 								<div id="chart-container" style="width: 800px; height: 600px;"></div> -->
-								<div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle" id="metabolomic-network"></div>
+								<div class="uk-height-large uk-flex uk-flex-center uk-flex-middle" id="metabolomic-network"></div>
 								<div class="uk-height-large uk-flex uk-flex-center uk-flex-middle" id="degree-network"></div>
 								<div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle" id="heatmap"></div>
 							</div>
@@ -631,11 +631,11 @@ myChart.setOption(option);
 			links.forEach(function (edge) {
 				edge.lineStyle = {
 					color: colors.find(obj => obj.id === edge.label).color,
-					width: 2, // Line width
+					width: 1.5, // Line width
 					type: 'solid', // Line type ('solid', 'dashed', 'dotted', etc.),
 				},
 				edge.label = {
-					show: true,
+					show: false, // true,
 					formatter: function(edge) {
 						return edge.value;
 					}
@@ -683,8 +683,8 @@ myChart.setOption(option);
 						categories: labels,
 						
 						force: {
-							edgeLength: 100,
-							repulsion: 1000,
+							edgeLength: 10, // 100,
+							repulsion: 10, // 1000,
 							gravity: 0.5
 						},
 						roam: true,
@@ -695,19 +695,26 @@ myChart.setOption(option);
 							formatter: '{b}'
 						},
 						itemStyle: {
-							color: "gray"
+							color: "gray",
+							// symbolSize: 5
+						},
+						symbolSize: function (params) {
+							return 2; // params.data.value;
 						},
 						lineStyle: {
 							// color: "label",
 							curveness: 0.3,
-							width: 2
+							width: 1 // 2
+						},
+						labelLayout: {
+							hideOverlap: true
 						},
 						edgeSymbol: ['circle', 'arrow'],
-						edgeSymbolSize: [4, 10],
+						edgeSymbolSize: [2, 5], // [4, 10]
 						emphasis: {
 							focus: 'adjacency',
 							lineStyle: {
-								width: 10
+								width: 5
 							}
 						}
 					}

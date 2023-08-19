@@ -162,9 +162,10 @@
 													<Select2
 														v-model="form2.group"
 														:options="usGroups"
-														:settings="{ 'width': '100%', 'placeholder': 'Select metabolities...', 'closeOnSelect': true }"
+														:settings="{ 'width': '100%', 'placeholder': 'Select item...', 'closeOnSelect': true }"
 														:error-state="$v.form2.group.$error" 
 														:validator="$v.form2.group"
+														@change="onChangeGroup($event)"
 													></Select2>
 												</client-only>
 												<ul class="sc-vue-errors">
@@ -185,6 +186,7 @@
 														:error-state="$v.form2.type.$error" :validator="$v.form2.type"
 														value="id"
 														class="p-radio"
+														@change="onChangeType($event)"
 													>
 														Alignment ID
 													</PrettyRadio>
@@ -195,6 +197,7 @@
 														:error-state="$v.form2.type.$error" :validator="$v.form2.type"
 														value="mz"
 														class="p-radio"
+														@change="onChangeType($event)"
 													>
 														Average Mz
 													</PrettyRadio>
@@ -205,6 +208,7 @@
 														:error-state="$v.form2.type.$error" :validator="$v.form2.type"
 														value="name"
 														class="p-radio"
+														@change="onChangeType($event)"
 													>
 														Metabolite name
 													</PrettyRadio>
@@ -218,14 +222,14 @@
 										</div>
 										<div>
 											<label class="uk-form-label">
-												Alignment ID
+												{{ getType(form2.type) }}
 											</label>
 											<div class="uk-form-controls">
 												<client-only>
 													<Select2
 														v-model="form2.nodes"
 														:options="usNodes"
-														:settings="{ 'width': '100%', 'placeholder': 'Select alignment id...' }"
+														:settings="{ 'width': '100%', 'placeholder': 'Select item...' }"
 														:error-state="$v.form2.nodes.$error" 
 														:validator="$v.form2.nodes"
 														multiple
@@ -294,7 +298,7 @@
 								<div id="chart-container" style="width: 800px; height: 600px;"></div> -->
 								<div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle" id="metabolomic-network"></div>
 								<div class="uk-height-large uk-flex uk-flex-center uk-flex-middle" id="degree-network"></div>
-								<div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle" id="heat-map"></div>
+								<div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle" id="heatmap"></div>
 							</div>
 						</ScCardContent>
 					</ScCard>
@@ -321,6 +325,8 @@ import swal from 'sweetalert2';
 // import clustergrammer from 'https://cdn.jsdelivr.net/npm/clustergrammer@1.19.5/+esm'
 import * as echarts from 'echarts';
 
+const types = [{"id": "id", "name": "Alignment ID"}, {"id": "mz", "name": "Average Mz"}, {"id": "name", "name": "Metabolite name"}];
+
 export default {
 	name: 'DataVisualization',
 	components: {
@@ -343,16 +349,17 @@ export default {
 		},
 		form2: {
 			id: "f02f05f8-bdce-4511-a746-a1e680da9e19",
-			nodes: ["10", "174", "465", "1005", "3212"], // ["74.0249", "129.0192", "130.0875"], // ["100.00072", "128.89351", "132.88524", "135.54123", "152.99445"],
-			group: "WT-pck1", // "FCSglc-DMA"
+			nodes: [], // ["10", "174", "465", "1005", "3212"], // ["74.0249", "129.0192", "130.0875"], // ["100.00072", "128.89351", "132.88524", "135.54123", "152.99445"],
+			group: "", // "WT-pck1", // "FCSglc-DMA"
 			type: "id"
 		},
 
 		graph_details: [],
-		graph_nodes: [],
+		graph_nodes: null,
 		labels: ['PP', 'Pp', 'PN', 'Pn', 'P?', 'pP', 'pp', 'pN', 'pn', 'p?', 'NP', 'Np', 'NN', 'Nn', 'N?', 'nP', 'np', 'nN', 'nn', 'n?', '?P', '?p', '?N', '?n'],
 		options: [],
 		groups: [],
+
 	}),
 	computed: {
 		usNodes () {
@@ -416,6 +423,30 @@ export default {
 		
 	},
 	methods: {
+		loadParams () {
+			const group = this.graph_nodes[this.form2.group];
+			const nodes = group[this.form2.type];
+			
+			this.options = [];
+			for (let i = 0; i < nodes.length; i++) {
+				this.options.push({
+					id: nodes[i],
+					text: nodes[i]
+				})
+			}
+		},
+		onChangeGroup: function(event){
+			this.loadParams();
+    	},
+		onChangeType: function(event){
+			this.loadParams();			
+    	},
+		getType (id) {
+			var result = types.filter(obj => {
+				return obj.id === id
+			});
+			return result[0].name;
+		},
 		// Function to set edge color based on tags
 		getEdgeColor(link) {
 			// Define a mapping between tags and colors
@@ -455,14 +486,6 @@ export default {
 							this.groups.push({
 								id: this.graph_details[i].name,
 								text: this.graph_details[i].name
-							})
-						}
-
-						this.options = [];
-						for (let i = 0; i < this.graph_nodes.length; i++) {
-							this.options.push({
-								id: this.graph_nodes[i],
-								text: this.graph_nodes[i]
 							})
 						}
 					}
@@ -701,7 +724,7 @@ myChart.setOption(option);
 			console.log(source);
 			console.log(target); */
 
-			var chartDom = document.getElementById('heat-map');
+			var chartDom = document.getElementById('heatmap');
 			var myChart = echarts.init(chartDom);
 			var option;
 
@@ -838,6 +861,7 @@ myChart.setOption(option);
 				},
 				xAxis: {
 					type: 'category',
+					// axisLabel: { interval: 0, rotate: 90 },
 					data: x
 				},
 				yAxis: {

@@ -349,13 +349,14 @@ export default {
 		},
 		form2: {
 			id: "f02f05f8-bdce-4511-a746-a1e680da9e19",
-			nodes: [], // ["10", "174", "465", "1005", "3212"], // ["74.0249", "129.0192", "130.0875"], // ["100.00072", "128.89351", "132.88524", "135.54123", "152.99445"],
+			nodes: ["10", "174", "465", "1005", "3212"], // ["74.0249", "129.0192", "130.0875"], // ["100.00072", "128.89351", "132.88524", "135.54123", "152.99445"],
 			group: "", // "WT-pck1", // "FCSglc-DMA"
 			type: "id"
 		},
 
 		graph_details: [],
-		graph_nodes: null,
+		graph_nodes: [],
+		nodes_detail: [],
 		labels: ['PP', 'Pp', 'PN', 'Pn', 'P?', 'pP', 'pp', 'pN', 'pn', 'p?', 'NP', 'Np', 'NN', 'Nn', 'N?', 'nP', 'np', 'nN', 'nn', 'n?', '?P', '?p', '?N', '?n'],
 		options: [],
 		groups: [],
@@ -424,14 +425,14 @@ export default {
 	},
 	methods: {
 		loadParams () {
-			const nodes = this.graph_nodes[this.form2.group][0];
-			console.log(nodes);
+			this.nodes_detail = this.graph_nodes[this.form2.group][0];
+			console.log(this.nodes_detail);
 			
 			this.options = [];
-			for (let i = 0; i < nodes.length; i++) {
+			for (let i = 0; i < this.nodes_detail.length; i++) {
 				this.options.push({
-					id: nodes[i]["id"],
-					text: nodes[i][this.form2.type]
+					id: this.nodes_detail [i]["id"],
+					text: this.nodes_detail [i][this.form2.type]
 				})
 			}
 		},
@@ -621,11 +622,13 @@ myChart.setOption(option);
 							{id: "nn", color: "gray"}];
 
 			const labels = Array.from(new Set(suits.map(d => d.label)));
-			const nodes = Array.from(new Set(suits.flatMap(l => [l.source, l.target])), id => ({id: id, name: id}));
+			const nodes = Array.from(new Set(suits.flatMap(l => [l.source, l.target])), id => ({
+				id: id, name: this.nodes_detail.find((obj) => obj.id == id)[this.form2.type]}));
 			const links = suits.map(obj => ({ ...obj, value: obj.label }))
-
-			// console.log(11, labels);
-			// console.log(22, nodes);
+			
+			console.log(this.nodes_detail.find((obj) => obj.id == "10"));
+			console.log(11, labels);
+			console.log(22, nodes);
 			// console.log(33, links);
 
 			links.forEach(function (edge) {

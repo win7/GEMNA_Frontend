@@ -424,14 +424,14 @@ export default {
 	},
 	methods: {
 		loadParams () {
-			const group = this.graph_nodes[this.form2.group];
-			const nodes = group[this.form2.type];
+			const nodes = this.graph_nodes[this.form2.group][0];
+			console.log(nodes);
 			
 			this.options = [];
 			for (let i = 0; i < nodes.length; i++) {
 				this.options.push({
-					id: nodes[i],
-					text: nodes[i]
+					id: nodes[i]["id"],
+					text: nodes[i][this.form2.type]
 				})
 			}
 		},

@@ -177,7 +177,7 @@
 										</div>
 										<div>
 											<label class="uk-form-label">
-												By
+												Name by
 											</label>
 											<div class="uk-form-controls">
 												<span class="uk-margin-right">
@@ -626,9 +626,8 @@ myChart.setOption(option);
 				id: id, name: this.nodes_detail.find((obj) => obj.id == id)[this.form2.type]}));
 			const links = suits.map(obj => ({ ...obj, value: obj.label }))
 			
-			console.log(this.nodes_detail.find((obj) => obj.id == "10"));
-			console.log(11, labels);
-			console.log(22, nodes);
+			// console.log(11, labels);
+			// console.log(22, nodes);
 			// console.log(33, links);
 
 			links.forEach(function (edge) {
@@ -687,8 +686,8 @@ myChart.setOption(option);
 						
 						force: {
 							edgeLength: 10, // 100,
-							repulsion: 10, // 1000,
-							gravity: 0.5
+							repulsion: 100, // 1000,
+							gravity: 0.4
 						},
 						roam: true,
 						draggable: true,
@@ -702,7 +701,7 @@ myChart.setOption(option);
 							// symbolSize: 5
 						},
 						symbolSize: function (params) {
-							return 2; // params.data.value;
+							return 3; // params.data.value;
 						},
 						lineStyle: {
 							// color: "label",
@@ -713,11 +712,14 @@ myChart.setOption(option);
 							hideOverlap: true
 						},
 						edgeSymbol: ['circle', 'arrow'],
-						edgeSymbolSize: [2, 5], // [4, 10]
+						edgeSymbolSize: [3, 6], // [4, 10]
+						/* edgeLabel: {
+							fontSize: 20
+						}, */
 						emphasis: {
 							focus: 'adjacency',
 							lineStyle: {
-								width: 5
+								width: 3
 							}
 						}
 					}
@@ -845,13 +847,16 @@ myChart.setOption(option);
 			
 			option && myChart.setOption(option);			
 		},
-		degree_network (list) {
+		degree_network (degrees) {
 			var chartDom = document.getElementById('degree-network');
 			var myChart = echarts.init(chartDom);
 			var option;
 
-			var x = list.map(d => d[0]);
-			var y = list.map(d => d[1]);
+			// var x = degrees.map(d => d[0].find((obj) => obj.id == id)[this.form2.type]);
+			var x = degrees.map(d => this.nodes_detail.find((obj) => obj.id == d[0])[this.form2.type]);
+			var y = degrees.map(d => d[1]);
+
+			console.log(x);
 
 			option = {
 				title: {

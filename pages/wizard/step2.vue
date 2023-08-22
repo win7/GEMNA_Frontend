@@ -116,6 +116,34 @@
 					</div>
 				</div>
 			</div>
+			<div class="uk-child-width-1-2@s uk-grid" data-uk-grid>
+				<div>
+					<label class="uk-form-label">
+						Alpha
+					</label>
+					<div class="uk-form-controls">
+						<ScInput v-model.trim="form.alpha" :error-state="$v.form.alpha.$error" :validator="$v.form.alpha" mode="outline" type="number"></ScInput>
+						<ul class="sc-vue-errors">
+							<li v-if="!$v.form.alpha.required">
+								Field is required
+							</li>
+						</ul>
+					</div>
+				</div>
+				<!-- <div>
+					<label class="uk-form-label">
+						Range
+					</label>
+					<div class="uk-form-controls">
+						<ScInput v-model.trim="form.range" :error-state="$v.form.range.$error" :validator="$v.form.range" mode="outline" type="number"></ScInput>
+						<ul class="sc-vue-errors">
+							<li v-if="!$v.form.range.required">
+								Field is required
+							</li>
+						</ul>
+					</div>
+				</div> -->
+			</div>
 		</fieldset>
 	</form>
 </template>
@@ -152,8 +180,9 @@ export default {
 			dimension: "3",
 			option: "",
 			control: [],
-			range: null,
-			transformation: null
+			range: "10",
+			transformation: null,
+			alpha: "0.05"
 		},
 	}),
 	computed: {
@@ -214,6 +243,9 @@ export default {
 				required
 			},
 			transformation: {
+				required
+			},
+			alpha: {
 				required
 			}
 		}

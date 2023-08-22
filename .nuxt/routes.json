@@ -3,64 +3,55 @@
     "name": "account_auth",
     "path": "/account_auth",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/account_auth.vue",
-    "chunkName": "pages/account_auth",
-    "_name": "_d9f1d560"
+    "chunkName": "pages/account_auth"
   },
   {
     "name": "data_visualization",
     "path": "/data_visualization",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/data_visualization.vue",
-    "chunkName": "pages/data_visualization",
-    "_name": "_5823fdb6"
+    "chunkName": "pages/data_visualization"
   },
   {
     "name": "data_visualization_v",
     "path": "/data_visualization_v",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/data_visualization_v.vue",
-    "chunkName": "pages/data_visualization_v",
-    "_name": "_38206b48"
+    "chunkName": "pages/data_visualization_v"
   },
   {
     "name": "data_visualization_v1",
     "path": "/data_visualization_v1",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/data_visualization_v1.vue",
-    "chunkName": "pages/data_visualization_v1",
-    "_name": "_cbd9d9f6"
+    "chunkName": "pages/data_visualization_v1"
   },
   {
     "name": "data_visualization_v2",
     "path": "/data_visualization_v2",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/data_visualization_v2.vue",
-    "chunkName": "pages/data_visualization_v2",
-    "_name": "_cbbdaaf4"
+    "chunkName": "pages/data_visualization_v2"
   },
   {
     "name": "data_visualization_v3",
     "path": "/data_visualization_v3",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/data_visualization_v3.vue",
-    "chunkName": "pages/data_visualization_v3",
-    "_name": "_cba17bf2"
+    "chunkName": "pages/data_visualization_v3"
   },
   {
     "name": "data_visualization_v4",
     "path": "/data_visualization_v4",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/data_visualization_v4.vue",
-    "chunkName": "pages/data_visualization_v4",
-    "_name": "_cb854cf0"
+    "chunkName": "pages/data_visualization_v4"
   },
   {
     "name": "login_page",
     "path": "/login_page",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/login_page.vue",
-    "chunkName": "pages/login_page",
-    "_name": "_67a1770a"
+    "chunkName": "pages/login_page"
   },
   {
     "name": "login_page_auth",
     "path": "/login_page_auth",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/login_page_auth.vue",
-    "chunkName": "pages/login_page_auth",
-    "_name": "_4fa8d19c"
+    "chunkName": "pages/login_page_auth"
   },
   {
     "name": "wizard",
@@ -72,319 +63,273 @@
         "name": "wizard-step1",
         "path": "step1",
         "component": "/home/win7/Project/Nuxt/meta_net/pages/wizard/step1.vue",
-        "chunkName": "pages/wizard/step1",
-        "_name": "_f90e4ad2"
+        "chunkName": "pages/wizard/step1"
       },
       {
         "name": "wizard-step2",
         "path": "step2",
         "component": "/home/win7/Project/Nuxt/meta_net/pages/wizard/step2.vue",
-        "chunkName": "pages/wizard/step2",
-        "_name": "_f8f21bd0"
+        "chunkName": "pages/wizard/step2"
       },
       {
         "name": "wizard-step3",
         "path": "step3",
         "component": "/home/win7/Project/Nuxt/meta_net/pages/wizard/step3.vue",
-        "chunkName": "pages/wizard/step3",
-        "_name": "_f8d5ecce"
+        "chunkName": "pages/wizard/step3"
       }
-    ],
-    "_name": "_24ae3f7e"
+    ]
   },
   {
     "name": "components-accordion",
     "path": "/components/accordion",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/components/accordion.vue",
-    "chunkName": "pages/components/accordion",
-    "_name": "_1c8bade5"
+    "chunkName": "pages/components/accordion"
   },
   {
     "name": "components-alert",
     "path": "/components/alert",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/components/alert.vue",
-    "chunkName": "pages/components/alert",
-    "_name": "_24fbdb0e"
+    "chunkName": "pages/components/alert"
   },
   {
     "name": "components-animations",
     "path": "/components/animations",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/components/animations.vue",
-    "chunkName": "pages/components/animations",
-    "_name": "_700441bc"
+    "chunkName": "pages/components/animations"
   },
   {
     "name": "components-avatars",
     "path": "/components/avatars",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/components/avatars.vue",
-    "chunkName": "pages/components/avatars",
-    "_name": "_257f4717"
+    "chunkName": "pages/components/avatars"
   },
   {
     "name": "components-badge_label",
     "path": "/components/badge_label",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/components/badge_label.vue",
-    "chunkName": "pages/components/badge_label",
-    "_name": "_0b40eab5"
+    "chunkName": "pages/components/badge_label"
   },
   {
     "name": "components-base",
     "path": "/components/base",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/components/base.vue",
-    "chunkName": "pages/components/base",
-    "_name": "_40b3dfc4"
+    "chunkName": "pages/components/base"
   },
   {
     "name": "components-breadcrumb",
     "path": "/components/breadcrumb",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/components/breadcrumb.vue",
-    "chunkName": "pages/components/breadcrumb",
-    "_name": "_30654fb6"
+    "chunkName": "pages/components/breadcrumb"
   },
   {
     "name": "components-buttons",
     "path": "/components/buttons",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/components/buttons.vue",
-    "chunkName": "pages/components/buttons",
-    "_name": "_b61abe44"
+    "chunkName": "pages/components/buttons"
   },
   {
     "name": "components-cards",
     "path": "/components/cards",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/components/cards.vue",
-    "chunkName": "pages/components/cards",
-    "_name": "_371d1500"
+    "chunkName": "pages/components/cards"
   },
   {
     "name": "components-color_palette",
     "path": "/components/color_palette",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/components/color_palette.vue",
-    "chunkName": "pages/components/color_palette",
-    "_name": "_1b9ab43c"
+    "chunkName": "pages/components/color_palette"
   },
   {
     "name": "components-drop_dropdowns",
     "path": "/components/drop_dropdowns",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/components/drop_dropdowns.vue",
-    "chunkName": "pages/components/drop_dropdowns",
-    "_name": "_0d0ff3e5"
+    "chunkName": "pages/components/drop_dropdowns"
   },
   {
     "name": "components-fab_buttons",
     "path": "/components/fab_buttons",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/components/fab_buttons.vue",
-    "chunkName": "pages/components/fab_buttons",
-    "_name": "_a1f3e5b4"
+    "chunkName": "pages/components/fab_buttons"
   },
   {
     "name": "components-fancy_footer",
     "path": "/components/fancy_footer",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/components/fancy_footer.vue",
-    "chunkName": "pages/components/fancy_footer",
-    "_name": "_4f405dc4"
+    "chunkName": "pages/components/fancy_footer"
   },
   {
     "name": "components-fancy_toolbar",
     "path": "/components/fancy_toolbar",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/components/fancy_toolbar.vue",
-    "chunkName": "pages/components/fancy_toolbar",
-    "_name": "_73a7a0bc"
+    "chunkName": "pages/components/fancy_toolbar"
   },
   {
     "name": "components-filters",
     "path": "/components/filters",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/components/filters.vue",
-    "chunkName": "pages/components/filters",
-    "_name": "_4e748f50"
+    "chunkName": "pages/components/filters"
   },
   {
     "name": "components-footer",
     "path": "/components/footer",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/components/footer.vue",
-    "chunkName": "pages/components/footer",
-    "_name": "_b0cc6264"
+    "chunkName": "pages/components/footer"
   },
   {
     "name": "components-grid",
     "path": "/components/grid",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/components/grid.vue",
-    "chunkName": "pages/components/grid",
-    "_name": "_8b75bc8e"
+    "chunkName": "pages/components/grid"
   },
   {
     "name": "components-height",
     "path": "/components/height",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/components/height.vue",
-    "chunkName": "pages/components/height",
-    "_name": "_a879f74c"
+    "chunkName": "pages/components/height"
   },
   {
     "name": "components-icons",
     "path": "/components/icons",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/components/icons.vue",
-    "chunkName": "pages/components/icons",
-    "_name": "_1a506592"
+    "chunkName": "pages/components/icons"
   },
   {
     "name": "components-lists",
     "path": "/components/lists",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/components/lists.vue",
-    "chunkName": "pages/components/lists",
-    "_name": "_067baf9c"
+    "chunkName": "pages/components/lists"
   },
   {
     "name": "components-masonry",
     "path": "/components/masonry",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/components/masonry.vue",
-    "chunkName": "pages/components/masonry",
-    "_name": "_2ba0dda2"
+    "chunkName": "pages/components/masonry"
   },
   {
     "name": "components-modals_dialogs",
     "path": "/components/modals_dialogs",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/components/modals_dialogs.vue",
-    "chunkName": "pages/components/modals_dialogs",
-    "_name": "_336a8305"
+    "chunkName": "pages/components/modals_dialogs"
   },
   {
     "name": "components-notifications",
     "path": "/components/notifications",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/components/notifications.vue",
-    "chunkName": "pages/components/notifications",
-    "_name": "_551fb9f6"
+    "chunkName": "pages/components/notifications"
   },
   {
     "name": "components-overlay",
     "path": "/components/overlay",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/components/overlay.vue",
-    "chunkName": "pages/components/overlay",
-    "_name": "_16f1b3a6"
+    "chunkName": "pages/components/overlay"
   },
   {
     "name": "components-pagination",
     "path": "/components/pagination",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/components/pagination.vue",
-    "chunkName": "pages/components/pagination",
-    "_name": "_25bbb3cd"
+    "chunkName": "pages/components/pagination"
   },
   {
     "name": "components-progress_spinners",
     "path": "/components/progress_spinners",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/components/progress_spinners.vue",
-    "chunkName": "pages/components/progress_spinners",
-    "_name": "_b4ccd62e"
+    "chunkName": "pages/components/progress_spinners"
   },
   {
     "name": "components-scrollable",
     "path": "/components/scrollable",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/components/scrollable.vue",
-    "chunkName": "pages/components/scrollable",
-    "_name": "_79d0094c"
+    "chunkName": "pages/components/scrollable"
   },
   {
     "name": "components-slider",
     "path": "/components/slider",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/components/slider.vue",
-    "chunkName": "pages/components/slider",
-    "_name": "_d64701d8"
+    "chunkName": "pages/components/slider"
   },
   {
     "name": "components-sortable",
     "path": "/components/sortable",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/components/sortable.vue",
-    "chunkName": "pages/components/sortable",
-    "_name": "_37d0d82a"
+    "chunkName": "pages/components/sortable"
   },
   {
     "name": "components-swipe_list",
     "path": "/components/swipe_list",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/components/swipe_list.vue",
-    "chunkName": "pages/components/swipe_list",
-    "_name": "_753c7e36"
+    "chunkName": "pages/components/swipe_list"
   },
   {
     "name": "components-tables",
     "path": "/components/tables",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/components/tables.vue",
-    "chunkName": "pages/components/tables",
-    "_name": "_0b663ad0"
+    "chunkName": "pages/components/tables"
   },
   {
     "name": "components-tabs",
     "path": "/components/tabs",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/components/tabs.vue",
-    "chunkName": "pages/components/tabs",
-    "_name": "_724bedf1"
+    "chunkName": "pages/components/tabs"
   },
   {
     "name": "components-timeline",
     "path": "/components/timeline",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/components/timeline.vue",
-    "chunkName": "pages/components/timeline",
-    "_name": "_3544e098"
+    "chunkName": "pages/components/timeline"
   },
   {
     "name": "components-toolbar",
     "path": "/components/toolbar",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/components/toolbar.vue",
-    "chunkName": "pages/components/toolbar",
-    "_name": "_7900dfd8"
+    "chunkName": "pages/components/toolbar"
   },
   {
     "name": "components-tooltips",
     "path": "/components/tooltips",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/components/tooltips.vue",
-    "chunkName": "pages/components/tooltips",
-    "_name": "_c737e67a"
+    "chunkName": "pages/components/tooltips"
   },
   {
     "name": "components-transitions",
     "path": "/components/transitions",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/components/transitions.vue",
-    "chunkName": "pages/components/transitions",
-    "_name": "_16b78e1b"
+    "chunkName": "pages/components/transitions"
   },
   {
     "name": "components-width",
     "path": "/components/width",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/components/width.vue",
-    "chunkName": "pages/components/width",
-    "_name": "_419a71e3"
+    "chunkName": "pages/components/width"
   },
   {
     "name": "dashboard-v1",
     "path": "/dashboard/v1",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/dashboard/v1.vue",
-    "chunkName": "pages/dashboard/v1",
-    "_name": "_8094faa8"
+    "chunkName": "pages/dashboard/v1"
   },
   {
     "name": "dashboard-v2",
     "path": "/dashboard/v2",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/dashboard/v2.vue",
-    "chunkName": "pages/dashboard/v2",
-    "_name": "_8078cba6"
+    "chunkName": "pages/dashboard/v2"
   },
   {
     "name": "forms-dynamic_fields",
     "path": "/forms/dynamic_fields",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/forms/dynamic_fields.vue",
-    "chunkName": "pages/forms/dynamic_fields",
-    "_name": "_bf9c7022"
+    "chunkName": "pages/forms/dynamic_fields"
   },
   {
     "name": "forms-regular_elements",
     "path": "/forms/regular_elements",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/forms/regular_elements.vue",
-    "chunkName": "pages/forms/regular_elements",
-    "_name": "_e1e16920"
+    "chunkName": "pages/forms/regular_elements"
   },
   {
     "name": "forms-validation",
     "path": "/forms/validation",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/forms/validation.vue",
-    "chunkName": "pages/forms/validation",
-    "_name": "_678648af"
+    "chunkName": "pages/forms/validation"
   },
   {
     "name": "forms-wizard",
@@ -396,109 +341,93 @@
         "name": "forms-wizard-step1",
         "path": "step1",
         "component": "/home/win7/Project/Nuxt/meta_net/pages/forms/wizard/step1.vue",
-        "chunkName": "pages/forms/wizard/step1",
-        "_name": "_2a57a412"
+        "chunkName": "pages/forms/wizard/step1"
       },
       {
         "name": "forms-wizard-step2",
         "path": "step2",
         "component": "/home/win7/Project/Nuxt/meta_net/pages/forms/wizard/step2.vue",
-        "chunkName": "pages/forms/wizard/step2",
-        "_name": "_2a3b7510"
+        "chunkName": "pages/forms/wizard/step2"
       },
       {
         "name": "forms-wizard-step3",
         "path": "step3",
         "component": "/home/win7/Project/Nuxt/meta_net/pages/forms/wizard/step3.vue",
-        "chunkName": "pages/forms/wizard/step3",
-        "_name": "_2a1f460e"
+        "chunkName": "pages/forms/wizard/step3"
       }
-    ],
-    "_name": "_f94388be"
+    ]
   },
   {
     "name": "layout-boxed",
     "path": "/layout/boxed",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/layout/boxed.vue",
-    "chunkName": "pages/layout/boxed",
-    "_name": "_e197984a"
+    "chunkName": "pages/layout/boxed"
   },
   {
     "name": "layout-mini_sidebar",
     "path": "/layout/mini_sidebar",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/layout/mini_sidebar.vue",
-    "chunkName": "pages/layout/mini_sidebar",
-    "_name": "_e768515a"
+    "chunkName": "pages/layout/mini_sidebar"
   },
   {
     "name": "layout-offcanvas_sidebar",
     "path": "/layout/offcanvas_sidebar",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/layout/offcanvas_sidebar.vue",
-    "chunkName": "pages/layout/offcanvas_sidebar",
-    "_name": "_bf87d756"
+    "chunkName": "pages/layout/offcanvas_sidebar"
   },
   {
     "name": "layout-top_menu",
     "path": "/layout/top_menu",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/layout/top_menu.vue",
-    "chunkName": "pages/layout/top_menu",
-    "_name": "_31194ae8"
+    "chunkName": "pages/layout/top_menu"
   },
   {
     "name": "pages-blank",
     "path": "/pages/blank",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/pages/blank.vue",
-    "chunkName": "pages/pages/blank",
-    "_name": "_19dccb3a"
+    "chunkName": "pages/pages/blank"
   },
   {
     "name": "pages-blank_header_expanded",
     "path": "/pages/blank_header_expanded",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/pages/blank_header_expanded.vue",
-    "chunkName": "pages/pages/blank_header_expanded",
-    "_name": "_261bae4f"
+    "chunkName": "pages/pages/blank_header_expanded"
   },
   {
     "name": "pages-chat",
     "path": "/pages/chat",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/pages/chat.vue",
-    "chunkName": "pages/pages/chat",
-    "_name": "_0ff64e99"
+    "chunkName": "pages/pages/chat"
   },
   {
     "name": "pages-contact_list",
     "path": "/pages/contact_list",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/pages/contact_list.vue",
-    "chunkName": "pages/pages/contact_list",
-    "_name": "_7b9c511e"
+    "chunkName": "pages/pages/contact_list"
   },
   {
     "name": "pages-contact_list_single",
     "path": "/pages/contact_list_single",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/pages/contact_list_single.vue",
-    "chunkName": "pages/pages/contact_list_single",
-    "_name": "_45ac4739"
+    "chunkName": "pages/pages/contact_list_single"
   },
   {
     "name": "pages-data_visualization",
     "path": "/pages/data_visualization",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/pages/data_visualization.vue",
-    "chunkName": "pages/pages/data_visualization",
-    "_name": "_d3109d60"
+    "chunkName": "pages/pages/data_visualization"
   },
   {
     "name": "pages-gallery",
     "path": "/pages/gallery",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/pages/gallery.vue",
-    "chunkName": "pages/pages/gallery",
-    "_name": "_b77de0be"
+    "chunkName": "pages/pages/gallery"
   },
   {
     "name": "pages-help_faq",
     "path": "/pages/help_faq",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/pages/help_faq.vue",
-    "chunkName": "pages/pages/help_faq",
-    "_name": "_fe7f404e"
+    "chunkName": "pages/pages/help_faq"
   },
   {
     "path": "/pages/invoices",
@@ -509,25 +438,21 @@
         "name": "pages-invoices",
         "path": "",
         "component": "/home/win7/Project/Nuxt/meta_net/pages/pages/invoices/index.vue",
-        "chunkName": "pages/pages/invoices/index",
-        "_name": "_a876d02c"
+        "chunkName": "pages/pages/invoices/index"
       },
       {
         "name": "pages-invoices-new",
         "path": "new",
         "component": "/home/win7/Project/Nuxt/meta_net/pages/pages/invoices/new.vue",
-        "chunkName": "pages/pages/invoices/new",
-        "_name": "_f77d3c90"
+        "chunkName": "pages/pages/invoices/new"
       },
       {
         "name": "pages-invoices-id",
         "path": ":id",
         "component": "/home/win7/Project/Nuxt/meta_net/pages/pages/invoices/_id.vue",
-        "chunkName": "pages/pages/invoices/_id",
-        "_name": "_708b8cd2"
+        "chunkName": "pages/pages/invoices/_id"
       }
-    ],
-    "_name": "_321eeaa7"
+    ]
   },
   {
     "name": "pages-issues",
@@ -545,21 +470,17 @@
             "name": "pages-issues-details-id",
             "path": ":id?",
             "component": "/home/win7/Project/Nuxt/meta_net/pages/pages/issues/details/_id.vue",
-            "chunkName": "pages/pages/issues/details/_id",
-            "_name": "_76d2cfce"
+            "chunkName": "pages/pages/issues/details/_id"
           }
-        ],
-        "_name": "_7188b16e"
+        ]
       },
       {
         "name": "pages-issues-list",
         "path": "list",
         "component": "/home/win7/Project/Nuxt/meta_net/pages/pages/issues/list.vue",
-        "chunkName": "pages/pages/issues/list",
-        "_name": "_66faef22"
+        "chunkName": "pages/pages/issues/list"
       }
-    ],
-    "_name": "_36dbb28a"
+    ]
   },
   {
     "path": "/pages/mailbox",
@@ -570,353 +491,302 @@
         "name": "pages-mailbox",
         "path": "",
         "component": "/home/win7/Project/Nuxt/meta_net/pages/pages/mailbox/index.vue",
-        "chunkName": "pages/pages/mailbox/index",
-        "_name": "_37104f74"
+        "chunkName": "pages/pages/mailbox/index"
       },
       {
         "name": "pages-mailbox-compose",
         "path": "compose",
         "component": "/home/win7/Project/Nuxt/meta_net/pages/pages/mailbox/compose.vue",
-        "chunkName": "pages/pages/mailbox/compose",
-        "_name": "_627bba06"
+        "chunkName": "pages/pages/mailbox/compose"
       },
       {
         "name": "pages-mailbox-message-id",
         "path": "message/:id?",
         "component": "/home/win7/Project/Nuxt/meta_net/pages/pages/mailbox/message/_id.vue",
-        "chunkName": "pages/pages/mailbox/message/_id",
-        "_name": "_433fde26"
+        "chunkName": "pages/pages/mailbox/message/_id"
       }
-    ],
-    "_name": "_7e1ebffa"
+    ]
   },
   {
     "name": "pages-notes",
     "path": "/pages/notes",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/pages/notes.vue",
-    "chunkName": "pages/pages/notes",
-    "_name": "_07d44d60"
+    "chunkName": "pages/pages/notes"
   },
   {
     "name": "pages-poi_listing",
     "path": "/pages/poi_listing",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/pages/poi_listing.vue",
-    "chunkName": "pages/pages/poi_listing",
-    "_name": "_797b27de"
+    "chunkName": "pages/pages/poi_listing"
   },
   {
     "name": "pages-pricing_tables",
     "path": "/pages/pricing_tables",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/pages/pricing_tables.vue",
-    "chunkName": "pages/pages/pricing_tables",
-    "_name": "_4ee3e9ff"
+    "chunkName": "pages/pages/pricing_tables"
   },
   {
     "name": "pages-settings",
     "path": "/pages/settings",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/pages/settings.vue",
-    "chunkName": "pages/pages/settings",
-    "_name": "_edd2c538"
+    "chunkName": "pages/pages/settings"
   },
   {
     "name": "pages-task_board",
     "path": "/pages/task_board",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/pages/task_board.vue",
-    "chunkName": "pages/pages/task_board",
-    "_name": "_04a7c3a6"
+    "chunkName": "pages/pages/task_board"
   },
   {
     "name": "pages-user_profile",
     "path": "/pages/user_profile",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/pages/user_profile.vue",
-    "chunkName": "pages/pages/user_profile",
-    "_name": "_515aecf6"
+    "chunkName": "pages/pages/user_profile"
   },
   {
     "name": "plugins-ajax",
     "path": "/plugins/ajax",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/plugins/ajax.vue",
-    "chunkName": "pages/plugins/ajax",
-    "_name": "_442ebcf6"
+    "chunkName": "pages/plugins/ajax"
   },
   {
     "name": "plugins-calendar",
     "path": "/plugins/calendar",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/plugins/calendar.vue",
-    "chunkName": "pages/plugins/calendar",
-    "_name": "_039205ba"
+    "chunkName": "pages/plugins/calendar"
   },
   {
     "name": "plugins-calendar_events",
     "path": "/plugins/calendar_events",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/plugins/calendar_events.vue",
-    "chunkName": "pages/plugins/calendar_events",
-    "_name": "_4ebef036"
+    "chunkName": "pages/plugins/calendar_events"
   },
   {
     "name": "plugins-charts",
     "path": "/plugins/charts",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/plugins/charts.vue",
-    "chunkName": "pages/plugins/charts",
-    "_name": "_0013f1fa"
+    "chunkName": "pages/plugins/charts"
   },
   {
     "name": "plugins-code_editor",
     "path": "/plugins/code_editor",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/plugins/code_editor.vue",
-    "chunkName": "pages/plugins/code_editor",
-    "_name": "_3aa9ccac"
+    "chunkName": "pages/plugins/code_editor"
   },
   {
     "name": "plugins-data_grid",
     "path": "/plugins/data_grid",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/plugins/data_grid.vue",
-    "chunkName": "pages/plugins/data_grid",
-    "_name": "_e8d9d1b4"
+    "chunkName": "pages/plugins/data_grid"
   },
   {
     "name": "plugins-datatables",
     "path": "/plugins/datatables",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/plugins/datatables.vue",
-    "chunkName": "pages/plugins/datatables",
-    "_name": "_c5884e98"
+    "chunkName": "pages/plugins/datatables"
   },
   {
     "name": "plugins-diff_tool",
     "path": "/plugins/diff_tool",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/plugins/diff_tool.vue",
-    "chunkName": "pages/plugins/diff_tool",
-    "_name": "_1c78167d"
+    "chunkName": "pages/plugins/diff_tool"
   },
   {
     "name": "plugins-gantt_chart",
     "path": "/plugins/gantt_chart",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/plugins/gantt_chart.vue",
-    "chunkName": "pages/plugins/gantt_chart",
-    "_name": "_4d8767de"
+    "chunkName": "pages/plugins/gantt_chart"
   },
   {
     "name": "plugins-google_maps",
     "path": "/plugins/google_maps",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/plugins/google_maps.vue",
-    "chunkName": "pages/plugins/google_maps",
-    "_name": "_10d508f0"
+    "chunkName": "pages/plugins/google_maps"
   },
   {
     "name": "plugins-idle_timeout",
     "path": "/plugins/idle_timeout",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/plugins/idle_timeout.vue",
-    "chunkName": "pages/plugins/idle_timeout",
-    "_name": "_9d9bd14a"
+    "chunkName": "pages/plugins/idle_timeout"
   },
   {
     "name": "plugins-image_cropper",
     "path": "/plugins/image_cropper",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/plugins/image_cropper.vue",
-    "chunkName": "pages/plugins/image_cropper",
-    "_name": "_c7b51cd8"
+    "chunkName": "pages/plugins/image_cropper"
   },
   {
     "name": "plugins-push_notifications",
     "path": "/plugins/push_notifications",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/plugins/push_notifications.vue",
-    "chunkName": "pages/plugins/push_notifications",
-    "_name": "_7989bba8"
+    "chunkName": "pages/plugins/push_notifications"
   },
   {
     "name": "plugins-tour",
     "path": "/plugins/tour",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/plugins/tour.vue",
-    "chunkName": "pages/plugins/tour",
-    "_name": "_842b0486"
+    "chunkName": "pages/plugins/tour"
   },
   {
     "name": "plugins-tree",
     "path": "/plugins/tree",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/plugins/tree.vue",
-    "chunkName": "pages/plugins/tree",
-    "_name": "_40987403"
+    "chunkName": "pages/plugins/tree"
   },
   {
     "name": "plugins-vector_maps",
     "path": "/plugins/vector_maps",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/plugins/vector_maps.vue",
-    "chunkName": "pages/plugins/vector_maps",
-    "_name": "_75de7884"
+    "chunkName": "pages/plugins/vector_maps"
   },
   {
     "name": "plugins-vue_good_table",
     "path": "/plugins/vue_good_table",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/plugins/vue_good_table.vue",
-    "chunkName": "pages/plugins/vue_good_table",
-    "_name": "_54a9e2ca"
+    "chunkName": "pages/plugins/vue_good_table"
   },
   {
     "name": "forms-advanced_elements-checkbox_radio",
     "path": "/forms/advanced_elements/checkbox_radio",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/forms/advanced_elements/checkbox_radio.vue",
-    "chunkName": "pages/forms/advanced_elements/checkbox_radio",
-    "_name": "_b33606a0"
+    "chunkName": "pages/forms/advanced_elements/checkbox_radio"
   },
   {
     "name": "forms-advanced_elements-color_picker",
     "path": "/forms/advanced_elements/color_picker",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/forms/advanced_elements/color_picker.vue",
-    "chunkName": "pages/forms/advanced_elements/color_picker",
-    "_name": "_fd2bc44a"
+    "chunkName": "pages/forms/advanced_elements/color_picker"
   },
   {
     "name": "forms-advanced_elements-date_picker",
     "path": "/forms/advanced_elements/date_picker",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/forms/advanced_elements/date_picker.vue",
-    "chunkName": "pages/forms/advanced_elements/date_picker",
-    "_name": "_6c1a7a44"
+    "chunkName": "pages/forms/advanced_elements/date_picker"
   },
   {
     "name": "forms-advanced_elements-date_range_picker",
     "path": "/forms/advanced_elements/date_range_picker",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/forms/advanced_elements/date_range_picker.vue",
-    "chunkName": "pages/forms/advanced_elements/date_range_picker",
-    "_name": "_5c87bd20"
+    "chunkName": "pages/forms/advanced_elements/date_range_picker"
   },
   {
     "name": "forms-advanced_elements-inputmask",
     "path": "/forms/advanced_elements/inputmask",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/forms/advanced_elements/inputmask.vue",
-    "chunkName": "pages/forms/advanced_elements/inputmask",
-    "_name": "_18b6ced6"
+    "chunkName": "pages/forms/advanced_elements/inputmask"
   },
   {
     "name": "forms-advanced_elements-multiselect",
     "path": "/forms/advanced_elements/multiselect",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/forms/advanced_elements/multiselect.vue",
-    "chunkName": "pages/forms/advanced_elements/multiselect",
-    "_name": "_5a3efd14"
+    "chunkName": "pages/forms/advanced_elements/multiselect"
   },
   {
     "name": "forms-advanced_elements-range_slider",
     "path": "/forms/advanced_elements/range_slider",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/forms/advanced_elements/range_slider.vue",
-    "chunkName": "pages/forms/advanced_elements/range_slider",
-    "_name": "_51395694"
+    "chunkName": "pages/forms/advanced_elements/range_slider"
   },
   {
     "name": "forms-advanced_elements-rating",
     "path": "/forms/advanced_elements/rating",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/forms/advanced_elements/rating.vue",
-    "chunkName": "pages/forms/advanced_elements/rating",
-    "_name": "_1490b864"
+    "chunkName": "pages/forms/advanced_elements/rating"
   },
   {
     "name": "forms-advanced_elements-select2",
     "path": "/forms/advanced_elements/select2",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/forms/advanced_elements/select2.vue",
-    "chunkName": "pages/forms/advanced_elements/select2",
-    "_name": "_93fd8156"
+    "chunkName": "pages/forms/advanced_elements/select2"
   },
   {
     "name": "forms-advanced_elements-switches",
     "path": "/forms/advanced_elements/switches",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/forms/advanced_elements/switches.vue",
-    "chunkName": "pages/forms/advanced_elements/switches",
-    "_name": "_35496c53"
+    "chunkName": "pages/forms/advanced_elements/switches"
   },
   {
     "name": "forms-advanced_elements-time_picker",
     "path": "/forms/advanced_elements/time_picker",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/forms/advanced_elements/time_picker.vue",
-    "chunkName": "pages/forms/advanced_elements/time_picker",
-    "_name": "_1dfaf342"
+    "chunkName": "pages/forms/advanced_elements/time_picker"
   },
   {
     "name": "forms-examples-advertising_evaluation_form",
     "path": "/forms/examples/advertising_evaluation_form",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/forms/examples/advertising_evaluation_form.vue",
-    "chunkName": "pages/forms/examples/advertising_evaluation_form",
-    "_name": "_6e57d03c"
+    "chunkName": "pages/forms/examples/advertising_evaluation_form"
   },
   {
     "name": "forms-examples-booking_form",
     "path": "/forms/examples/booking_form",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/forms/examples/booking_form.vue",
-    "chunkName": "pages/forms/examples/booking_form",
-    "_name": "_0dc8caaa"
+    "chunkName": "pages/forms/examples/booking_form"
   },
   {
     "name": "forms-examples-car_rental_form",
     "path": "/forms/examples/car_rental_form",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/forms/examples/car_rental_form.vue",
-    "chunkName": "pages/forms/examples/car_rental_form",
-    "_name": "_a26972f8"
+    "chunkName": "pages/forms/examples/car_rental_form"
   },
   {
     "name": "forms-examples-checkout_form",
     "path": "/forms/examples/checkout_form",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/forms/examples/checkout_form.vue",
-    "chunkName": "pages/forms/examples/checkout_form",
-    "_name": "_0b1fa50d"
+    "chunkName": "pages/forms/examples/checkout_form"
   },
   {
     "name": "forms-examples-contact_forms",
     "path": "/forms/examples/contact_forms",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/forms/examples/contact_forms.vue",
-    "chunkName": "pages/forms/examples/contact_forms",
-    "_name": "_5d797ac0"
+    "chunkName": "pages/forms/examples/contact_forms"
   },
   {
     "name": "forms-examples-job_application_form",
     "path": "/forms/examples/job_application_form",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/forms/examples/job_application_form.vue",
-    "chunkName": "pages/forms/examples/job_application_form",
-    "_name": "_a9181a56"
+    "chunkName": "pages/forms/examples/job_application_form"
   },
   {
     "name": "forms-examples-medical_history_form",
     "path": "/forms/examples/medical_history_form",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/forms/examples/medical_history_form.vue",
-    "chunkName": "pages/forms/examples/medical_history_form",
-    "_name": "_631874bd"
+    "chunkName": "pages/forms/examples/medical_history_form"
   },
   {
     "name": "forms-examples-registration_form",
     "path": "/forms/examples/registration_form",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/forms/examples/registration_form.vue",
-    "chunkName": "pages/forms/examples/registration_form",
-    "_name": "_6085e20c"
+    "chunkName": "pages/forms/examples/registration_form"
   },
   {
     "name": "forms-examples-rental_application_form",
     "path": "/forms/examples/rental_application_form",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/forms/examples/rental_application_form.vue",
-    "chunkName": "pages/forms/examples/rental_application_form",
-    "_name": "_fa7fb304"
+    "chunkName": "pages/forms/examples/rental_application_form"
   },
   {
     "name": "forms-examples-transaction_feedback_form",
     "path": "/forms/examples/transaction_feedback_form",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/forms/examples/transaction_feedback_form.vue",
-    "chunkName": "pages/forms/examples/transaction_feedback_form",
-    "_name": "_5805cae6"
+    "chunkName": "pages/forms/examples/transaction_feedback_form"
   },
   {
     "name": "forms-wysiwyg-ckeditor",
     "path": "/forms/wysiwyg/ckeditor",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/forms/wysiwyg/ckeditor.vue",
-    "chunkName": "pages/forms/wysiwyg/ckeditor",
-    "_name": "_3fc9cc4d"
+    "chunkName": "pages/forms/wysiwyg/ckeditor"
   },
   {
     "name": "forms-wysiwyg-quill",
     "path": "/forms/wysiwyg/quill",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/forms/wysiwyg/quill.vue",
-    "chunkName": "pages/forms/wysiwyg/quill",
-    "_name": "_5b554286"
+    "chunkName": "pages/forms/wysiwyg/quill"
   },
   {
     "name": "index",
     "path": "/",
     "component": "/home/win7/Project/Nuxt/meta_net/pages/index.vue",
-    "chunkName": "pages/index",
-    "_name": "_0a064628"
+    "chunkName": "pages/index"
   }
 ]

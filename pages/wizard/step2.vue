@@ -86,7 +86,7 @@
 			<div class="uk-child-width-1-2@s uk-grid" data-uk-grid>
 				<div>
 					<label class="uk-form-label">
-						Transformation (log10)
+						Has transformation (log10)?
 					</label>
 					<div class="uk-form-controls">
 						<Select2

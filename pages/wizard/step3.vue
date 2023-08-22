@@ -36,6 +36,9 @@
 			<span class="uk-text-muted uk-text-default">
 				Range:
 			</span> {{ data.range }}<br>
+			<span class="uk-text-muted uk-text-default">
+				Alpha:
+			</span> {{ data.alpha }}<br>
 			<br>
 			<span class="uk-text-muted uk-text-default">
 				Email:

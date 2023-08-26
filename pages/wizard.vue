@@ -84,6 +84,7 @@ export default {
 			form.append('transformation', this.finalModel.transformation);
 			form.append('range', this.finalModel.range);
 			form.append('alpha', this.finalModel.alpha);
+			form.append('threshold', this.finalModel.threshold);
 			form.append('email', this.finalModel.email);
 			
 			// this.$nuxt.$loading.start();

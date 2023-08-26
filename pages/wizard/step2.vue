@@ -89,6 +89,33 @@
 						Has transformation (log10)?
 					</label>
 					<div class="uk-form-controls">
+						<span class="uk-margin-right">
+							<PrettyRadio
+								v-model="form.transformation"
+								:error-state="$v.form.transformation.$error" :validator="$v.form.transformation"
+								value="no"
+								class="p-radio"
+							>
+								No
+							</PrettyRadio>
+						</span>
+						<span class="uk-margin-right">
+							<PrettyRadio
+								v-model="form.transformation"
+								:error-state="$v.form.transformation.$error" :validator="$v.form.transformation"
+								value="yes"
+								class="p-radio"
+							>
+								Yes
+							</PrettyRadio>
+						</span>
+						<ul class="sc-vue-errors">
+							<li v-if="!$v.form.transformation.required">
+								Field is required
+							</li>
+						</ul>
+					</div>
+					<!-- <div class="uk-form-controls">
 						<Select2
 							v-model="form.transformation"
 							:options="transformations"
@@ -100,7 +127,7 @@
 								Field is required
 							</li>
 						</ul>						
-					</div>
+					</div> -->
 				</div>
 				<div>
 					<label class="uk-form-label">
@@ -130,19 +157,19 @@
 						</ul>
 					</div>
 				</div>
-				<!-- <div>
+				<div>
 					<label class="uk-form-label">
-						Range
+						Threshold
 					</label>
 					<div class="uk-form-controls">
-						<ScInput v-model.trim="form.range" :error-state="$v.form.range.$error" :validator="$v.form.range" mode="outline" type="number"></ScInput>
+						<ScInput v-model.trim="form.threshold" :error-state="$v.form.threshold.$error" :validator="$v.form.threshold" mode="outline" type="number"></ScInput>
 						<ul class="sc-vue-errors">
-							<li v-if="!$v.form.range.required">
+							<li v-if="!$v.form.threshold.required">
 								Field is required
 							</li>
 						</ul>
 					</div>
-				</div> -->
+				</div>
 			</div>
 		</fieldset>
 	</form>
@@ -181,8 +208,9 @@ export default {
 			option: "",
 			control: [],
 			range: "10",
-			transformation: null,
-			alpha: "0.05"
+			transformation: "no",
+			alpha: "0.05",
+			threshold: "0.5"
 		},
 	}),
 	computed: {
@@ -246,6 +274,9 @@ export default {
 				required
 			},
 			alpha: {
+				required
+			},
+			threshold: {
 				required
 			}
 		}

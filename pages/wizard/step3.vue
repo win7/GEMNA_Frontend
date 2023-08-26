@@ -39,6 +39,9 @@
 			<span class="uk-text-muted uk-text-default">
 				Alpha:
 			</span> {{ data.alpha }}<br>
+			<span class="uk-text-muted uk-text-default">
+				Threshold:
+			</span> {{ data.threshold }}<br>
 			<br>
 			<span class="uk-text-muted uk-text-default">
 				Email:

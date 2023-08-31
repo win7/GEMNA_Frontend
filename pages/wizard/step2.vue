@@ -93,7 +93,7 @@
 							<PrettyRadio
 								v-model="form.transformation"
 								:error-state="$v.form.transformation.$error" :validator="$v.form.transformation"
-								value="no"
+								value="false"
 								class="p-radio"
 							>
 								No
@@ -103,7 +103,7 @@
 							<PrettyRadio
 								v-model="form.transformation"
 								:error-state="$v.form.transformation.$error" :validator="$v.form.transformation"
-								value="yes"
+								value="true"
 								class="p-radio"
 							>
 								Yes
@@ -208,7 +208,7 @@ export default {
 			option: "",
 			control: [],
 			range: "10",
-			transformation: "no",
+			transformation: "false",
 			alpha: "0.05",
 			threshold: "0.5"
 		},

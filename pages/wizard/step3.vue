@@ -34,14 +34,15 @@
 				Tranformation:
 			</span> {{ data.transformation }}<br>
 			<span class="uk-text-muted uk-text-default">
-				Range:
-			</span> {{ data.range }}<br>
+				Threshold (corr):
+			</span> {{ data.threshold_corr }}<br>
+			<span class="uk-text-muted uk-text-default">
+				Threshold (log2):
+			</span> {{ data.threshold_log2 }}<br>
 			<span class="uk-text-muted uk-text-default">
 				Alpha:
 			</span> {{ data.alpha }}<br>
-			<span class="uk-text-muted uk-text-default">
-				Threshold:
-			</span> {{ data.threshold }}<br>
+			
 			<br>
 			<span class="uk-text-muted uk-text-default">
 				Email:

@@ -131,12 +131,12 @@
 				</div>
 				<div>
 					<label class="uk-form-label">
-						Range
+						Threshold (corr)
 					</label>
 					<div class="uk-form-controls">
-						<ScInput v-model.trim="form.range" :error-state="$v.form.range.$error" :validator="$v.form.range" mode="outline" type="number"></ScInput>
+						<ScInput v-model.trim="form.threshold_corr" :error-state="$v.form.threshold_corr.$error" :validator="$v.form.threshold_corr" mode="outline" type="number"></ScInput>
 						<ul class="sc-vue-errors">
-							<li v-if="!$v.form.range.required">
+							<li v-if="!$v.form.threshold_corr.required">
 								Field is required
 							</li>
 						</ul>
@@ -146,12 +146,12 @@
 			<div class="uk-child-width-1-2@s uk-grid" data-uk-grid>
 				<div>
 					<label class="uk-form-label">
-						Alpha
+						Threshold (log2)
 					</label>
 					<div class="uk-form-controls">
-						<ScInput v-model.trim="form.alpha" :error-state="$v.form.alpha.$error" :validator="$v.form.alpha" mode="outline" type="number"></ScInput>
+						<ScInput v-model.trim="form.threshold_log2" :error-state="$v.form.threshold_log2.$error" :validator="$v.form.threshold_log2" mode="outline" type="number"></ScInput>
 						<ul class="sc-vue-errors">
-							<li v-if="!$v.form.alpha.required">
+							<li v-if="!$v.form.threshold_log2.required">
 								Field is required
 							</li>
 						</ul>
@@ -159,12 +159,12 @@
 				</div>
 				<div>
 					<label class="uk-form-label">
-						Threshold
+						Alpha
 					</label>
 					<div class="uk-form-controls">
-						<ScInput v-model.trim="form.threshold" :error-state="$v.form.threshold.$error" :validator="$v.form.threshold" mode="outline" type="number"></ScInput>
+						<ScInput v-model.trim="form.alpha" :error-state="$v.form.alpha.$error" :validator="$v.form.alpha" mode="outline" type="number"></ScInput>
 						<ul class="sc-vue-errors">
-							<li v-if="!$v.form.threshold.required">
+							<li v-if="!$v.form.alpha.required">
 								Field is required
 							</li>
 						</ul>
@@ -207,10 +207,10 @@ export default {
 			dimension: "3",
 			option: "",
 			control: [],
-			range: "10",
 			transformation: "false",
+			threshold_corr: "0.5",
+			threshold_log2: "0",
 			alpha: "0.05",
-			threshold: "0.5"
 		},
 	}),
 	computed: {
@@ -267,16 +267,16 @@ export default {
 			control: {
 				required
 			},
-			range: {
-				required
-			},
 			transformation: {
 				required
 			},
-			alpha: {
+			threshold_corr: {
 				required
 			},
-			threshold: {
+			threshold_log2: {
+				required
+			},
+			alpha: {
 				required
 			}
 		}

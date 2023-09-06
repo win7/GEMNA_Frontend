@@ -604,33 +604,26 @@ var option = {
 myChart.setOption(option);
 
 		},
-		legendFormatter(edges, name) {
-			// Find the edge label that corresponds to the legend item
-			var edge = edges.find((edge) => edge.label === name);
-			if (edge) {
-				// Return the custom legend label using the edge label and source/target nodes
-				return `${edge.label} (${edge.source} ➔ ${edge.target})`;
-			}
-			return name; // Use the default legend label if no edge label found
-		},
 		metabolomic_network (suits) {
 			const colors = [{id: "PP", color: "#FF00FF"}, {id: "Pp", color: "#3FFF00"}, {id: "PN", color: "#00FFFF"},
 							{id: "Pn", color: "#FFF700"}, {id: "pP", color: "#FF0000"}, {id: "pp", color: "#0000FF"},
 							{id: "pN", color: "#006600"}, {id: "pn", color: "#00CC96"}, {id: "NP", color: "#AB63FA"},
 							{id: "Np", color: "#FF28FF"}, {id: "NN", color: "#B6E880"}, {id: "Nn", color: "##FF97FF"},
 							{id: "nP", color: "#FFA15A"}, {id: "np", color: "#19D3F3"}, {id: "nN", color: "#FF6692"},
-							{id: "nn", color: "gray"}];
+							{id: "nn", color: "#B6F8A0"}, {id: "?p", color: "gray"}, {id: "?P", color: "gray"}, {id: "?n", color: "gray"},
+							{id: "?N", color: "gray"}, {id: "p?", color: "gray"}, {id: "P?", color: "gray"}, {id: "n?", color: "gray"}, {id: "N?", color: "gray"}];
 
 			const labels = Array.from(new Set(suits.map(d => d.label)));
 			const nodes = Array.from(new Set(suits.flatMap(l => [l.source, l.target])), id => ({
 				id: id, name: this.nodes_detail.find((obj) => obj.id == id)[this.form2.type]}));
 			const links = suits.map(obj => ({ ...obj, value: obj.label }))
 			
-			// console.log(11, labels);
-			// console.log(22, nodes);
-			// console.log(33, links);
+			/* console.log(11, labels);
+			console.log(22, nodes);
+			console.log(33, links); */
 
 			links.forEach(function (edge) {
+				console.log(edge);
 				edge.lineStyle = {
 					color: colors.find(obj => obj.id === edge.label).color,
 					width: 1.5, // Line width

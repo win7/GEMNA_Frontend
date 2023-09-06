@@ -630,7 +630,7 @@ myChart.setOption(option);
 					type: 'solid', // Line type ('solid', 'dashed', 'dotted', etc.),
 				},
 				edge.label = {
-					show: false, // true,
+					show: true, // false, // true,
 					formatter: function(edge) {
 						return edge.value;
 					}
@@ -678,8 +678,8 @@ myChart.setOption(option);
 						categories: labels,
 						
 						force: {
-							edgeLength: 10, // 100,
-							repulsion: 100, // 1000,
+							edgeLength: 25, // 10, // 100,
+							repulsion: 250, // 100, // 1000,
 							gravity: 0.4
 						},
 						roam: true,
@@ -699,11 +699,11 @@ myChart.setOption(option);
 						lineStyle: {
 							// color: "label",
 							curveness: 0.3,
-							width: 1 // 2
+							width: 2 // 1 // 2
 						},
-						labelLayout: {
+						/* labelLayout: {
 							hideOverlap: true
-						},
+						}, */
 						edgeSymbol: ['circle', 'arrow'],
 						edgeSymbolSize: [3, 6], // [4, 10]
 						/* edgeLabel: {

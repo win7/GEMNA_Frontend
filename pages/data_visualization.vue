@@ -345,10 +345,10 @@ export default {
 		submitStatus2: null,
 
 		form1: {
-			id: "9784797d-b356-49f3-9bfd-043e64e9f84c",
+			id: "4409c115-da19-426d-b5cc-6dd040238b45",
 		},
 		form2: {
-			id: "9784797d-b356-49f3-9bfd-043e64e9f84c",
+			id: "4409c115-da19-426d-b5cc-6dd040238b45",
 			nodes: ["1" ,"2", "3", "4", "5"], // ["74.0249", "129.0192", "130.0875"], // ["100.00072", "128.89351", "132.88524", "135.54123", "152.99445"],
 			group: "", // "WT-pck1", // "FCSglc-DMA"
 			type: "id"
@@ -736,6 +736,7 @@ myChart.setOption(option);
 			// let group = this.form2.group.split("-");
 			// let yData = [group[0] + " (before)", group[1] + " (after)"]; // Object.keys(matrix[0]);
 			let yData = this.form2.group.split("-");
+			yData.push("Ratio");
 			let xData = []; // Object.keys(matrix);
 			
 			let data = [];
@@ -743,6 +744,7 @@ myChart.setOption(option);
 				xData.push(matrix[i].ID);
 				data.push([i, 0, matrix[i].Before]);
 				data.push([i, 1, matrix[i].After]);
+				data.push([i, 2, matrix[i].Ratio]);
 			}
 	
 			var minValue = Math.min.apply(null, data.map(item => item[2]));

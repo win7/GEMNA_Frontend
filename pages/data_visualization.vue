@@ -299,6 +299,7 @@
 								<div class="uk-height-large uk-flex uk-flex-center uk-flex-middle" id="metabolomic-network"></div>
 								<div class="uk-height-large uk-flex uk-flex-center uk-flex-middle" id="degree-network"></div>
 								<div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle" id="heatmap"></div>
+								<div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle" id="heatmap_ratio"></div>
 							</div>
 						</ScCardContent>
 					</ScCard>
@@ -524,6 +525,7 @@ export default {
 
 						const biocyc = response.data.data.biocyc;
 						this.heatmap_biocyc(biocyc);
+						this.heatmap_biocyc_ratio(biocyc);
 
 						const deegres = response.data.data.degrees;
 						this.degree_network(deegres);
@@ -736,7 +738,6 @@ myChart.setOption(option);
 			// let group = this.form2.group.split("-");
 			// let yData = [group[0] + " (before)", group[1] + " (after)"]; // Object.keys(matrix[0]);
 			let yData = this.form2.group.split("-");
-			yData.push("Ratio");
 			let xData = []; // Object.keys(matrix);
 			
 			let data = [];
@@ -744,7 +745,6 @@ myChart.setOption(option);
 				xData.push(matrix[i].ID);
 				data.push([i, 0, matrix[i].Before]);
 				data.push([i, 1, matrix[i].After]);
-				data.push([i, 2, matrix[i].Ratio]);
 			}
 	
 			var minValue = Math.min.apply(null, data.map(item => item[2]));
@@ -754,6 +754,125 @@ myChart.setOption(option);
 				title: {
 					// text: 'Les Miserables',
 					subtext: 'Heatmap',
+					top: 'top',
+					left: 'center'
+				},
+				tooltip: {
+					position: 'top',
+					trigger: 'item', // Tooltip trigger on data item
+					formatter: function(params) {
+						// Customize the tooltip content
+						// console.log(params);
+						return 'Name: ' + params.name + '<br/> Value: ' + params.value[2];
+					}
+				},
+				grid: {
+					// height: '50%',
+					// top: '15%'
+				},
+				xAxis: {
+					type: 'category',
+					data: xData
+				},
+				yAxis: {
+					type: 'category',
+					data: yData
+				},
+				visualMap: {
+					min: minValue,
+					max: maxValue,
+					calculable: true,
+					orient: 'vertical',
+    				left: 'right',
+    				// bottom: '84%',					
+					realtime: false,
+					inRange: {
+						color: [
+							'#313695',
+							'#4575b4',
+							'#74add1',
+							'#abd9e9',
+							'#e0f3f8',
+							'#ffffbf',
+							'#fee090',
+							'#fdae61',
+							'#f46d43',
+							'#d73027',
+							'#a50026'
+						]
+					}
+				},
+				series: [
+					{
+						name: 'Correlation',
+						type: 'heatmap',
+						data: data,
+						label: {
+							show: false
+						},
+						emphasis: {
+								itemStyle: {
+								borderColor: '#333',
+								borderWidth: 1
+							}
+						},
+						// progressive: 1000,
+						animation: false
+					}
+				],
+				/* dataZoom: [{
+					type: 'inside', // Use inside type dataZoom for zooming within the chart area
+					xAxisIndex: 0,  // Specify the index of the xAxis component
+					filterMode: 'none', // Keep the original data range
+				}], */
+				dataZoom: [
+					{
+						type: 'slider', // Use slider type dataZoom for horizontal zooming
+						xAxisIndex: 0,
+						filterMode: 'none',
+					},
+					/* {
+						type: 'slider', // Use slider type dataZoom for vertical zooming
+						yAxisIndex: 0,
+						filterMode: 'none',
+						orient: 'vertical', // Set orientation to vertical
+					} */
+				]
+			};
+			
+			option && myChart.setOption(option);			
+		},
+		heatmap_biocyc_ratio (matrix) {
+			// set the dimensions and margins of the graph
+			
+			/* const source = [...new Set(data.map(obj => obj.source))];
+			const target = [...new Set(data.map(obj => obj.target))];
+
+			console.log(source);
+			console.log(target); */
+
+			var chartDom = document.getElementById('heatmap_ratio');
+			var myChart = echarts.init(chartDom);
+			var option;
+
+			// let group = this.form2.group.split("-");
+			// let yData = [group[0] + " (before)", group[1] + " (after)"]; // Object.keys(matrix[0]);
+			let yData = ["Ratio"]
+			let xData = []; // Object.keys(matrix);
+			
+			let data = [];
+			for (let i = 0; i < matrix.length; i++) {
+				xData.push(matrix[i].ID);
+				data.push([i, 0, matrix[i].Ratio]);
+			}
+	
+			var minValue = Math.min.apply(null, data.map(item => item[2]));
+			var maxValue = Math.max.apply(null, data.map(item => item[2]));
+
+			option = {
+				title: {
+					// text: 'Les Miserables',
+					// subtext: 'Heatmap',
 					top: 'top',
 					left: 'center'
 				},

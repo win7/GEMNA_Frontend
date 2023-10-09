@@ -208,7 +208,7 @@ export default {
 			option: "",
 			control: [],
 			transformation: "false",
-			threshold_corr: "0.5",
+			threshold_corr: "0.01",
 			threshold_log2: "0",
 			alpha: "0.05",
 		},

@@ -345,11 +345,11 @@ export default {
 		submitStatus2: null,
 
 		form1: {
-			id: "f02f05f8-bdce-4511-a746-a1e680da9e19",
+			id: "9784797d-b356-49f3-9bfd-043e64e9f84c",
 		},
 		form2: {
-			id: "f02f05f8-bdce-4511-a746-a1e680da9e19",
-			nodes: ["10", "174", "465", "1005", "3212"], // ["74.0249", "129.0192", "130.0875"], // ["100.00072", "128.89351", "132.88524", "135.54123", "152.99445"],
+			id: "9784797d-b356-49f3-9bfd-043e64e9f84c",
+			nodes: ["1" ,"2", "3", "4", "5"], // ["74.0249", "129.0192", "130.0875"], // ["100.00072", "128.89351", "132.88524", "135.54123", "152.99445"],
 			group: "", // "WT-pck1", // "FCSglc-DMA"
 			type: "id"
 		},
@@ -425,8 +425,8 @@ export default {
 	},
 	methods: {
 		loadParams () {
-			this.nodes_detail = this.graph_nodes[this.form2.group][0];
-			console.log(this.nodes_detail);
+			console.log(this.form2.group);
+			this.nodes_detail = this.graph_nodes[this.form2.group];
 			
 			this.options = [];
 			for (let i = 0; i < this.nodes_detail.length; i++) {
@@ -480,7 +480,7 @@ export default {
 						this.flag = true;
 
 						this.graph_details = response.data.data.details;
-						this.graph_nodes = response.data.data.nodes;
+						this.graph_nodes = response.data.data.nodes;						
 						
 						this.groups = [];
 						for (let i = 0; i < this.graph_details.length; i++) {

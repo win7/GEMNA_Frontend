@@ -507,7 +507,6 @@ export default {
 			this.$v.form2.$touch();
 			if (this.$v.form2.$invalid) {
 				this.submitStatus2 = 'ERROR'
-
 			} else {
 				console.log(this.form2);
 				this.submitStatus2 = 'PENDING';

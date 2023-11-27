@@ -93,7 +93,7 @@
 							<PrettyRadio
 								v-model="form.transformation"
 								:error-state="$v.form.transformation.$error" :validator="$v.form.transformation"
-								value="false"
+								value=false
 								class="p-radio"
 							>
 								No
@@ -103,7 +103,7 @@
 							<PrettyRadio
 								v-model="form.transformation"
 								:error-state="$v.form.transformation.$error" :validator="$v.form.transformation"
-								value="true"
+								value=true
 								class="p-radio"
 							>
 								Yes
@@ -180,7 +180,7 @@ import { scHelpers } from "~/assets/js/utils";
 
 const methods = [{"id": "dgi", "name": "DGI"}, {"id": "vgae", "name": "VGAE"}];
 const options = [{"id": "none", "name": "none"}, {"id": "str", "name": "str"}, {"id": "dyn", "name": "dyn"}];
-const transformations = [{"id": "true", "name": "Yes"}, {"id": "false", "name": "No"}];
+const transformations = [{"id": true, "name": "Yes"}, {"id": false, "name": "No"}];
 
 import ScInput from '~/components/Input'
 import PrettyRadio from 'pretty-checkbox-vue/radio';
@@ -207,7 +207,7 @@ export default {
 			dimension: "3",
 			option: "",
 			control: [],
-			transformation: "false",
+			transformation: false,
 			threshold_corr: "0.01",
 			threshold_log2: "0",
 			alpha: "0.05",

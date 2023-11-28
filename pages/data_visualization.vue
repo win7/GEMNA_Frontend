@@ -222,6 +222,38 @@
 										</div>
 										<div>
 											<label class="uk-form-label">
+												Plot by
+											</label>
+											<div class="uk-form-controls">
+												<span class="uk-margin-right">
+													<PrettyRadio
+														v-model="form2.plot"
+														:error-state="$v.form2.plot.$error" :validator="$v.form2.plot"
+														value="correlation"
+														class="p-radio"
+													>
+														Correlation nodes
+													</PrettyRadio>
+												</span>
+												<span class="uk-margin-right">
+													<PrettyRadio
+														v-model="form2.plot"
+														:error-state="$v.form2.plot.$error" :validator="$v.form2.plot.type"
+														value="correlation_neighbors"
+														class="p-radio"
+													>
+													Correlation + neighbors nodes
+													</PrettyRadio>
+												</span>
+												<ul class="sc-vue-errors">
+													<li v-if="!$v.form2.plot.required">
+														Field is required
+													</li>
+												</ul>
+											</div>
+										</div>
+										<div>
+											<label class="uk-form-label">
 												{{ getType(form2.type) }}
 											</label>
 											<div class="uk-form-controls">
@@ -346,13 +378,15 @@ export default {
 		submitStatus2: null,
 
 		form1: {
-			id: "4409c115-da19-426d-b5cc-6dd040238b45",
+			id: "f40a27c6-6296-4b4b-9a0b-63d1d23e3c0a",
 		},
 		form2: {
-			id: "4409c115-da19-426d-b5cc-6dd040238b45",
+			id: "f40a27c6-6296-4b4b-9a0b-63d1d23e3c0a",
 			nodes: ["1" ,"2", "3", "4", "5"], // ["74.0249", "129.0192", "130.0875"], // ["100.00072", "128.89351", "132.88524", "135.54123", "152.99445"],
 			group: "", // "WT-pck1", // "FCSglc-DMA"
-			type: "id"
+			type: "id",
+			plot: "correlation"
+
 		},
 
 		graph_details: [],
@@ -417,6 +451,9 @@ export default {
 				required,
 			},
 			type: {
+				required
+			},
+			plot: {
 				required
 			}
 		}
@@ -605,6 +642,7 @@ var option = {
 myChart.setOption(option);
 
 		},
+
 		metabolomic_network (suits) {
 			const colors = [{id: "PP", color: "#FF00FF"}, {id: "Pp", color: "#3FFF00"}, {id: "PN", color: "#00FFFF"},
 							{id: "Pn", color: "#FFF700"}, {id: "pP", color: "#FF0000"}, {id: "pp", color: "#0000FF"},
@@ -626,8 +664,8 @@ myChart.setOption(option);
 			links.forEach(function (edge) {
 				console.log(edge);
 				edge.lineStyle = {
-					color: colors.find(obj => obj.id === edge.label).color,
-					width: 3.0, // Line width
+					color: "black", // colors.find(obj => obj.id === edge.label).color,
+					width: 2.0, // Line width
 					type: 'solid', // Line type ('solid', 'dashed', 'dotted', etc.),
 				},
 				edge.label = {
@@ -681,7 +719,7 @@ myChart.setOption(option);
 						force: {
 							edgeLength: 200, // 10, // 100,
 							repulsion: 1000, // 100, // 1000,
-							gravity: 0.4
+							gravity: 0.5
 						},
 						roam: true,
 						draggable: true,
@@ -700,7 +738,7 @@ myChart.setOption(option);
 						lineStyle: {
 							// color: "label",
 							curveness: 0.3,
-							width: 3 // 1 // 2
+							// width: 2 // 1 // 2
 						},
 						/* labelLayout: {
 							hideOverlap: true

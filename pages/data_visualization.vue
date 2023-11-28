@@ -627,7 +627,7 @@ myChart.setOption(option);
 				console.log(edge);
 				edge.lineStyle = {
 					color: colors.find(obj => obj.id === edge.label).color,
-					width: 1.5, // Line width
+					width: 3.0, // Line width
 					type: 'solid', // Line type ('solid', 'dashed', 'dotted', etc.),
 				},
 				edge.label = {
@@ -679,8 +679,8 @@ myChart.setOption(option);
 						categories: labels,
 						
 						force: {
-							edgeLength: 25, // 10, // 100,
-							repulsion: 250, // 100, // 1000,
+							edgeLength: 200, // 10, // 100,
+							repulsion: 1000, // 100, // 1000,
 							gravity: 0.4
 						},
 						roam: true,
@@ -691,25 +691,26 @@ myChart.setOption(option);
 							formatter: '{b}'
 						},
 						itemStyle: {
-							color: "gray",
+							color: "orange",
 							// symbolSize: 5
 						},
 						symbolSize: function (params) {
-							return 3; // params.data.value;
+							return 20; // params.data.value;
 						},
 						lineStyle: {
 							// color: "label",
 							curveness: 0.3,
-							width: 2 // 1 // 2
+							width: 3 // 1 // 2
 						},
 						/* labelLayout: {
 							hideOverlap: true
 						}, */
 						edgeSymbol: ['circle', 'arrow'],
-						edgeSymbolSize: [3, 6], // [4, 10]
-						/* edgeLabel: {
-							fontSize: 20
-						}, */
+						edgeSymbolSize: [4, 10], // [3, 6], // [4, 10]
+						edgeLabel: {
+							fontSize: 14,
+							color: "black"
+						},
 						emphasis: {
 							focus: 'adjacency',
 							lineStyle: {

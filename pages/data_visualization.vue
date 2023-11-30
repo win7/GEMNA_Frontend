@@ -39,8 +39,7 @@
 												Experiment code
 											</label>
 											<div class="uk-form-controls">
-												<ScInput v-model.trim="form1.id" :error-state="$v.form1.id.$error" :validator="$v.form1.id" mode="outline" data-uk-tooltip="title: Hello World; pos: top-right"></ScInput>
-												
+												<ScInput v-model.trim="form1.id" :error-state="$v.form1.id.$error" :validator="$v.form1.id" mode="outline" data-uk-tooltip="title: This code was sent to your email.; pos: top-right"></ScInput>
 												<ul class="sc-vue-errors">
 													<li v-if="!$v.form1.id.required">
 														Field is required
@@ -166,6 +165,7 @@
 														:error-state="$v.form2.group.$error" 
 														:validator="$v.form2.group"
 														@change="onChangeGroup($event)"
+														data-uk-tooltip="title: ...; pos: top-right"
 													></Select2>
 												</client-only>
 												<ul class="sc-vue-errors">
@@ -187,6 +187,7 @@
 														value="id"
 														class="p-radio"
 														@change="onChangeType($event)"
+														data-uk-tooltip="title: ...; pos: top-right"
 													>
 														Alignment ID
 													</PrettyRadio>
@@ -198,6 +199,7 @@
 														value="mz"
 														class="p-radio"
 														@change="onChangeType($event)"
+														data-uk-tooltip="title: ...; pos: top-right"
 													>
 														Average Mz
 													</PrettyRadio>
@@ -209,6 +211,7 @@
 														value="name"
 														class="p-radio"
 														@change="onChangeType($event)"
+														data-uk-tooltip="title: ...; pos: top-right"
 													>
 														Metabolite name
 													</PrettyRadio>
@@ -231,6 +234,7 @@
 														:error-state="$v.form2.plot.$error" :validator="$v.form2.plot"
 														value="correlation"
 														class="p-radio"
+														data-uk-tooltip="title: ...; pos: top-right"
 													>
 														Correlation nodes
 													</PrettyRadio>
@@ -241,6 +245,7 @@
 														:error-state="$v.form2.plot.$error" :validator="$v.form2.plot.type"
 														value="correlation_neighbors"
 														class="p-radio"
+														data-uk-tooltip="title: ...; pos: top-right"
 													>
 													Correlation + neighbors nodes
 													</PrettyRadio>
@@ -265,6 +270,7 @@
 														:error-state="$v.form2.nodes.$error" 
 														:validator="$v.form2.nodes"
 														multiple
+														data-uk-tooltip="title: ...; pos: top-right"
 													></Select2>
 												</client-only>
 												<ul class="sc-vue-errors">

@@ -167,7 +167,7 @@
 						Threshold (differences between correlations)
 					</label>
 					<div class="uk-form-controls">
-						<ScInput v-model.trim="form.alpha" :error-state="$v.form.alpha.$error" :validator="$v.form.alpha" mode="outline" type="number" data-uk-tooltip="title: Significance of the difference between two correlations. Filter by significance < threshold; pos: top-right"></ScInput>
+						<ScInput v-model.trim="form.alpha" :error-state="$v.form.alpha.$error" :validator="$v.form.alpha" mode="outline" type="number" data-uk-tooltip="title: Significance of the difference between two correlations. Filter by significance < threshold.; pos: top-right"></ScInput>
 						<ul class="sc-vue-errors">
 							<li v-if="!$v.form.alpha.required">
 								Field is required

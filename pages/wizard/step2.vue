@@ -16,6 +16,7 @@
 								:options="methods"
 								:settings="{'width': '100%', 'placeholder': 'Select a method...'}"
 								:error-state="$v.form.method.$error"
+								data-uk-tooltip="title: Method for generate embeddgins. The best model in the experiments was VGAE.; pos: top-right"
 							></Select2>
 						</client-only>
 						<ul class="sc-vue-errors">
@@ -36,6 +37,7 @@
 								:options="options"
 								:settings="{'width': '100%', 'placeholder': 'Select a data variation...'}"
 								:error-state="$v.form.option.$error"
+								data-uk-tooltip="title: Technique to modify corpus graph. The best technique in the experiments was str.; pos: top-right"
 							></Select2>
 						</client-only>
 						<ul class="sc-vue-errors">
@@ -52,7 +54,7 @@
 						Embeddings dimension
 					</label>
 					<div class="uk-form-controls">
-						<ScInput v-model.trim="form.dimension" :error-state="$v.form.dimension.$error" :validator="$v.form.dimension" mode="outline" type="number"></ScInput>
+						<ScInput v-model.trim="form.dimension" :error-state="$v.form.dimension.$error" :validator="$v.form.dimension" mode="outline" type="number" data-uk-tooltip="title: Dimension of the embeddings to represent the nodes and edges of the graph.; pos: top-right"></ScInput>
 						<ul class="sc-vue-errors">
 							<li v-if="!$v.form.dimension.required">
 								Field is required
@@ -73,6 +75,7 @@
 								:error-state="$v.form.control.$error" 
 								:validator="$v.form.control"
 								multiple
+								data-uk-tooltip="title: ...; pos: top-right"
 							></Select2>
 						</client-only>
 						<ul class="sc-vue-errors">
@@ -95,6 +98,7 @@
 								:error-state="$v.form.transformation.$error" :validator="$v.form.transformation"
 								value=false
 								class="p-radio"
+								data-uk-tooltip="title: The raw data has transformation (log10)?; pos: top-right"
 							>
 								No
 							</PrettyRadio>
@@ -105,6 +109,7 @@
 								:error-state="$v.form.transformation.$error" :validator="$v.form.transformation"
 								value=true
 								class="p-radio"
+								data-uk-tooltip="title: The raw data has transformation (log10)?; pos: top-right"
 							>
 								Yes
 							</PrettyRadio>
@@ -134,7 +139,7 @@
 						Threshold (corr)
 					</label>
 					<div class="uk-form-controls">
-						<ScInput v-model.trim="form.threshold_corr" :error-state="$v.form.threshold_corr.$error" :validator="$v.form.threshold_corr" mode="outline" type="number"></ScInput>
+						<ScInput v-model.trim="form.threshold_corr" :error-state="$v.form.threshold_corr.$error" :validator="$v.form.threshold_corr" mode="outline" type="number" data-uk-tooltip="title: If, abs(correlation coefficient) >= threshold, for a pair of nodes then, there is an edge between both nodes.; pos: top-right"></ScInput>
 						<ul class="sc-vue-errors">
 							<li v-if="!$v.form.threshold_corr.required">
 								Field is required
@@ -149,7 +154,7 @@
 						Threshold (log2)
 					</label>
 					<div class="uk-form-controls">
-						<ScInput v-model.trim="form.threshold_log2" :error-state="$v.form.threshold_log2.$error" :validator="$v.form.threshold_log2" mode="outline" type="number"></ScInput>
+						<ScInput v-model.trim="form.threshold_log2" :error-state="$v.form.threshold_log2.$error" :validator="$v.form.threshold_log2" mode="outline" type="number" data-uk-tooltip="title: ...; pos: top-right"></ScInput>
 						<ul class="sc-vue-errors">
 							<li v-if="!$v.form.threshold_log2.required">
 								Field is required
@@ -159,10 +164,10 @@
 				</div>
 				<div>
 					<label class="uk-form-label">
-						Alpha
+						Threshold (differences between correlations)
 					</label>
 					<div class="uk-form-controls">
-						<ScInput v-model.trim="form.alpha" :error-state="$v.form.alpha.$error" :validator="$v.form.alpha" mode="outline" type="number"></ScInput>
+						<ScInput v-model.trim="form.alpha" :error-state="$v.form.alpha.$error" :validator="$v.form.alpha" mode="outline" type="number" data-uk-tooltip="title: Significance of the difference between two correlations. Filter by significance < threshold; pos: top-right"></ScInput>
 						<ul class="sc-vue-errors">
 							<li v-if="!$v.form.alpha.required">
 								Field is required

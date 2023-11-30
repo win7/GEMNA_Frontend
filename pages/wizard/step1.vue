@@ -10,7 +10,7 @@
 						Email
 					</label>
 					<div class="uk-form-controls">
-						<ScInput v-model.trim="form.email" :error-state="$v.form.email.$error" :validator="$v.form.email" mode="outline"></ScInput>
+						<ScInput v-model.trim="form.email" :error-state="$v.form.email.$error" :validator="$v.form.email" mode="outline" data-uk-tooltip="title: The result will send to email.; pos: top-right"></ScInput>
 						<ul class="sc-vue-errors">
 							<li v-if="!$v.form.email.required">
 								Field is required
@@ -26,7 +26,7 @@
 						Raw data
 					</label>
 					<div class="uk-form-controls">
-						<input type="file" :error-state="$v.form.raw_data.$error" :validator="$v.form.raw_data" @change="loadFile" mode="outline"/>
+						<input type="file" :error-state="$v.form.raw_data.$error" :validator="$v.form.raw_data" @change="loadFile" mode="outline" data-uk-tooltip="title: Upload raw data file. The first 3 columns are Alignment ID, Average Mz, Metabolite name, the rest of them are the measurements.; pos: top-right"/>
 						<!-- <ScInput @change="loadFile"
 							name="raw_data"
 							type="file"

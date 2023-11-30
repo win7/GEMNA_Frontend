@@ -39,7 +39,7 @@
 												Experiment code
 											</label>
 											<div class="uk-form-controls">
-												<ScInput v-model.trim="form1.id" :error-state="$v.form1.id.$error" :validator="$v.form1.id" mode="outline"></ScInput>
+												<ScInput v-model.trim="form1.id" :error-state="$v.form1.id.$error" :validator="$v.form1.id" mode="outline" data-uk-tooltip="title: Hello World; pos: top-right"></ScInput>
 												
 												<ul class="sc-vue-errors">
 													<li v-if="!$v.form1.id.required">
@@ -759,6 +759,16 @@ myChart.setOption(option);
 				]
 			};
 			myChart.setOption(option);
+
+			myChart.on('click', function (params) {
+				if (params.dataType === 'node') {
+					// Click event on a node
+					console.log('Clicked on node:', params.data.name);
+					// Add your custom logic here
+				} else {
+					console.log("Other case");
+				}
+			});
 		},
 		heatmap_biocyc (matrix) {
 			// set the dimensions and margins of the graph

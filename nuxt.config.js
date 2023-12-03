@@ -148,7 +148,7 @@ module.exports = {
 	** See https://axios.nuxtjs.org/options
 	*/
 	axios: {
-		baseURL: "http://172.19.4.227:8001", // 8080 for test with django
+		baseURL: "http://172.19.4.227:8000", // 8080 for test with django
 		// progress: false,
 		// credentials: true,
 		// validateStatus: false

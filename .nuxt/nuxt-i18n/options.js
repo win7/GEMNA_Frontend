@@ -18,7 +18,7 @@ export const options = {
   defaultLocaleRouteNameSuffix: "default",
   strategy: "no_prefix",
   lazy: true,
-  langDir: "/home/win7/Project/Nuxt/meta_net/lang",
+  langDir: "/home/win7/Projects/NuxtJs/MetaNet_Nuxt/lang",
   rootRedirect: null,
   detectBrowserLanguage: {"alwaysRedirect":false,"cookieCrossOrigin":false,"cookieDomain":null,"cookieKey":"i18n_redirected","cookieSecure":false,"fallbackLocale":"","onlyOnNoPrefix":false,"onlyOnRoot":false,"useCookie":true},
   differentDomains: false,

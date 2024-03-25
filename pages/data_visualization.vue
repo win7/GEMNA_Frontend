@@ -298,47 +298,36 @@
 				</div>
 
 				<div class="uk-width-3-4@l">
-					<ScCard>
-						<ScCardTitle>
-							Interpretation
-						</ScCardTitle>
-						<!-- <div class="sc-padding sc-padding-medium-ends md-bg-grey-100">
-							<div class=" uk-flex-middle uk-grid-small uk-grid" data-uk-grid>
+					<ScCard :full-screen="cardBFullScreen">
+						<ScCardHeader> <!-- separator> -->
+							<div class="uk-flex uk-flex-middle">
 								<div class="uk-flex-1">
-									<div class="uk-button-group sc-button-group-outline">
-										<button class="sc-button sc-button-default sc-button-outline sc-button-small" :class="{'uk-active': activePeriod === 'hours'}" @click="setChartPeriod('hours')">
-											Hours
-										</button>
-										<button class="sc-button sc-button-default sc-button-outline sc-button-small" :class="{'uk-active': activePeriod === 'week'}" @click="setChartPeriod('week')">
-											Week
-										</button>
-										<button class="sc-button sc-button-default sc-button-outline sc-button-small" :class="{'uk-active': activePeriod === 'months'}" @click="setChartPeriod('months')">
-											Months
-										</button>
-										<button class="sc-button sc-button-default sc-button-outline sc-button-small" :class="{'uk-active': activePeriod === 'year'}" @click="setChartPeriod('year')">
-											Years
-										</button>
-									</div>
+									<ScCardTitle>
+										Interpretation
+									</ScCardTitle>
+									<!-- <ScCardMeta>
+										<time datetime="2019-01-01">
+											Jan 01, 2021
+										</time>
+									</ScCardMeta> -->
 								</div>
-								<div class="uk-flex uk-width-auto@s">
-									<a id="sc-chart-reload" href="javascript:void(0)">
-										<i class="mdi mdi-reload sc-color-secondary sc-icon-square"></i>
-									</a>
-									<a id="sc-chart-save-image" href="javascript:void(0)">
-										<i class="mdi mdi-floppy sc-color-secondary sc-icon-square"></i>
-									</a>
-								</div>
+								<ScCardActions>
+									<a
+										href="javascript:void(0)"
+										class="sc-actions-icon mdi mdi-fullscreen"
+										:class="{'mdi-fullscreen' : !cardBFullScreen, 'mdi-fullscreen-exit' : cardBFullScreen }"
+										@click.prevent="cardBFullScreen = !cardBFullScreen"
+									></a>
+								</ScCardActions>
 							</div>
-						</div> -->
+						</ScCardHeader>
 						<ScCardContent>
-							<div class="sc-padding-medium">
-								<!-- <div id="graphs" style="border: 1px solid #333;"></div>
-								<div id="chart-container" style="width: 800px; height: 600px;"></div> -->
+							<ScCardBody>
 								<div class="uk-height-large uk-flex uk-flex-center uk-flex-middle" id="metabolomic-network"></div>
-								<div class="uk-height-large uk-flex uk-flex-center uk-flex-middle" id="degree-network"></div>
+								<div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle" id="degree-network"></div>
 								<div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle" id="heatmap"></div>
 								<div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle" id="heatmap_ratio"></div>
-							</div>
+							</ScCardBody>
 						</ScCardContent>
 					</ScCard>
 				</div>
@@ -384,10 +373,10 @@ export default {
 		submitStatus2: null,
 
 		form1: {
-			id: "f40a27c6-6296-4b4b-9a0b-63d1d23e3c0a",
+			id: "57666a91-e59a-422e-be7f-4b49499d2ef2",
 		},
 		form2: {
-			id: "f40a27c6-6296-4b4b-9a0b-63d1d23e3c0a",
+			id: "57666a91-e59a-422e-be7f-4b49499d2ef2",
 			nodes: ["1" ,"2", "3", "4", "5"], // ["74.0249", "129.0192", "130.0875"], // ["100.00072", "128.89351", "132.88524", "135.54123", "152.99445"],
 			group: "", // "WT-pck1", // "FCSglc-DMA"
 			type: "id",
@@ -401,6 +390,8 @@ export default {
 		labels: ['PP', 'Pp', 'PN', 'Pn', 'P?', 'pP', 'pp', 'pN', 'pn', 'p?', 'NP', 'Np', 'NN', 'Nn', 'N?', 'nP', 'np', 'nN', 'nn', 'n?', '?P', '?p', '?N', '?n'],
 		options: [],
 		groups: [],
+
+		cardBFullScreen: false,
 
 	}),
 	computed: {

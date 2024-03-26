@@ -324,9 +324,38 @@
 						<ScCardContent>
 							<ScCardBody>
 								<div class="uk-height-large uk-flex uk-flex-center uk-flex-middle" id="metabolomic-network"></div>
+								<div class="uk-height-small uk-flex uk-flex-center uk-flex-middle" id="metabolomic-labels">
+									<div>
+										<p class="uk-margin-small-bottom">
+											Correlations labels
+										</p>
+										<div class="uk-grid-small uk-child-width-auto uk-grid" data-uk-grid>
+											<label><input class="uk-checkbox" type="checkbox" :checked="is_all_selected" @click="selectAllLabels">Select all</label>
+											<label v-for="label in labels" :key="label" :value="label">
+												<input class="uk-checkbox" type="checkbox" checked :key="label" :value="label" v-model="selected_labels"> {{ label }}
+											</label>
+										</div>
+									</div>
+								</div>
+								<div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle" id="metabolomic-names">
+									<div class="uk-child-width-expand@l uk-grid" data-uk-grid>
+										<div v-for="(col, index) in splitConditions(4)" :key="index" class="uk-margin-remove">
+											<ul class="uk-list">
+												<li v-for="condition in col" :key="condition">
+													<PrettyCheck v-model="userData.conditions" :value="condition" class="p-icon">
+														<i slot="extra" class="icon mdi mdi-check"></i>
+														{{ condition }}
+													</PrettyCheck>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
 								<div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle" id="degree-network"></div>
 								<div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle" id="heatmap"></div>
 								<div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle" id="heatmap_ratio"></div>
+								<span>{{ nodes }}</span>
+								<span>{{ selected_labels }}</span>
 							</ScCardBody>
 						</ScCardContent>
 					</ScCard>
@@ -346,6 +375,9 @@ import PrettyRadio from 'pretty-checkbox-vue/radio';
 import { validationMixin } from 'vuelidate';
 import { required, minLength, email } from 'vuelidate/lib/validators';
 import { ScProgressCircular } from '~/components/progress'
+
+import { scHelpers } from "~/assets/js/utils";
+const { splitArr } = scHelpers;
 
 import swal from 'sweetalert2';
 // import * as clustergrammer from 'clustergrammer';
@@ -393,6 +425,14 @@ export default {
 
 		cardBFullScreen: false,
 
+		userData: {
+			conditions: [],
+		},
+		conditions: ['AIDS/HIV Positive', 'Anemia', 'Asthma', 'Breathing Problem', 'Cancer', 'Chemotherapy', 'Chest Pains', 'Cold Sores/Fever Blisters', 'Convulsions', 'Diabetes', 'Drug Addition', 'Frequent Cough', 'Hypoglycemia', 'Glaucoma', 'Heart Attack/Failure', 'Low Blood Pressure', 'Stroke', 'Tuberculosis'],
+		selected_labels: [],
+		is_all_selected: true,
+
+		nodes: null
 	}),
 	computed: {
 		usNodes () {
@@ -459,6 +499,21 @@ export default {
 		
 	},
 	methods: {
+		selectAllLabels () {
+			if (this.is_all_selected) {
+				this.selected_labels = [];
+				this.is_all_selected = false;
+			} else {
+				this.selected_labels = [];
+				for (var k in this.labels) {
+					this.selected_labels.push(this.labels[k]);
+				}
+				this.is_all_selected = true;
+			}
+		},
+		splitConditions (n) {
+			return splitArr(this.conditions, n);
+		},
 		loadParams () {
 			console.log(this.form2.group);
 			this.nodes_detail = this.graph_nodes[this.form2.group];
@@ -466,8 +521,8 @@ export default {
 			this.options = [];
 			for (let i = 0; i < this.nodes_detail.length; i++) {
 				this.options.push({
-					id: this.nodes_detail [i]["id"],
-					text: this.nodes_detail [i][this.form2.type]
+					id: this.nodes_detail[i]["id"],
+					text: this.nodes_detail[i][this.form2.type]
 				})
 			}
 		},
@@ -552,7 +607,7 @@ export default {
 							``,
 							'success'
 						);
-						
+
 						const suits = response.data.data.changes_sub;
 						this.metabolomic_network(suits);
 
@@ -649,14 +704,16 @@ myChart.setOption(option);
 							{id: "nn", color: "#B6F8A0"}, {id: "?p", color: "gray"}, {id: "?P", color: "gray"}, {id: "?n", color: "gray"},
 							{id: "?N", color: "gray"}, {id: "p?", color: "gray"}, {id: "P?", color: "gray"}, {id: "n?", color: "gray"}, {id: "N?", color: "gray"}];
 
-			const labels = Array.from(new Set(suits.map(d => d.label)));
-			const nodes = Array.from(new Set(suits.flatMap(l => [l.source, l.target])), id => ({
+			this.labels = Array.from(new Set(suits.map(d => d.label)));
+			this.nodes = Array.from(new Set(suits.flatMap(l => [l.source, l.target])), id => ({
 				id: id, name: this.nodes_detail.find((obj) => obj.id == id)[this.form2.type]}));
 			const links = suits.map(obj => ({ ...obj, value: obj.label }))
+
+			this.selected_labels = this.labels;
 			
-			/* console.log(11, labels);
-			console.log(22, nodes);
-			console.log(33, links); */
+			console.log(11, this.labels);
+			console.log(22, this.nodes);
+			console.log(33, links);
 
 			links.forEach(function (edge) {
 				console.log(edge);
@@ -709,9 +766,9 @@ myChart.setOption(option);
 						type: 'graph',
 						layout: 'force',
 
-						data: nodes,
+						data: this.nodes,
 						links: links,
-						categories: labels,
+						categories: this.labels,
 						
 						force: {
 							edgeLength: 200, // 10, // 100,

@@ -324,6 +324,21 @@
 						<ScCardContent>
 							<ScCardBody>
 								<div class="uk-height-large uk-flex uk-flex-center uk-flex-middle" id="metabolomic-network"></div>
+
+								<!-- <client-only>
+									<MultiSelect
+										v-model="selected_nodes"
+										:settings="searchableSettings"
+										:options="msSearchableOptions"
+									></MultiSelect>
+								</client-only> -->
+
+								<span>{{ nodes }}</span><br>
+								<span>{{ selected_labels }}</span><br>
+								<span>{{ selected_nodes }}</span><br>
+								
+								<button v-on:click="saludar">Saludar</button>
+
 								<div class="uk-height-small uk-flex uk-flex-center uk-flex-middle" id="metabolomic-labels">
 									<div>
 										<p class="uk-margin-small-bottom">
@@ -332,19 +347,19 @@
 										<div class="uk-grid-small uk-child-width-auto uk-grid" data-uk-grid>
 											<label><input class="uk-checkbox" type="checkbox" :checked="is_all_selected" @click="selectAllLabels">Select all</label>
 											<label v-for="label in labels" :key="label" :value="label">
-												<input class="uk-checkbox" type="checkbox" checked :key="label" :value="label" v-model="selected_labels"> {{ label }}
+												<input class="uk-checkbox" type="checkbox" checked :key="label" :value="label" v-model="selected_labels"> {{ label }} <!-- @click="selectLabel(label)" -->
 											</label>
 										</div>
 									</div>
 								</div>
 								<div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle" id="metabolomic-names">
 									<div class="uk-child-width-expand@l uk-grid" data-uk-grid>
-										<div v-for="(col, index) in splitConditions(4)" :key="index" class="uk-margin-remove">
+										<div v-for="(nodes, index) in splitNodes(4)" :key="index" class="uk-margin-remove">
 											<ul class="uk-list">
-												<li v-for="condition in col" :key="condition">
-													<PrettyCheck v-model="userData.conditions" :value="condition" class="p-icon">
+												<li v-for="node in nodes" :key="node.id">
+													<PrettyCheck v-model="selected_nodes" :value="node.id" class="p-icon">
 														<i slot="extra" class="icon mdi mdi-check"></i>
-														{{ condition }}
+														{{ node.name }}
 													</PrettyCheck>
 												</li>
 											</ul>
@@ -354,8 +369,6 @@
 								<div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle" id="degree-network"></div>
 								<div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle" id="heatmap"></div>
 								<div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle" id="heatmap_ratio"></div>
-								<span>{{ nodes }}</span>
-								<span>{{ selected_labels }}</span>
 							</ScCardBody>
 						</ScCardContent>
 					</ScCard>
@@ -379,11 +392,17 @@ import { ScProgressCircular } from '~/components/progress'
 import { scHelpers } from "~/assets/js/utils";
 const { splitArr } = scHelpers;
 
+require('~/plugins/jquery');
+if(process.client) {
+	require('~/assets/js/vendor/jquery.quicksearch.js');
+}
+
 import swal from 'sweetalert2';
 // import * as clustergrammer from 'clustergrammer';
 // import * as d3 from 'd3';
 // import clustergrammer from 'https://cdn.jsdelivr.net/npm/clustergrammer@1.19.5/+esm'
 import * as echarts from 'echarts';
+import { len } from 'vuelidate/lib/validators/common';
 
 const types = [{"id": "id", "name": "Alignment ID"}, {"id": "mz", "name": "Average Mz"}, {"id": "name", "name": "Metabolite name"}];
 
@@ -394,7 +413,7 @@ export default {
 		PrettyCheck,
 		PrettyRadio,
 		Select2: process.client ? () => import('~/components/Select2') : null,
-		// MultiSelect: process.client ? () => import('~/components/Multiselect') : null
+		MultiSelect: process.client ? () => import('~/components/Multiselect') : null,
 		ScProgressCircular,
 	},
 	mixins: [validationMixin],
@@ -429,12 +448,69 @@ export default {
 			conditions: [],
 		},
 		conditions: ['AIDS/HIV Positive', 'Anemia', 'Asthma', 'Breathing Problem', 'Cancer', 'Chemotherapy', 'Chest Pains', 'Cold Sores/Fever Blisters', 'Convulsions', 'Diabetes', 'Drug Addition', 'Frequent Cough', 'Hypoglycemia', 'Glaucoma', 'Heart Attack/Failure', 'Low Blood Pressure', 'Stroke', 'Tuberculosis'],
+		
+		nodes: [],
 		selected_labels: [],
+		selected_nodes: [],
 		is_all_selected: true,
+		is_all_selected_nodes: true,
 
-		nodes: null
+		searchable: {
+			model: []
+		},
+		options_node: [],
+
+		suits: [],
+
 	}),
 	computed: {
+		msSearchableOptions () {
+			this.options_node = [];
+			for (var k in this.nodes) { // copy nodes
+				this.options_node.push({
+					value: this.nodes[k].id,
+					text: this.nodes[k].name
+				});
+			}
+			console.log(this.options_node);
+			return 	this.options_node;
+		},
+		searchableSettings () {
+			return {
+				cssClass: 'ms-header',
+				selectableHeader: "<div class='custom-header md-bg-grey-200'><input type='text' id='selectableSearch' class='uk-input uk-form-small search-input' autocomplete='off' placeholder='Search...'></div>",
+				selectionHeader: "<div class='custom-header md-bg-grey-200'><input type='text' id='selectionSearch' class='uk-input uk-form-small search-input' autocomplete='off' placeholder='Search...'></div>",
+				afterInit (ms) {
+					const that = this;
+					let $selectableSearch = that.$selectableUl.prev().children();
+					let $selectionSearch = that.$selectionUl.prev().children();
+					let selectableSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selectable:not(.ms-selected)';
+					let selectionSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selection.ms-selected';
+					that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
+						.on('keydown', function (e) {
+							if (e.which === 40) {
+								that.$selectableUl.focus();
+								return false;
+							}
+						});
+					that.qs2 = $selectionSearch.quicksearch(selectionSearchString)
+						.on('keydown', function (e) {
+							if (e.which === 40) {
+								that.$selectionUl.focus();
+								return false;
+							}
+						});
+				},
+				afterSelect () {
+					this.qs1.cache();
+					this.qs2.cache();
+				},
+				afterDeselect () {
+					this.qs1.cache();
+					this.qs2.cache();
+				}
+			}
+		},
 		usNodes () {
 			return this.options.map(function (obj) {
 				obj.id = obj.id || obj.rank;
@@ -499,6 +575,15 @@ export default {
 		
 	},
 	methods: {
+		saludar: function (event) {
+			const suits = this.filterLabels(this.suits);
+			this.metabolomic_network(suits);
+		},
+		selectLabel (id) {
+      		console.log('event fired for: ' + id);
+
+			this.metabolomic_network(this.suits);
+    	},
 		selectAllLabels () {
 			if (this.is_all_selected) {
 				this.selected_labels = [];
@@ -511,8 +596,20 @@ export default {
 				this.is_all_selected = true;
 			}
 		},
-		splitConditions (n) {
-			return splitArr(this.conditions, n);
+		selectAllNodes () {
+			if (this.is_all_selected_nodes) {
+				this.selected_nodes = [];
+				this.is_all_selected_nodes = false;
+			} else {
+				this.selected_nodes = [];
+				for (var k in this.nodes) {
+					this.selected_nodes.push(this.nodes[k].id);
+				}
+				this.is_all_selected_nodes = true;
+			}
+		},
+		splitNodes (n) {
+			return splitArr(this.nodes, n);
 		},
 		loadParams () {
 			console.log(this.form2.group);
@@ -559,7 +656,7 @@ export default {
 				this.submitStatus1 = 'PENDING';
 
 				await this.$axios.get(`/api/experiments/${this.form1.id}/`).then((response) => {
-					console.log(1, response.data);		
+					console.log(1, response.data);
 					if (response.status === 200) {
 						swal.fire(
 							response.data.message,
@@ -570,8 +667,7 @@ export default {
 						this.flag = true;
 
 						this.graph_details = response.data.data.details;
-						this.graph_nodes = response.data.data.nodes;						
-						
+						this.graph_nodes = response.data.data.nodes;
 						this.groups = [];
 						for (let i = 0; i < this.graph_details.length; i++) {
 							this.groups.push({
@@ -608,8 +704,8 @@ export default {
 							'success'
 						);
 
-						const suits = response.data.data.changes_sub;
-						this.metabolomic_network(suits);
+						this.suits = response.data.data.changes_sub;
+						this.metabolomic_network(this.suits);
 
 						const biocyc = response.data.data.biocyc;
 						this.heatmap_biocyc(biocyc);
@@ -631,71 +727,84 @@ export default {
 		},
 		testok () {
 			var chartContainer = document.getElementById('main');
-var myChart = echarts.init(chartContainer);
+			var myChart = echarts.init(chartContainer);
 
-// Sample data for the graph nodes and edges
-var nodes = [
-  { name: 'Node A' },
-  { name: 'Node B' },
-  { name: 'Node C' },
-];
+			// Sample data for the graph nodes and edges
+			var nodes = [
+			{ name: 'Node A' },
+			{ name: 'Node B' },
+			{ name: 'Node C' },
+			];
 
-var edges = [
-  { source: 'Node A', target: 'Node B', value: 5, label: 'Edge Label 1' },
-  { source: 'Node B', target: 'Node C', value: 8, label: 'Edge Label 2' },
-  { source: 'Node C', target: 'Node A', value: 3, label: 'Edge Label 3' },
-];
+			var edges = [
+			{ source: 'Node A', target: 'Node B', value: 5, label: 'Edge Label 1' },
+			{ source: 'Node B', target: 'Node C', value: 8, label: 'Edge Label 2' },
+			{ source: 'Node C', target: 'Node A', value: 3, label: 'Edge Label 3' },
+			];
 
-// ECharts option object
-var option = {
-  series: [
-    {
-      type: 'graph',
-	  layout: 'force',
-	  roam: true,
-      data: nodes,
-      links: edges,
-      edgeSymbol: ['none', 'arrow'], // Optional: Arrow symbol for directed edges
-      edgeSymbolSize: 8, // Optional: Arrow size for directed edges
-      label: {
-        show: true, // Show the edge labels
-        position: 'middle', // Position of the edge labels (middle of the edge)
-        fontSize: 12, // Font size for the edge labels
-        color: '#333', // Font color for the edge labels
-        formatter: function (params) {
-          // Custom formatter function for the edge labels
-          return params.data.label; // Use the 'label' property from the edge data
-        },
-      },
-      lineStyle: {
-        // Set the line style for the edges
-        width: 2,
-      },
-    },
-  ],
-  legend: {
-    data: edges.map((edge) => edge.label), // Use the edge labels as legend data
-    formatter: function (name) {
-      // Custom legend formatter
-      var edge = edges.find((edge) => edge.label === name);
-      return `{line|${name}}`;
-    },
-    textStyle: {
-      rich: {
-        line: {
-          width: 30,
-        },
-      },
-    },
-  },
-};
+			// ECharts option object
+			var option = {
+				series: [
+					{
+					type: 'graph',
+					layout: 'force',
+					roam: true,
+					data: nodes,
+					links: edges,
+					edgeSymbol: ['none', 'arrow'], // Optional: Arrow symbol for directed edges
+					edgeSymbolSize: 8, // Optional: Arrow size for directed edges
+					label: {
+						show: true, // Show the edge labels
+						position: 'middle', // Position of the edge labels (middle of the edge)
+						fontSize: 12, // Font size for the edge labels
+						color: '#333', // Font color for the edge labels
+						formatter: function (params) {
+							// Custom formatter function for the edge labels
+							return params.data.label; // Use the 'label' property from the edge data
+						},
+					},
+					lineStyle: {
+						// Set the line style for the edges
+						width: 2,
+					},
+					},
+				],
+				legend: {
+					data: edges.map((edge) => edge.label), // Use the edge labels as legend data
+					formatter: function (name) {
+					// Custom legend formatter
+					var edge = edges.find((edge) => edge.label === name);
+					return `{line|${name}}`;
+					},
+					textStyle: {
+					rich: {
+						line: {
+						width: 30,
+						},
+					},
+					},
+				},
+			};
 
-// Set the option to the chart and render it
-myChart.setOption(option);
+			// Set the option to the chart and render it
+			myChart.setOption(option);
 
 		},
 
+		filterLabels (suits) {
+			const suits_filter = [];
+			for (var k in suits) { // copy nodes
+				if (this.selected_labels.includes(suits[k].label)){
+					suits_filter.push(suits[k]);
+				}
+			}
+			return suits_filter;
+		},
+
 		metabolomic_network (suits) {
+			// this.nodes = [];
+			// this.labels = [];
+			
 			const colors = [{id: "PP", color: "#FF00FF"}, {id: "Pp", color: "#3FFF00"}, {id: "PN", color: "#00FFFF"},
 							{id: "Pn", color: "#FFF700"}, {id: "pP", color: "#FF0000"}, {id: "pp", color: "#0000FF"},
 							{id: "pN", color: "#006600"}, {id: "pn", color: "#00CC96"}, {id: "NP", color: "#AB63FA"},
@@ -709,7 +818,10 @@ myChart.setOption(option);
 				id: id, name: this.nodes_detail.find((obj) => obj.id == id)[this.form2.type]}));
 			const links = suits.map(obj => ({ ...obj, value: obj.label }))
 
-			this.selected_labels = this.labels;
+			// this.selected_labels = this.labels.sort(); // copy labels
+			for (var k in this.nodes) { // copy nodes
+				this.selected_nodes.push(this.nodes[k].id);
+			}
 			
 			console.log(11, this.labels);
 			console.log(22, this.nodes);
@@ -717,6 +829,8 @@ myChart.setOption(option);
 
 			links.forEach(function (edge) {
 				console.log(edge);
+				console.log(edge.value);
+
 				edge.lineStyle = {
 					color: "black", // colors.find(obj => obj.id === edge.label).color,
 					width: 2.0, // Line width
@@ -768,7 +882,7 @@ myChart.setOption(option);
 
 						data: this.nodes,
 						links: links,
-						categories: this.labels,
+						// categories: this.labels,
 						
 						force: {
 							edgeLength: 200, // 10, // 100,
@@ -1587,54 +1701,54 @@ myChart.setOption(option);
 		test4 () {
 			// Your data for the directed graph
 			const graphData = {
-      nodes: [
-        { id: 'A', name: 'Node A' },
-        { id: 'B', name: 'Node B' },
-        { id: 'C', name: 'Node C' },
-        { id: 'D', name: 'Node D' }
-      ],
-      links: [
-        { source: 'A', target: 'B', label: "NP" },
-        { source: 'A', target: 'C', label: "np" },
-        { source: 'B', target: 'D', label: "NP" }
-      ]
-    };
+			nodes: [
+				{ id: 'A', name: 'Node A' },
+				{ id: 'B', name: 'Node B' },
+				{ id: 'C', name: 'Node C' },
+				{ id: 'D', name: 'Node D' }
+			],
+			links: [
+				{ source: 'A', target: 'B', label: "NP" },
+				{ source: 'A', target: 'C', label: "np" },
+				{ source: 'B', target: 'D', label: "NP" }
+			]
+			};
 
-    // Initialize ECharts
-    const myChart = echarts.init(document.getElementById('chart-container'));
-    // Set the options for the directed graph
-    const option = {
-      title: {
-        text: 'Directed Graph Example'
-      },
-      series: [
-        {
-          type: 'graph',
-          layout: 'force',
-          data: graphData.nodes,
-          links: graphData.links,
-          force: {
-            repulsion: 100,
-            edgeLength: 100
-          },
-		  draggable: true,
-          roam: true,
-          label: {
-            show: true,
-            position: 'right'
-          },
-          edgeSymbol: ['circle', 'arrow'],
-          edgeSymbolSize: [4, 10],
-          lineStyle: {
-            color: 'label',
-            curveness: 0.2
-          }
-        }
-      ]
-    };
+			// Initialize ECharts
+			const myChart = echarts.init(document.getElementById('chart-container'));
+			// Set the options for the directed graph
+			const option = {
+			title: {
+				text: 'Directed Graph Example'
+			},
+			series: [
+				{
+				type: 'graph',
+				layout: 'force',
+				data: graphData.nodes,
+				links: graphData.links,
+				force: {
+					repulsion: 100,
+					edgeLength: 100
+				},
+				draggable: true,
+				roam: true,
+				label: {
+					show: true,
+					position: 'right'
+				},
+				edgeSymbol: ['circle', 'arrow'],
+				edgeSymbolSize: [4, 10],
+				lineStyle: {
+					color: 'label',
+					curveness: 0.2
+				}
+				}
+			]
+			};
 
-    // Set the options to the chart
-    myChart.setOption(option);
+			// Set the options to the chart
+			myChart.setOption(option);
 		}
 	}
 }

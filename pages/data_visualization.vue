@@ -336,9 +336,11 @@
 								<span>{{ nodes }}</span><br>
 								<span>{{ selected_labels }}</span><br>
 								<span>{{ selected_nodes }}</span><br>
-								
-								<button v-on:click="saludar">Saludar</button>
 
+								<button class="sc-button sc-button-primary" @click="filterGraph">
+									<span>Filter</span>
+								</button>
+								
 								<div class="uk-height-small uk-flex uk-flex-center uk-flex-middle" id="metabolomic-labels">
 									<div>
 										<p class="uk-margin-small-bottom">
@@ -346,8 +348,8 @@
 										</p>
 										<div class="uk-grid-small uk-child-width-auto uk-grid" data-uk-grid>
 											<label><input class="uk-checkbox" type="checkbox" :checked="is_all_selected" @click="selectAllLabels">Select all</label>
-											<label v-for="label in labels" :key="label" :value="label">
-												<input class="uk-checkbox" type="checkbox" checked :key="label" :value="label" v-model="selected_labels"> {{ label }} <!-- @click="selectLabel(label)" -->
+											<label v-for="label in labels_all" :key="label" :value="label">
+												<input class="uk-checkbox" type="checkbox" :key="label" :value="label" v-model="selected_labels"> {{ label }} <!-- @click="selectLabel(label)" -->
 											</label>
 										</div>
 									</div>
@@ -405,7 +407,13 @@ import * as echarts from 'echarts';
 import { len } from 'vuelidate/lib/validators/common';
 
 const types = [{"id": "id", "name": "Alignment ID"}, {"id": "mz", "name": "Average Mz"}, {"id": "name", "name": "Metabolite name"}];
-
+const colors = [{id: "PP", color: "#FF00FF"}, {id: "Pp", color: "#3FFF00"}, {id: "PN", color: "#00FFFF"},
+				{id: "Pn", color: "#FFF700"}, {id: "pP", color: "#FF0000"}, {id: "pp", color: "#0000FF"},
+				{id: "pN", color: "#006600"}, {id: "pn", color: "#00CC96"}, {id: "NP", color: "#AB63FA"},
+				{id: "Np", color: "#FF28FF"}, {id: "NN", color: "#B6E880"}, {id: "Nn", color: "##FF97FF"},
+				{id: "nP", color: "#FFA15A"}, {id: "np", color: "#19D3F3"}, {id: "nN", color: "#FF6692"},
+				{id: "nn", color: "#B6F8A0"}, {id: "?p", color: "gray"}, {id: "?P", color: "gray"}, {id: "?n", color: "gray"},
+				{id: "?N", color: "gray"}, {id: "p?", color: "gray"}, {id: "P?", color: "gray"}, {id: "n?", color: "gray"}, {id: "N?", color: "gray"}];
 export default {
 	name: 'DataVisualization',
 	components: {
@@ -432,13 +440,12 @@ export default {
 			group: "", // "WT-pck1", // "FCSglc-DMA"
 			type: "id",
 			plot: "correlation"
-
 		},
 
 		graph_details: [],
 		graph_nodes: [],
 		nodes_detail: [],
-		labels: ['PP', 'Pp', 'PN', 'Pn', 'P?', 'pP', 'pp', 'pN', 'pn', 'p?', 'NP', 'Np', 'NN', 'Nn', 'N?', 'nP', 'np', 'nN', 'nn', 'n?', '?P', '?p', '?N', '?n'],
+		labels_all: ['PP', 'Pp', 'PN', 'Pn', 'P?', 'pP', 'pp', 'pN', 'pn', 'p?', 'NP', 'Np', 'NN', 'Nn', 'N?', 'nP', 'np', 'nN', 'nn', 'n?', '?P', '?p', '?N', '?n'],
 		options: [],
 		groups: [],
 
@@ -450,8 +457,10 @@ export default {
 		conditions: ['AIDS/HIV Positive', 'Anemia', 'Asthma', 'Breathing Problem', 'Cancer', 'Chemotherapy', 'Chest Pains', 'Cold Sores/Fever Blisters', 'Convulsions', 'Diabetes', 'Drug Addition', 'Frequent Cough', 'Hypoglycemia', 'Glaucoma', 'Heart Attack/Failure', 'Low Blood Pressure', 'Stroke', 'Tuberculosis'],
 		
 		nodes: [],
-		selected_labels: [],
+		labels: [],
 		selected_nodes: [],
+		selected_labels: [],
+		
 		is_all_selected: true,
 		is_all_selected_nodes: true,
 
@@ -575,9 +584,10 @@ export default {
 		
 	},
 	methods: {
-		saludar: function (event) {
-			const suits = this.filterLabels(this.suits);
-			this.metabolomic_network(suits);
+		filterGraph: function (event) {
+			let suits = this.filterLabels(this.suits);
+			suits = this.filterNodes(suits);
+			this.metabolomic_network(suits, false);
 		},
 		selectLabel (id) {
       		console.log('event fired for: ' + id);
@@ -704,8 +714,11 @@ export default {
 							'success'
 						);
 
+						this.selected_nodes = [];
+						this.selected_edges = [];
+
 						this.suits = response.data.data.changes_sub;
-						this.metabolomic_network(this.suits);
+						this.metabolomic_network(this.suits, true);
 
 						const biocyc = response.data.data.biocyc;
 						this.heatmap_biocyc(biocyc);
@@ -793,7 +806,7 @@ export default {
 
 		filterLabels (suits) {
 			const suits_filter = [];
-			for (var k in suits) { // copy nodes
+			for (var k in suits) {
 				if (this.selected_labels.includes(suits[k].label)){
 					suits_filter.push(suits[k]);
 				}
@@ -801,35 +814,43 @@ export default {
 			return suits_filter;
 		},
 
-		metabolomic_network (suits) {
-			// this.nodes = [];
-			// this.labels = [];
-			
-			const colors = [{id: "PP", color: "#FF00FF"}, {id: "Pp", color: "#3FFF00"}, {id: "PN", color: "#00FFFF"},
-							{id: "Pn", color: "#FFF700"}, {id: "pP", color: "#FF0000"}, {id: "pp", color: "#0000FF"},
-							{id: "pN", color: "#006600"}, {id: "pn", color: "#00CC96"}, {id: "NP", color: "#AB63FA"},
-							{id: "Np", color: "#FF28FF"}, {id: "NN", color: "#B6E880"}, {id: "Nn", color: "##FF97FF"},
-							{id: "nP", color: "#FFA15A"}, {id: "np", color: "#19D3F3"}, {id: "nN", color: "#FF6692"},
-							{id: "nn", color: "#B6F8A0"}, {id: "?p", color: "gray"}, {id: "?P", color: "gray"}, {id: "?n", color: "gray"},
-							{id: "?N", color: "gray"}, {id: "p?", color: "gray"}, {id: "P?", color: "gray"}, {id: "n?", color: "gray"}, {id: "N?", color: "gray"}];
+		filterNodes (suits) {
+			const suits_filter = [];
+			for (var k in suits) {
+				if (this.selected_nodes.includes(suits[k].source) && this.selected_nodes.includes(suits[k].target)){
+					suits_filter.push(suits[k]);
+				}
+			}
+			return suits_filter;
+		},
 
-			this.labels = Array.from(new Set(suits.map(d => d.label)));
-			this.nodes = Array.from(new Set(suits.flatMap(l => [l.source, l.target])), id => ({
-				id: id, name: this.nodes_detail.find((obj) => obj.id == id)[this.form2.type]}));
-			const links = suits.map(obj => ({ ...obj, value: obj.label }))
+		metabolomic_network (suits, is_init) {
+			if (is_init) {
+				this.labels = Array.from(new Set(suits.map(d => d.label)));
+				this.selected_labels = this.labels.sort(); // copy to selected
 
-			// this.selected_labels = this.labels.sort(); // copy labels
-			for (var k in this.nodes) { // copy nodes
-				this.selected_nodes.push(this.nodes[k].id);
+				this.nodes = Array.from(new Set(suits.flatMap(l => [l.source, l.target])), id => ({
+								id: id, name: this.nodes_detail.find((obj) => obj.id == id)[this.form2.type]}));
+
+				for (var k in this.nodes) { // copy to selected
+					this.selected_nodes.push(this.nodes[k].id);
+				}
 			}
 			
+			const nodes = Array.from(new Set(suits.flatMap(l => [l.source, l.target])), id => ({
+							id: id, name: this.nodes_detail.find((obj) => obj.id == id)[this.form2.type]}));
+			const labels = Array.from(new Set(suits.map(d => d.label)));
+			const links = suits.map(obj => ({ ...obj, value: obj.label }))
+
+			// this.selected_labels.sort();
+
 			console.log(11, this.labels);
 			console.log(22, this.nodes);
 			console.log(33, links);
 
 			links.forEach(function (edge) {
-				console.log(edge);
-				console.log(edge.value);
+				console.log(0, edge);
+				// console.log(edge.value);
 
 				edge.lineStyle = {
 					color: "black", // colors.find(obj => obj.id === edge.label).color,
@@ -860,10 +881,10 @@ export default {
 					left: 'center'
 				},
 				tooltip: {},
-				grid: {
+				/* grid: {
 					// height: '50%',
 					// top: '15%'
-				},
+				}, */
 				/* legend: 
 				{
 					// selectedMode: 'single',
@@ -872,17 +893,17 @@ export default {
 					}), * /
 					data: graph.labels
 				}, */
-				animationDuration: 1500,
-				animationEasingUpdate: 'quinticInOut',
+				// animationDuration: 1500,
+				// animationEasingUpdate: 'quinticInOut',
 				series: [
 					{
 						// name: 'Les Miserables',
 						type: 'graph',
 						layout: 'force',
 
-						data: this.nodes,
+						data: nodes,
 						links: links,
-						// categories: this.labels,
+						categories: labels,
 						
 						force: {
 							edgeLength: 200, // 10, // 100,

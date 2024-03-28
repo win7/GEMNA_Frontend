@@ -44,7 +44,6 @@ export default {
 					$(item).attr('selected', 'selected')
 				}
 			});
-			console.log('123');
 			$(this.$el).multiSelect('refresh')
 		},
 		msValue (newValue, oldValue) {

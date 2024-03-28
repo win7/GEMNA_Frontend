@@ -50,10 +50,10 @@
 									</div>
 								</fieldset>
 								<div class="uk-margin-top">
-									<!-- <button class="sc-button sc-button-primary" :disabled="submitStatus1 === 'PENDING'" @click.prevent="submitForm1($event)">
+									<!-- <button class="sc-button sc-button-primary" :disabled="submitStatus1 === 'PENDING'" @click="submitForm1($event)">
 										Search
 									</button> -->
-									<button class="sc-button sc-button-primary" :class="{'sc-button-progress-overlay': submitStatus1 === 'PENDING'}" :disabled="submitStatus1 === 'PENDING'" @click.prevent="submitForm1($event)">
+									<button class="sc-button sc-button-primary" :class="{'sc-button-progress-overlay': submitStatus1 === 'PENDING'}" :disabled="submitStatus1 === 'PENDING'" @click="submitForm1($event)">
 										<span>Search</span>
 										<transition name="scale-up">
 											<span v-show="submitStatus1 === 'PENDING'" class="sc-button-progress-layer">
@@ -283,7 +283,7 @@
 									</div>
 								</fieldset>
 								<div class="uk-margin-top">
-									<button class="sc-button sc-button-primary" :class="{'sc-button-progress-overlay': submitStatus2 === 'PENDING'}" :disabled="submitStatus2 === 'PENDING'" @click.prevent="submitForm2($event)">
+									<button class="sc-button sc-button-primary" :class="{'sc-button-progress-overlay': submitStatus2 === 'PENDING'}" :disabled="submitStatus2 === 'PENDING'" @click="submitForm2($event)">
 										<span>Plot</span>
 										<transition name="scale-up">
 											<span v-show="submitStatus2 === 'PENDING'" class="sc-button-progress-layer">
@@ -293,6 +293,14 @@
 									</button>
 								</div>
 							</form>
+
+							<client-only>
+										<MultiSelect
+											v-model="selected_nodes_"
+											:settings="searchableSettings"
+											:options="msSearchableOptions"
+										></MultiSelect>
+									</client-only>
 						</ScCardBody>
 					</ScCard>
 				</div>
@@ -324,37 +332,39 @@
 						<ScCardContent>
 							<ScCardBody>
 								<div class="uk-height-large uk-flex uk-flex-center uk-flex-middle" id="metabolomic-network"></div>
-								
-								<div class="uk-height-large uk-flex-center uk-flex-middle" v-if="flag_select">
+
+								<div class="uk-height-large uk-flex uk-flex-center uk-flex-middle" id="metabolomic-networkok">
 									<client-only>
 										<MultiSelect
-											v-model="selected_nodes"
-											:settings="select_settings"
+											v-model="selected_nodes_"
+											:settings="searchableSettings"
 											:options="msSearchableOptions"
-										></MultiSelect> <!-- </MultiSelect>:settings="searchableSettings" -->
+										></MultiSelect>
 									</client-only>
+								</div>
 
+								<span>{{ nodes }}</span><br>
+								<span>{{ selected_labels }}</span><br>
+								<span>{{ selected_nodes }}</span><br>
+
+								<button class="sc-button sc-button-primary" @click="filterGraph">
+									<span>Filter</span>
+								</button>
+								
+								<div class="uk-height-small uk-flex uk-flex-center uk-flex-middle" id="metabolomic-labels">
 									<div>
 										<p class="uk-margin-small-bottom">
 											Correlations labels
 										</p>
 										<div class="uk-grid-small uk-child-width-auto uk-grid" data-uk-grid>
-											<label><input class="uk-checkbox" type="checkbox" :checked="is_all_selected" @click.prevent="selectAllLabels">Select all</label>
+											<label><input class="uk-checkbox" type="checkbox" :checked="is_all_selected" @click="selectAllLabels">Select all</label>
 											<label v-for="label in labels_all" :key="label" :value="label">
-												<input class="uk-checkbox" type="checkbox" :key="label" :value="label" v-model="selected_labels"> {{ label }} <!-- @click.prevent="selectLabel(label)" -->
+												<input class="uk-checkbox" type="checkbox" :key="label" :value="label" v-model="selected_labels"> {{ label }} <!-- @click="selectLabel(label)" -->
 											</label>
 										</div>
 									</div>
-
-									<button class="sc-button sc-button-primary" @click.prevent="filterGraph">
-										<span>Filter</span>
-									</button>
 								</div>
-
-								<span>selected_labels: {{ selected_labels }}</span><br>
-								<span>selected_nodes: {{ selected_nodes }}</span><br>
-
-								<!-- <div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle" id="metabolomic-names">
+								<div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle" id="metabolomic-names">
 									<div class="uk-child-width-expand@l uk-grid" data-uk-grid>
 										<div v-for="(nodes, index) in splitNodes(4)" :key="index" class="uk-margin-remove">
 											<ul class="uk-list">
@@ -367,7 +377,7 @@
 											</ul>
 										</div>
 									</div>
-								</div> -->
+								</div>
 								<div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle" id="degree-network"></div>
 								<div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle" id="heatmap"></div>
 								<div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle" id="heatmap_ratio"></div>
@@ -404,25 +414,27 @@ import swal from 'sweetalert2';
 // import * as d3 from 'd3';
 // import clustergrammer from 'https://cdn.jsdelivr.net/npm/clustergrammer@1.19.5/+esm'
 import * as echarts from 'echarts';
-import { len, ref } from 'vuelidate/lib/validators/common';
+import { len } from 'vuelidate/lib/validators/common';
 
 const types = [{"id": "id", "name": "Alignment ID"}, {"id": "mz", "name": "Average Mz"}, {"id": "name", "name": "Metabolite name"}];
-const colors = [{id: "PP", color: "#FF00FF"}, {id: "Pp", color: "#3FFF00"}, {id: "PN", color: "#00FFFF"},
+/* const colors = [{id: "PP", color: "#FF00FF"}, {id: "Pp", color: "#3FFF00"}, {id: "PN", color: "#00FFFF"},
 				{id: "Pn", color: "#FFF700"}, {id: "pP", color: "#FF0000"}, {id: "pp", color: "#0000FF"},
 				{id: "pN", color: "#006600"}, {id: "pn", color: "#00CC96"}, {id: "NP", color: "#AB63FA"},
 				{id: "Np", color: "#FF28FF"}, {id: "NN", color: "#B6E880"}, {id: "Nn", color: "##FF97FF"},
 				{id: "nP", color: "#FFA15A"}, {id: "np", color: "#19D3F3"}, {id: "nN", color: "#FF6692"},
 				{id: "nn", color: "#B6F8A0"}, {id: "?p", color: "gray"}, {id: "?P", color: "gray"}, {id: "?n", color: "gray"},
-				{id: "?N", color: "gray"}, {id: "p?", color: "gray"}, {id: "P?", color: "gray"}, {id: "n?", color: "gray"}, {id: "N?", color: "gray"}];
+				{id: "?N", color: "gray"}, {id: "p?", color: "gray"}, {id: "P?", color: "gray"}, {id: "n?", color: "gray"}, {id: "N?", color: "gray"}]; */
+
 export default {
 	name: 'DataVisualization',
 	components: {
 		ScInput,
 		PrettyCheck,
 		PrettyRadio,
+		ScProgressCircular,
+
 		Select2: process.client ? () => import('~/components/Select2') : null,
 		MultiSelect: process.client ? () => import('~/components/Multiselect') : null,
-		ScProgressCircular,
 	},
 	mixins: [validationMixin],
 	data: () => ({
@@ -451,67 +463,47 @@ export default {
 
 		cardBFullScreen: false,
 
+		userData: {
+			conditions: [],
+		},
+		conditions: ['AIDS/HIV Positive', 'Anemia', 'Asthma', 'Breathing Problem', 'Cancer', 'Chemotherapy', 'Chest Pains', 'Cold Sores/Fever Blisters', 'Convulsions', 'Diabetes', 'Drug Addition', 'Frequent Cough', 'Hypoglycemia', 'Glaucoma', 'Heart Attack/Failure', 'Low Blood Pressure', 'Stroke', 'Tuberculosis'],
+		
 		nodes: [],
 		labels: [],
 		selected_nodes: [],
+		selected_nodes_: [],
+
 		selected_labels: [],
 		
 		is_all_selected: true,
 		is_all_selected_nodes: true,
 
-		searchable: {
-			model: []
-		},
 		options_node: [],
 
 		suits: [],
 
-		dele: "0",
-		categoryParDel: [{value: 'A', text: "c"}, {value: 'B', text: "b"}, {value: 'C', text: "c"}],
-
-		publicMethods: [],
-		flag_select: false,
-
-		select_settings: {
-			cssClass: 'ms-header ms-footer',
-			selectableHeader: "<div class='custom-header md-bg-grey-300 md-color-black'>Selectable</div>",
-			selectionHeader: "<div class='custom-header md-bg-light-blue-800 md-color-white'>Selection</div>",
-		}
 	}),
 	computed: {
-		msPublicMethodsOptions () {
-			let options = [];
-			for (let i = 1; i < 200; i++) {
-				options.push({
-					value: 'el-' + i,
-					text: "name" + i
-				})
-			}
-			return 	options;
-		},
 		msSearchableOptions () {
-			let options_node = [];
+			/* this.options_node = [];
 			for (var k in this.nodes) {
-				options_node.push({
-					value: this.nodes[k].id + "",
+				this.options_node.push({
+					value: this.nodes[k].id,
 					text: this.nodes[k].name
 				});
 			}
-			console.log(77, options_node);
-			console.log(77, this.nodes);
-			return 	options_node;
+			console.log(123, this.nodes);
+			console.log(123, this.options_node);
+			return 	this.options_node; */
 
-			/* let options = [];
-			for (let i = 1; i < 10; i++) {
+			let options = [];
+			for (let i = 1; i < 100; i++) {
 				options.push({
 					value: 'el-' + i,
-					text: email() + this.dele
+					text: email()
 				})
 			}
-
-			console.log(77, options);
-			return options; */
-			
+			return 	options;
 		},
 		searchableSettings () {
 			return {
@@ -572,6 +564,17 @@ export default {
 			this.appMounted = true;
 			console.log(this);
 		}, 200); */
+
+		// this.test_d3();
+
+		// this.metabolomic_network();
+
+		// this.test1();
+		// this.test2();
+		// this.test3();
+		// this.test4();
+		// this.metabolomic_network([]);
+		// this.testok();
 
 	},
 	validations: {
@@ -821,7 +824,6 @@ export default {
 			myChart.setOption(option);
 
 		},
-
 		filterLabels (suits) {
 			const suits_filter = [];
 			for (var k in suits) {
@@ -831,7 +833,6 @@ export default {
 			}
 			return suits_filter;
 		},
-
 		filterNodes (suits) {
 			const suits_filter = [];
 			for (var k in suits) {
@@ -841,34 +842,29 @@ export default {
 			}
 			return suits_filter;
 		},
-
 		metabolomic_network (suits, is_init) {
 			if (is_init) {
-				this.flag_select = false;
-
 				this.labels = Array.from(new Set(suits.map(d => d.label)));
+				this.selected_labels = this.labels.sort(); // copy to selected
 
 				this.nodes = Array.from(new Set(suits.flatMap(l => [l.source, l.target])), id => ({
 								id: id, name: this.nodes_detail.find((obj) => obj.id == id)[this.form2.type]}));
 
-				/*/ for (var k in this.nodes) { // copy to selected
+				for (var k in this.nodes) { // copy to selected
 					this.selected_nodes.push(this.nodes[k].id);
-				} */
-				//this.$refs.msPublicMethods.select_all()
+				}
 			}
 			
 			const nodes = Array.from(new Set(suits.flatMap(l => [l.source, l.target])), id => ({
 							id: id, name: this.nodes_detail.find((obj) => obj.id == id)[this.form2.type]}));
 			const labels = Array.from(new Set(suits.map(d => d.label)));
-			const links = suits.map(obj => ({ ...obj, value: obj.label }));
-
-			this.selected_labels = labels.sort(); // copy to selected
+			const links = suits.map(obj => ({ ...obj, value: obj.label }))
 
 			// this.selected_labels.sort();
 
-			// console.log(11, this.labels);
-			// console.log(22, this.nodes);
-			// console.log(33, links);
+			console.log(11, this.labels);
+			console.log(22, this.nodes);
+			console.log(33, links);
 
 			links.forEach(function (edge) {
 				// console.log(0, edge);
@@ -887,9 +883,9 @@ export default {
 				}
 			});
 
-			let chartDom = document.getElementById('metabolomic-network');
-			let myChart = echarts.init(chartDom);
-			let option;
+			var chartDom = document.getElementById('metabolomic-network');
+			var myChart = echarts.init(chartDom);
+			var option;
 
 			myChart.hideLoading();
 			/* graph.nodes.forEach(function (node) {
@@ -925,12 +921,12 @@ export default {
 
 						data: nodes,
 						links: links,
-						categories: labels,
+						// categories: labels,
 						
 						force: {
 							edgeLength: 200, // 10, // 100,
 							repulsion: 1000, // 100, // 1000,
-							gravity: 0.5
+							gravity: 0.9
 						},
 						roam: true,
 						draggable: true,
@@ -980,8 +976,6 @@ export default {
 					console.log("Other case");
 				}
 			});
-
-			this.flag_select = true;
 		},
 		heatmap_biocyc (matrix) {
 			// set the dimensions and margins of the graph

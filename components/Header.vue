@@ -166,7 +166,7 @@
 					</li>
 					<li>
 						<a href="javascript:void(0)">
-							<img v-rjs="require('~/assets/img/avatars/avatar_default_sm@2x.png')" :src="user.avatar" alt="">
+							<img v-rjs="require('~/assets/img/avatars/avatar.png')" :src="user.avatar" alt="">
 						</a>
 						<div class="uk-navbar-dropdown uk-dropdown-small">
 							<ul class="uk-nav uk-nav-navbar">
@@ -213,7 +213,7 @@ export default {
 	},
 	data: () => ({
 		user: {
-			avatar: require('~/assets/img/avatars/avatar_default_sm.png'),
+			avatar: require('~/assets/img/avatars/avatar.png'),
 			messages: [
 				{
 					"id": 1,

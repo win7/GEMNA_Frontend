@@ -326,29 +326,55 @@
 								<div class="uk-height-large uk-flex uk-flex-center uk-flex-middle" id="metabolomic-network"></div>
 								
 								<div class="uk-height-large uk-flex-center uk-flex-middle" v-if="flag_select">
-									<client-only>
-										<MultiSelect
-											v-model="selected_nodes"
-											:settings="select_settings"
-											:options="msSearchableOptions"
-										></MultiSelect> <!-- </MultiSelect>:settings="searchableSettings" -->
-									</client-only>
-
-									<div>
-										<p class="uk-margin-small-bottom">
-											Correlations labels
-										</p>
-										<div class="uk-grid-small uk-child-width-auto uk-grid" data-uk-grid>
-											<label><input class="uk-checkbox" type="checkbox" :checked="is_all_selected" @click.prevent="selectAllLabels">Select all</label>
-											<label v-for="label in labels_all" :key="label" :value="label">
-												<input class="uk-checkbox" type="checkbox" :key="label" :value="label" v-model="selected_labels"> {{ label }} <!-- @click.prevent="selectLabel(label)" -->
-											</label>
+									<form>
+										<fieldset class="uk-fieldset md-bg-grey-100 sc-padding">
+											<!-- <p class="sc-text-semibold uk-text-large uk-margin-remove-top">
+												Personal info
+											</p> -->
+											<div class="uk-child-width-1-1@m uk-grid" data-uk-grid>
+												<div>
+													<label class="uk-form-label">
+														{{ getType(form2.type) }}
+													</label>
+													<div class="uk-form-controls">
+														<client-only>
+															<MultiSelect
+																v-model="selected_nodes"
+																:settings="select_settings"
+																:options="msSearchableOptions"
+															></MultiSelect> <!-- </MultiSelect>:settings="searchableSettings" -->
+														</client-only>
+														<!-- <ul class="sc-vue-errors">
+															<li v-if="!$v.form2.group.required">
+																Field is required
+															</li>
+														</ul> -->
+													</div>
+												</div>
+												<div>
+													<label class="uk-form-label">
+														Correlations labels
+													</label>
+													<div class="uk-form-controls">
+														<!-- <p class="uk-margin-small-bottom">
+															Correlations labels
+														</p> -->
+														<div class="uk-grid-small uk-child-width-auto uk-grid" data-uk-grid>
+															<label v-for="label in labels" :key="label" :value="label">
+																<input class="uk-checkbox" type="checkbox" :key="label" :value="label" v-model="selected_labels"> {{ label }} <!-- @click.prevent="selectLabel(label)" -->
+															</label>
+															<label><input class="uk-checkbox" type="checkbox" :checked="is_all_selected" @click="selectAllLabels">Select all</label>
+														</div>
+													</div>
+												</div>
+											</div>
+										</fieldset>
+										<div class="uk-margin-top">
+											<button class="sc-button sc-button-primary" @click.prevent="filterGraph">
+												<span>Filter</span>
+											</button>
 										</div>
-									</div>
-
-									<button class="sc-button sc-button-primary" @click.prevent="filterGraph">
-										<span>Filter</span>
-									</button>
+									</form>
 								</div>
 
 								<span>selected_labels: {{ selected_labels }}</span><br>
@@ -456,7 +482,7 @@ export default {
 		selected_nodes: [],
 		selected_labels: [],
 		
-		is_all_selected: true,
+		is_all_selected: false,
 		is_all_selected_nodes: true,
 
 		searchable: {
@@ -862,9 +888,7 @@ export default {
 			const labels = Array.from(new Set(suits.map(d => d.label)));
 			const links = suits.map(obj => ({ ...obj, value: obj.label }));
 
-			this.selected_labels = labels.sort(); // copy to selected
-
-			// this.selected_labels.sort();
+			// this.selected_labels = labels.sort(); // copy to selected
 
 			// console.log(11, this.labels);
 			// console.log(22, this.nodes);
@@ -937,7 +961,8 @@ export default {
 						label: {
 							show: true,
 							position: 'right',
-							formatter: '{b}'
+							formatter: '{b}',
+							fontSize: 16
 						},
 						itemStyle: {
 							color: "orange",
@@ -946,6 +971,7 @@ export default {
 						symbolSize: function (params) {
 							return 20; // params.data.value;
 						},
+
 						lineStyle: {
 							// color: "label",
 							curveness: 0.3,
@@ -957,7 +983,7 @@ export default {
 						edgeSymbol: ['circle', 'arrow'],
 						edgeSymbolSize: [4, 10], // [3, 6], // [4, 10]
 						edgeLabel: {
-							fontSize: 14,
+							fontSize: 16,
 							color: "black"
 						},
 						emphasis: {

@@ -266,7 +266,7 @@
 													<Select2
 														v-model="form2.nodes"
 														:options="usNodes"
-														:settings="{ 'width': '100%', 'placeholder': 'Select item...' }"
+														:settings="{ 'width': '100%', 'placeholder': 'Select item...', 'closeOnSelect': false }"
 														:error-state="$v.form2.nodes.$error" 
 														:validator="$v.form2.nodes"
 														multiple
@@ -372,6 +372,9 @@
 										<div class="uk-margin-top">
 											<button class="sc-button sc-button-primary" @click.prevent="filterGraph">
 												<span>Filter</span>
+											</button>
+											<button class="sc-button sc-button-default" @click.prevent="resetGraph">
+												<span>Reset</span>
 											</button>
 										</div>
 									</form>
@@ -628,6 +631,9 @@ export default {
 		
 	},
 	methods: {
+		resetGraph: function (event) {
+			this.flag_select = false;
+		},
 		filterGraph: function (event) {
 			let suits = this.filterLabels(this.suits);
 			suits = this.filterNodes(suits);
@@ -749,6 +755,9 @@ export default {
 			} else {
 				console.log(this.form2);
 				this.submitStatus2 = 'PENDING';
+				
+				this.flag_select = false;
+
 				await this.$axios.post("/api/experiments-consult/", this.form2).then((response) => {
 					console.log(1, response.data);
 					if (response.status === 200) {
@@ -758,8 +767,8 @@ export default {
 							'success'
 						);
 
-						this.selected_nodes = [];
-						this.selected_edges = [];
+						// this.selected_nodes = [];
+						// this.selected_edges = [];
 
 						this.suits = response.data.data.changes_sub;
 						this.metabolomic_network(this.suits, true);
@@ -870,8 +879,6 @@ export default {
 
 		metabolomic_network (suits, is_init) {
 			if (is_init) {
-				this.flag_select = false;
-
 				this.labels = Array.from(new Set(suits.map(d => d.label)));
 
 				this.nodes = Array.from(new Set(suits.flatMap(l => [l.source, l.target])), id => ({
@@ -974,7 +981,7 @@ export default {
 
 						lineStyle: {
 							// color: "label",
-							curveness: 0.3,
+							curveness: 0.2,
 							// width: 2 // 1 // 2
 						},
 						/* labelLayout: {

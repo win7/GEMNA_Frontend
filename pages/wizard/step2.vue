@@ -183,7 +183,7 @@
 <script>
 import { scHelpers } from "~/assets/js/utils";
 
-const methods = [{"id": "dgi", "name": "DGI"}, {"id": "vgae", "name": "VGAE"}];
+const methods = [{"vgae-line": "LVGAE"}, {"vgae-base": "VGAE"}, {"id": "argva-base", "name": "ARGVA"}, {"id": "dgi-tran", "name": "DGI"}];
 const options = [{"id": "none", "name": "none"}, {"id": "str", "name": "str"}, {"id": "dyn", "name": "dyn"}];
 const transformations = [{"id": true, "name": "Yes"}, {"id": false, "name": "No"}];
 

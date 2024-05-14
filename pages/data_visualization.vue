@@ -119,7 +119,7 @@
 											<th class="uk-text-nowrap">
 												Group
 											</th>
-											<th v-for="item in labels" class="uk-text-nowrap">
+											<th v-for="item in labels_all" class="uk-text-nowrap">
 												{{ item }}
 											</th>
 										</tr>
@@ -380,8 +380,8 @@
 									</form>
 								</div>
 
-								<span>selected_labels: {{ selected_labels }}</span><br>
-								<span>selected_nodes: {{ selected_nodes }}</span><br>
+								<!-- <span>selected_labels: {{ selected_labels }}</span><br>
+								<span>selected_nodes: {{ selected_nodes }}</span><br> -->
 
 								<!-- <div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle" id="metabolomic-names">
 									<div class="uk-child-width-expand@l uk-grid" data-uk-grid>

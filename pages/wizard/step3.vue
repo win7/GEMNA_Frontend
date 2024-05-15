@@ -52,7 +52,7 @@
 </template>
 <script>
 
-const methods = [{"id": "dgi", "name": "DGI"}, {"id": "vgae", "name": "VGAE"}];
+const methods = [{"id": "vgae-line", "name": "LVGAE"}, {"id": "vgae-base", "name": "VGAE"}, {"id": "argva-base", "name": "ARGVA"}, {"id": "dgi-tran", "name": "DGI"}];
 const options = [{"id": "none", "name": "none"}, {"id": "str", "name": "str"}, {"id": "dyn", "name": "dyn"}];
 
 export default {

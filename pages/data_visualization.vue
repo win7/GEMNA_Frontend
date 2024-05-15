@@ -594,7 +594,7 @@ export default {
 		}
 	},
 	created () {
-		
+
 	},
 	mounted () {
 		/* setTimeout(() => {
@@ -747,6 +747,7 @@ export default {
 			}
 			this.submitStatus1 = 'OK'
 		},
+
 		async submitForm2 (e) {
 			e.preventDefault();
 			this.$v.form2.$touch();
@@ -791,6 +792,7 @@ export default {
 			}
 			this.submitStatus2 = 'OK'
 		},
+
 		testok () {
 			var chartContainer = document.getElementById('main');
 			var myChart = echarts.init(chartContainer);
@@ -987,8 +989,8 @@ export default {
 						/* labelLayout: {
 							hideOverlap: true
 						}, */
-						edgeSymbol: ['circle', 'arrow'],
-						edgeSymbolSize: [4, 10], // [3, 6], // [4, 10]
+						/* edgeSymbol: ['circle', 'arrow'],
+						edgeSymbolSize: [4, 10], // [3, 6], // [4, 10] */
 						edgeLabel: {
 							fontSize: 16,
 							color: "black"
@@ -1016,6 +1018,7 @@ export default {
 
 			this.flag_select = true;
 		},
+
 		heatmap_biocyc (matrix) {
 			// set the dimensions and margins of the graph
 			
@@ -1136,6 +1139,7 @@ export default {
 			
 			option && myChart.setOption(option);			
 		},
+
 		heatmap_biocyc_ratio (matrix) {
 			// set the dimensions and margins of the graph
 			
@@ -1255,6 +1259,7 @@ export default {
 			
 			option && myChart.setOption(option);			
 		},
+
 		degree_network (degrees) {
 			var chartDom = document.getElementById('degree-network');
 			var myChart = echarts.init(chartDom);
@@ -1306,6 +1311,7 @@ export default {
 
 			option && myChart.setOption(option);
 		},
+
 		test1 () {
 			// set the dimensions and margins of the graph
 			var margin = {top: 80, right: 25, bottom: 30, left: 40},
@@ -1515,6 +1521,7 @@ export default {
 				.on("mousemove", mousemove)
 				.on("mouseleave", mouseleave)
 		},
+
 		test2 () {
 			// set the dimensions and margins of the graph
 			var margin = {top: 30, right: 30, bottom: 30, left: 30},
@@ -1699,6 +1706,7 @@ export default {
 				.on("mouseleave", mouseleave)
 			})
 		},
+
 		test3 () {
 			var chartDom = document.getElementById('main');
 			var myChart = echarts.init(chartDom);
@@ -1776,6 +1784,7 @@ export default {
 			option && myChart.setOption(option);
 
 		},
+
 		test4 () {
 			// Your data for the directed graph
 			const graphData = {

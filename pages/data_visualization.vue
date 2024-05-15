@@ -363,7 +363,7 @@
 															<label v-for="label in labels" :key="label" :value="label">
 																<input class="uk-checkbox" type="checkbox" :key="label" :value="label" v-model="selected_labels"> {{ label }} <!-- @click.prevent="selectLabel(label)" -->
 															</label>
-															<label><input class="uk-checkbox" type="checkbox" :checked="is_all_selected" @click="selectAllLabels">Select all</label>
+															<label><input class="uk-checkbox" type="checkbox" :checked="is_all_selected_labels" @click="selectAllEdgeLabels">Select all</label>
 														</div>
 													</div>
 												</div>
@@ -443,6 +443,7 @@ const colors = [{id: "PP", color: "#FF00FF"}, {id: "Pp", color: "#3FFF00"}, {id:
 				{id: "nP", color: "#FFA15A"}, {id: "np", color: "#19D3F3"}, {id: "nN", color: "#FF6692"},
 				{id: "nn", color: "#B6F8A0"}, {id: "?p", color: "gray"}, {id: "?P", color: "gray"}, {id: "?n", color: "gray"},
 				{id: "?N", color: "gray"}, {id: "p?", color: "gray"}, {id: "P?", color: "gray"}, {id: "n?", color: "gray"}, {id: "N?", color: "gray"}];
+
 export default {
 	name: 'DataVisualization',
 	components: {
@@ -461,11 +462,11 @@ export default {
 		submitStatus2: null,
 
 		form1: {
-			id: "",
+			id: "69ea9bb4-fabe-4f39-b1bf-0817f743e2bf",
 		},
 		form2: {
-			id: "",
-			nodes: [], // ["74.0249", "129.0192", "130.0875"], // ["100.00072", "128.89351", "132.88524", "135.54123", "152.99445"],
+			id: "69ea9bb4-fabe-4f39-b1bf-0817f743e2bf",
+			nodes: [52], // ["74.0249", "129.0192", "130.0875"], // ["100.00072", "128.89351", "132.88524", "135.54123", "152.99445"],
 			group: "", // "WT-pck1", // "FCSglc-DMA"
 			type: "id",
 			plot: "correlation"
@@ -485,7 +486,7 @@ export default {
 		selected_nodes: [],
 		selected_labels: [],
 		
-		is_all_selected: false,
+		is_all_selected_labels: false,
 		is_all_selected_nodes: true,
 
 		searchable: {
@@ -644,16 +645,17 @@ export default {
 
 			this.metabolomic_network(this.suits);
     	},
-		selectAllLabels () {
-			if (this.is_all_selected) {
+		selectAllEdgeLabels () {
+			if (this.is_all_selected_labels) {
+				console.log("trueeeeeee");
 				this.selected_labels = [];
-				this.is_all_selected = false;
+				this.is_all_selected_labels = false;
 			} else {
 				this.selected_labels = [];
 				for (var k in this.labels) {
 					this.selected_labels.push(this.labels[k]);
 				}
-				this.is_all_selected = true;
+				this.is_all_selected_labels = true;
 			}
 		},
 		selectAllNodes () {
@@ -707,6 +709,7 @@ export default {
 			// Return the color for the link based on its tag
 			return colorMapping[link.tag];
 		},
+
 		async submitForm1 (e) {
 			e.preventDefault();
 			this.$v.form1.$touch();
@@ -791,6 +794,9 @@ export default {
 
 						const deegres = response.data.data.degrees;
 						this.degree_network(deegres);
+
+						this.selectAllEdgeLabels();
+
 					}
 				}).catch((error) => {
 					console.log(error.response);

@@ -461,11 +461,11 @@ export default {
 		submitStatus2: null,
 
 		form1: {
-			id: "57666a91-e59a-422e-be7f-4b49499d2ef2",
+			id: "",
 		},
 		form2: {
-			id: "57666a91-e59a-422e-be7f-4b49499d2ef2",
-			nodes: ["1" ,"2", "3", "4", "5"], // ["74.0249", "129.0192", "130.0875"], // ["100.00072", "128.89351", "132.88524", "135.54123", "152.99445"],
+			id: "",
+			nodes: [], // ["74.0249", "129.0192", "130.0875"], // ["100.00072", "128.89351", "132.88524", "135.54123", "152.99445"],
 			group: "", // "WT-pck1", // "FCSglc-DMA"
 			type: "id",
 			plot: "correlation"
@@ -715,6 +715,17 @@ export default {
 			} else {
 				this.submitStatus1 = 'PENDING';
 
+				this.flag = false;
+				this.graph_details = [];
+				this.graph_nodes = [];
+				this.groups = [];
+
+				this.form2.id = "";
+				this.form2.nodes = [];
+				this.form2.group = "";
+				// this.form2.type = "id";
+				// this.form2.plot = "correlation";
+
 				await this.$axios.get(`/api/experiments/${this.form1.id}/`).then((response) => {
 					console.log(1, response.data);
 					if (response.status === 200) {
@@ -728,7 +739,7 @@ export default {
 
 						this.graph_details = response.data.data.details;
 						this.graph_nodes = response.data.data.nodes;
-						this.groups = [];
+						// this.groups = [];
 						for (let i = 0; i < this.graph_details.length; i++) {
 							this.groups.push({
 								id: this.graph_details[i].name,

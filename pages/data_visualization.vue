@@ -802,14 +802,14 @@ export default {
 						this.suits = response.data.data.changes_sub;
 						this.metabolomic_network(this.suits, true);
 
-						const biocyc = response.data.data.biocyc;
-						this.biocyc = biocyc;
-						this.heatmap_biocyc(biocyc);
-						this.heatmap_biocyc_ratio(biocyc);
+						// const biocyc = response.data.data.biocyc;
+						this.biocyc = response.data.data.biocyc;
+						this.heatmap_biocyc(this.biocyc);
+						this.heatmap_biocyc_ratio(this.biocyc);
 
-						const deegres = response.data.data.degrees;
-						this.deegres =deegres;
-						this.degree_network(deegres);
+						// const deegres = response.data.data.degrees;
+						this.deegres = response.data.data.degrees;
+						this.degree_network(this.deegres);
 						
 						this.is_all_selected_labels = false;
 						this.selectAllEdgeLabels();

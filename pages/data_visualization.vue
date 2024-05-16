@@ -495,8 +495,9 @@ export default {
 		options_node: [],
 
 		suits: [],
+		biocyc: [],
+		degress: [],
 
-		dele: "0",
 		categoryParDel: [{value: 'A', text: "c"}, {value: 'B', text: "b"}, {value: 'C', text: "c"}],
 
 		publicMethods: [],
@@ -634,6 +635,20 @@ export default {
 	methods: {
 		resetGraph: function (event) {
 			this.flag_select = false;
+
+			// this.suits = response.data.data.changes_sub;
+			this.metabolomic_network(this.suits, true);
+
+			// this.biocyc = response.data.data.biocyc;
+			this.heatmap_biocyc(this.biocyc);
+			this.heatmap_biocyc_ratio(this.biocyc);
+
+			// this.deegres = response.data.data.degrees;
+			this.degree_network(this.deegres);
+			
+			this.is_all_selected_labels = false;
+			this.selectAllEdgeLabels();
+
 		},
 		filterGraph: function (event) {
 			let suits = this.filterLabels(this.suits);
@@ -647,7 +662,6 @@ export default {
     	},
 		selectAllEdgeLabels () {
 			if (this.is_all_selected_labels) {
-				console.log("trueeeeeee");
 				this.selected_labels = [];
 				this.is_all_selected_labels = false;
 			} else {
@@ -789,12 +803,15 @@ export default {
 						this.metabolomic_network(this.suits, true);
 
 						const biocyc = response.data.data.biocyc;
+						this.biocyc = biocyc;
 						this.heatmap_biocyc(biocyc);
 						this.heatmap_biocyc_ratio(biocyc);
 
 						const deegres = response.data.data.degrees;
+						this.deegres =deegres;
 						this.degree_network(deegres);
-
+						
+						this.is_all_selected_labels = false;
 						this.selectAllEdgeLabels();
 
 					}

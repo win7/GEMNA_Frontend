@@ -72,7 +72,7 @@
 				<div class="uk-width-1-4@l">
 					<ScCard>
 						<ScCardTitle>
-							Graphs Details
+							Networks Details
 						</ScCardTitle>
 						<ScCardBody>
 							<div class="uk-overflow-auto">
@@ -339,11 +339,30 @@
 													<div class="uk-form-controls">
 														<client-only>
 															<MultiSelect
+																ref="msPublicMethods"
 																v-model="selected_nodes"
 																:settings="select_settings"
 																:options="msSearchableOptions"
 															></MultiSelect> <!-- </MultiSelect>:settings="searchableSettings" -->
 														</client-only>
+														<div data-uk-margin>
+															<a class="sc-button sc-button-default sc-button-small sc-button-outline" href="javascript:void(0)" @click.prevent="msSelectAll()">
+																select all
+															</a>
+															<a class="sc-button sc-button-default sc-button-small sc-button-outline" href="javascript:void(0)" @click.prevent="msDeselectAll()">
+																deselect all
+															</a>
+															<div>
+																{{ publicMethods.model }}
+															</div>
+														</div>
+														<!-- <client-only>
+															<MultiSelect
+																v-model="selected_nodes"
+																:settings="select_settings"
+																:options="msSearchableOptions"
+															></MultiSelect> < !-- </MultiSelect>:settings="searchableSettings" - ->
+														</client-only> -->
 														<!-- <ul class="sc-vue-errors">
 															<li v-if="!$v.form2.group.required">
 																Field is required
@@ -633,6 +652,12 @@ export default {
 		
 	},
 	methods: {
+		msSelectAll () {
+			this.$refs.msPublicMethods.select_all()
+		},
+		msDeselectAll () {
+			this.$refs.msPublicMethods.deselect_all()
+		},
 		resetGraph: function (event) {
 			this.flag_select = false;
 

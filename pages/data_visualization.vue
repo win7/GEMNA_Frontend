@@ -488,13 +488,13 @@ export default {
 		submitStatus2: null,
 
 		form1: {
-			id: "69ea9bb4-fabe-4f39-b1bf-0817f743e2bf",
+			id: "",
 		},
 		form2: {
-			id: "69ea9bb4-fabe-4f39-b1bf-0817f743e2bf",
-			nodes: [52], // ["74.0249", "129.0192", "130.0875"], // ["100.00072", "128.89351", "132.88524", "135.54123", "152.99445"],
+			id: "",
+			nodes: [], // ["74.0249", "129.0192", "130.0875"], // ["100.00072", "128.89351", "132.88524", "135.54123", "152.99445"],
 			group: "", // "WT-pck1", // "FCSglc-DMA"
-			type: "id",
+			type: "name", // id, name
 			plot: "correlation"
 		},
 
@@ -524,9 +524,6 @@ export default {
 		biocyc: [],
 		degress: [],
 
-		categoryParDel: [{value: 'A', text: "c"}, {value: 'B', text: "b"}, {value: 'C', text: "c"}],
-
-		publicMethods: [],
 		flag_select: false,
 
 		select_settings: {
@@ -554,8 +551,6 @@ export default {
 					text: this.nodes[k].name
 				});
 			}
-			console.log(77, options_node);
-			console.log(77, this.nodes);
 			return 	options_node;
 
 			/* let options = [];

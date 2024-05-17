@@ -324,7 +324,13 @@
 						<ScCardContent>
 							<ScCardBody>
 								<div class="uk-height-large uk-flex uk-flex-center uk-flex-middle" id="metabolomic-network"></div>
-								
+								<!-- <div class="uk-child-width-1-2@s" uk-grid>
+									<div>
+										<pre class="uk-resize-vertical">
+											<div class="uk-flex uk-flex-center uk-flex-middle" id="metabolomic-network"></div>
+										</pre>
+									</div>
+								</div> -->
 								<div class="uk-height-large uk-flex-center uk-flex-middle" v-if="flag_select">
 									<form>
 										<fieldset class="uk-fieldset md-bg-grey-100 sc-padding">
@@ -345,15 +351,16 @@
 																:options="msSearchableOptions"
 															></MultiSelect> <!-- </MultiSelect>:settings="searchableSettings" -->
 														</client-only>
-														<div data-uk-margin>
-															<a class="sc-button sc-button-default sc-button-small sc-button-outline" href="javascript:void(0)" @click.prevent="msSelectAll()">
-																select all
-															</a>
-															<a class="sc-button sc-button-default sc-button-small sc-button-outline" href="javascript:void(0)" @click.prevent="msDeselectAll()">
-																deselect all
-															</a>
-															<div>
-																{{ publicMethods.model }}
+														<div class="uk-text-center" uk-grid>
+															<div class="uk-width-1-2">
+																<a class="sc-button sc-button-custom md-bg-light-blue-800 sc-button-mini" href="javascript:void(0)" @click.prevent="msSelectAll()">
+																	Select all
+																</a>
+															</div>
+															<div class="uk-width-1-2">
+																<a class="sc-button sc-button-default sc-button-mini" href="javascript:void(0)" @click.prevent="msDeselectAll()">
+																	Deselect all
+																</a>
 															</div>
 														</div>
 														<!-- <client-only>

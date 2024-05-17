@@ -1906,3 +1906,8 @@ export default {
 	@import "~scss/common/md_colors";
 	@import '~scss/vue/_pretty_checkboxes';
 </style>
+<style scoped>
+	.uk-height-large {
+  		height: 560px;
+	}
+</style>

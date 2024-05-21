@@ -488,10 +488,10 @@ export default {
 		submitStatus2: null,
 
 		form1: {
-			id: "4ef46df6-65c3-4fbf-8fcb-677b75c7aaa4",
+			id: "",
 		},
 		form2: {
-			id: "4ef46df6-65c3-4fbf-8fcb-677b75c7aaa4",
+			id: "",
 			nodes: [], // ["74.0249", "129.0192", "130.0875"], // ["100.00072", "128.89351", "132.88524", "135.54123", "152.99445"],
 			group: "", // "WT-pck1", // "FCSglc-DMA"
 			type: "name", // id, name
@@ -1055,14 +1055,14 @@ export default {
 							show: true,
 							position: 'right',
 							formatter: '{b}',
-							fontSize: 16
+							fontSize: 12 // 16
 						},
 						itemStyle: {
 							color: "orange",
 							// symbolSize: 5
 						},
 						symbolSize: function (params) {
-							return 20; // params.data.value;
+							return 16; // 16 // params.data.value;
 						},
 
 						lineStyle: {
@@ -1076,15 +1076,15 @@ export default {
 						/* edgeSymbol: ['circle', 'arrow'],
 						edgeSymbolSize: [4, 10], // [3, 6], // [4, 10] */
 						edgeLabel: {
-							fontSize: 16,
+							fontSize: 12, // 16
 							color: "black"
 						},
-						emphasis: {
+						/* emphasis: {
 							focus: 'adjacency',
 							lineStyle: {
 								width: 3
 							}
-						}
+						} */
 					}
 				]
 			};

@@ -488,10 +488,10 @@ export default {
 		submitStatus2: null,
 
 		form1: {
-			id: "",
+			id: "4ef46df6-65c3-4fbf-8fcb-677b75c7aaa4",
 		},
 		form2: {
-			id: "",
+			id: "4ef46df6-65c3-4fbf-8fcb-677b75c7aaa4",
 			nodes: [], // ["74.0249", "129.0192", "130.0875"], // ["100.00072", "128.89351", "132.88524", "135.54123", "152.99445"],
 			group: "", // "WT-pck1", // "FCSglc-DMA"
 			type: "name", // id, name
@@ -520,7 +520,8 @@ export default {
 		},
 		options_node: [],
 
-		suits: [],
+		nodes_response: [],
+		edges_response: [],
 		biocyc: [],
 		degress: [],
 
@@ -663,8 +664,8 @@ export default {
 		resetGraph: function (event) {
 			this.flag_select = false;
 
-			// this.suits = response.data.data.changes_sub;
-			this.metabolomic_network(this.suits, true);
+			// this.edges_response = response.data.data.changes_sub;
+			this.metabolomic_network(this.nodes_response, this.edges_response, true);
 
 			// this.biocyc = response.data.data.biocyc;
 			this.heatmap_biocyc(this.biocyc);
@@ -677,15 +678,41 @@ export default {
 			this.selectAllEdgeLabels();
 
 		},
+		filterLabels (edges_response) {
+			const edges_filter = [];
+			for (var k in edges_response) {
+				if (this.selected_labels.includes(edges_response[k].label)){
+					edges_filter.push(edges_response[k]);
+				}
+			}
+			return edges_filter;
+		},
+		filterNodes (nodes_response) {
+			const nodes_filter = [];
+			for (var k in nodes_response) {
+				if (this.selected_nodes.includes(nodes_response[k].id)){
+					nodes_filter.push(nodes_response[k]);
+				}
+			}
+			return nodes_filter;
+		},
+		filterEdges (edges_response) {
+			const edges_filter = [];
+			for (var k in edges_response) {
+				if (this.selected_nodes.includes(edges_response[k].source) && this.selected_nodes.includes(edges_response[k].target)){
+					edges_filter.push(edges_response[k]);
+				}
+			}
+			return edges_filter;
+		},
 		filterGraph: function (event) {
-			let suits = this.filterLabels(this.suits);
-			suits = this.filterNodes(suits);
-			this.metabolomic_network(suits, false);
+			let edges = this.filterLabels(this.edges_response);
+			edges = this.filterEdges(edges);
+			let nodes = this.filterNodes(this.nodes_response);
+			this.metabolomic_network(nodes, edges, false);
 		},
 		selectLabel (id) {
       		console.log('event fired for: ' + id);
-
-			this.metabolomic_network(this.suits);
     	},
 		selectAllEdgeLabels () {
 			if (this.is_all_selected_labels) {
@@ -825,9 +852,10 @@ export default {
 
 						// this.selected_nodes = [];
 						// this.selected_edges = [];
-
-						this.suits = response.data.data.changes_sub;
-						this.metabolomic_network(this.suits, true);
+						
+						this.nodes_response = response.data.data.nodes;						
+						this.edges_response = response.data.data.edges;
+						this.metabolomic_network(this.nodes_response, this.edges_response, true);
 
 						// const biocyc = response.data.data.biocyc;
 						this.biocyc = response.data.data.biocyc;
@@ -920,32 +948,21 @@ export default {
 
 		},
 
-		filterLabels (suits) {
-			const suits_filter = [];
-			for (var k in suits) {
-				if (this.selected_labels.includes(suits[k].label)){
-					suits_filter.push(suits[k]);
-				}
-			}
-			return suits_filter;
-		},
-
-		filterNodes (suits) {
-			const suits_filter = [];
-			for (var k in suits) {
-				if (this.selected_nodes.includes(suits[k].source) && this.selected_nodes.includes(suits[k].target)){
-					suits_filter.push(suits[k]);
-				}
-			}
-			return suits_filter;
-		},
-
-		metabolomic_network (suits, is_init) {
+		metabolomic_network (nodes_response, edges_response, is_init) {
 			if (is_init) {
-				this.labels = Array.from(new Set(suits.map(d => d.label)));
+				this.labels = Array.from(new Set(edges_response.map(d => d.label)));
 
-				this.nodes = Array.from(new Set(suits.flatMap(l => [l.source, l.target])), id => ({
-								id: id, name: this.nodes_detail.find((obj) => obj.id == id)[this.form2.type]}));
+				/* this.nodes = Array.from(new Set(suits.flatMap(l => [l.source, l.target])), id => ({
+								id: id, name: this.nodes_detail.find((obj) => obj.id == id)[this.form2.type]})); */
+				
+				this.nodes = nodes_response.map(node => {
+					return {
+						id: node.id,
+						name: this.nodes_detail.find((obj) => obj.id == node.id)[this.form2.type],
+						x: node.pos[0],
+						y: node.pos[1]
+					};
+				});
 
 				/*/ for (var k in this.nodes) { // copy to selected
 					this.selected_nodes.push(this.nodes[k].id);
@@ -953,10 +970,16 @@ export default {
 				//this.$refs.msPublicMethods.select_all()
 			}
 			
-			const nodes = Array.from(new Set(suits.flatMap(l => [l.source, l.target])), id => ({
-							id: id, name: this.nodes_detail.find((obj) => obj.id == id)[this.form2.type]}));
-			const labels = Array.from(new Set(suits.map(d => d.label)));
-			const links = suits.map(obj => ({ ...obj, value: obj.label }));
+			const nodes = nodes_response.map(node => {
+				return {
+					id: node.id,
+					name: this.nodes_detail.find((obj) => obj.id == node.id)[this.form2.type],
+					x: node.pos[0],
+					y: node.pos[1]
+				};
+			});
+			const labels = Array.from(new Set(edges_response.map(d => d.label)));
+			const links = edges_response.map(obj => ({ ...obj, value: obj.label }));
 
 			// this.selected_labels = labels.sort(); // copy to selected
 
@@ -1015,7 +1038,7 @@ export default {
 					{
 						// name: 'Les Miserables',
 						type: 'graph',
-						layout: 'force',
+						layout: 'none', // force, circular, none
 
 						data: nodes,
 						links: links,
@@ -1044,7 +1067,7 @@ export default {
 
 						lineStyle: {
 							// color: "label",
-							curveness: 0.2,
+							curveness: 0.1,
 							// width: 2 // 1 // 2
 						},
 						/* labelLayout: {

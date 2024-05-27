@@ -303,7 +303,7 @@
 							<div class="uk-flex uk-flex-middle">
 								<div class="uk-flex-1">
 									<ScCardTitle>
-										Interpretation
+										Similarity analysis
 									</ScCardTitle>
 									<!-- <ScCardMeta>
 										<time datetime="2019-01-01">
@@ -494,6 +494,7 @@ export default {
 			id: "",
 			nodes: [], // ["74.0249", "129.0192", "130.0875"], // ["100.00072", "128.89351", "132.88524", "135.54123", "152.99445"],
 			group: "", // "WT-pck1", // "FCSglc-DMA"
+			groups: [],
 			type: "name", // id, name
 			plot: "correlation"
 		},
@@ -811,7 +812,9 @@ export default {
 						this.graph_details = response.data.data.details;
 						this.graph_nodes = response.data.data.nodes;
 						// this.groups = [];
+						this.form2.groups = [];
 						for (let i = 0; i < this.graph_details.length; i++) {
+							this.form2.groups.push(this.graph_details[i].name)
 							this.groups.push({
 								id: this.graph_details[i].name,
 								text: this.graph_details[i].name
@@ -837,6 +840,7 @@ export default {
 				this.submitStatus2 = 'ERROR'
 			} else {
 				console.log(this.form2);
+
 				this.submitStatus2 = 'PENDING';
 				
 				this.flag_select = false;
@@ -859,7 +863,10 @@ export default {
 
 						// const biocyc = response.data.data.biocyc;
 						this.biocyc = response.data.data.biocyc;
-						this.heatmap_biocyc(this.biocyc);
+						const biocyc_all = response.data.data.biocyc_all;
+
+						// this.heatmap_biocyc(this.biocyc);
+						this.heatmap_biocyc_all(biocyc_all);
 						this.heatmap_biocyc_ratio(this.biocyc);
 
 						// const deegres = response.data.data.degrees;
@@ -1128,6 +1135,139 @@ export default {
 				data.push([i, 1, matrix[i].After]);
 			}
 	
+			var minValue = Math.min.apply(null, data.map(item => item[2]));
+			var maxValue = Math.max.apply(null, data.map(item => item[2]));
+
+			option = {
+				title: {
+					// text: 'Les Miserables',
+					subtext: 'Heatmap',
+					top: 'top',
+					left: 'center'
+				},
+				tooltip: {
+					position: 'top',
+					trigger: 'item', // Tooltip trigger on data item
+					formatter: function(params) {
+						// Customize the tooltip content
+						// console.log(params);
+						return 'Name: ' + params.name + '<br/> Value: ' + params.value[2];
+					}
+				},
+				grid: {
+					// height: '50%',
+					// top: '15%'
+				},
+				xAxis: {
+					type: 'category',
+					data: xData
+				},
+				yAxis: {
+					type: 'category',
+					data: yData
+				},
+				visualMap: {
+					min: minValue,
+					max: maxValue,
+					calculable: true,
+					orient: 'vertical',
+    				left: 'right',
+    				// bottom: '84%',					
+					realtime: false,
+					inRange: {
+						color: [
+							'#313695',
+							'#4575b4',
+							'#74add1',
+							'#abd9e9',
+							'#e0f3f8',
+							'#ffffbf',
+							'#fee090',
+							'#fdae61',
+							'#f46d43',
+							'#d73027',
+							'#a50026'
+						]
+					}
+				},
+				series: [
+					{
+						name: 'Correlation',
+						type: 'heatmap',
+						data: data,
+						label: {
+							show: false
+						},
+						emphasis: {
+								itemStyle: {
+								borderColor: '#333',
+								borderWidth: 1
+							}
+						},
+						// progressive: 1000,
+						animation: false
+					}
+				],
+				/* dataZoom: [{
+					type: 'inside', // Use inside type dataZoom for zooming within the chart area
+					xAxisIndex: 0,  // Specify the index of the xAxis component
+					filterMode: 'none', // Keep the original data range
+				}], */
+				dataZoom: [
+					{
+						type: 'slider', // Use slider type dataZoom for horizontal zooming
+						xAxisIndex: 0,
+						filterMode: 'none',
+					},
+					/* {
+						type: 'slider', // Use slider type dataZoom for vertical zooming
+						yAxisIndex: 0,
+						filterMode: 'none',
+						orient: 'vertical', // Set orientation to vertical
+					} */
+				]
+			};
+			
+			option && myChart.setOption(option);			
+		},
+
+		heatmap_biocyc_all (list_matrix) {
+			// set the dimensions and margins of the graph
+			
+			/* const source = [...new Set(data.map(obj => obj.source))];
+			const target = [...new Set(data.map(obj => obj.target))];
+
+			console.log(source);
+			console.log(target); */
+
+			var chartDom = document.getElementById('heatmap');
+			var myChart = echarts.init(chartDom);
+			var option;
+
+			// let group = this.form2.group.split("-");
+			// let yData = [group[0] + " (before)", group[1] + " (after)"]; // Object.keys(matrix[0]);
+			let group_ = this.form2.group.split("-");
+			let yData = [group_[0]]; // this.form2.group.split("-");
+			for (let k = 0; k < this.form2.groups.length; k++) { // improve iterations
+				group_ = this.form2.groups[k].split("-");
+				yData.push(group_[1]);
+			}
+
+			let xData = []; // Object.keys(matrix);
+			
+			let data = [];
+			let matrix = [];
+			for (let i = 0; i < this.form2.groups.length; i++) {
+				matrix = list_matrix[this.form2.groups[i]];
+				for (let j = 0; j < matrix.length; j++) {
+					if (i == 0) {
+						xData.push(matrix[j].ID);
+						data.push([j, 0, matrix[j].Before]);
+					}
+					data.push([j, i + 1, matrix[j].After]);
+				}
+			}
+
 			var minValue = Math.min.apply(null, data.map(item => item[2]));
 			var maxValue = Math.max.apply(null, data.map(item => item[2]));
 

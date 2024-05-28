@@ -591,7 +591,8 @@ export default {
 
 		nodes_response: [],
 		edges_response: [],
-		biocyc: [],
+		// biocyc: [],
+		biocyc_all: [],
 		degress: [],
 
 		flag_select: false,
@@ -945,19 +946,12 @@ export default {
 						
 						this.nodes_response = response.data.data.nodes;						
 						this.edges_response = response.data.data.edges;
-						this.metabolomic_network(this.nodes_response, this.edges_response, true);
-
-						// const biocyc = response.data.data.biocyc;
-						this.biocyc = response.data.data.biocyc;
-						const biocyc_all = response.data.data.biocyc_all;
-
-						// this.heatmap_biocyc(this.biocyc);
-						this.heatmap_biocyc_all(biocyc_all);
-						// this.heatmap_biocyc_ratio(this.biocyc);
-						this.heatmap_biocyc_ratio_all(biocyc_all);
-
-						// const deegres = response.data.data.degrees;
+						this.biocyc_all = response.data.data.biocyc_all;
 						this.deegres = response.data.data.degrees;
+
+						this.metabolomic_network(this.nodes_response, this.edges_response, true);
+						this.heatmap_biocyc_all(this.biocyc_all);
+						this.heatmap_biocyc_ratio_all(this.biocyc_all);
 						this.degree_network(this.deegres);
 						
 						this.is_all_selected_labels = false;
@@ -1609,7 +1603,7 @@ export default {
 			option = {
 				title: {
 					// text: 'Les Miserables',
-					// subtext: 'Heatmap',
+					subtext: 'Ratios',
 					top: 'top',
 					left: 'center'
 				},
@@ -1713,7 +1707,7 @@ export default {
 			option = {
 				title: {
 					// text: 'Les Miserables',
-					subtext: 'Degrees',
+					subtext: 'Neighbors',
 					top: 'top',
 					left: 'center'
 				},

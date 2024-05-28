@@ -21,17 +21,22 @@
 				</div>
 			</div> -->
 
-			<div class="uk-grid" data-uk-grid>
+			<div class="uk-flex-center uk-grid" data-uk-grid>
 				<div class="uk-width-xxlarge">
 					<ScCard>
-						<ScCardTitle>
-							Consult
-						</ScCardTitle>
+						<ScCardHeader>
+							<div class="uk-flex uk-flex-middle">
+								<i class="mdi mdi-book-search sc-icon-24 uk-margin-medium-right"></i>
+								<ScCardTitle>
+									Load Experiment Form
+								</ScCardTitle>
+							</div>
+						</ScCardHeader>
 						<ScCardBody>
 							<form>
 								<fieldset class="uk-fieldset md-bg-grey-100 sc-padding">
 									<!-- <p class="sc-text-semibold uk-text-large uk-margin-remove-top">
-										Personal info
+										Consult
 									</p> -->
 									<div class="uk-child-width-1-2@m uk-grid" data-uk-grid>
 										<div>
@@ -47,6 +52,19 @@
 												</ul>
 											</div>
 										</div>
+										<!-- <div>
+											<label class="uk-form-label">
+												Other
+											</label>
+											<div class="uk-form-controls">
+												<ScInput v-model.trim="form1.id" :error-state="$v.form1.id.$error" :validator="$v.form1.id" mode="outline" data-uk-tooltip="title: This code was sent to your email.; pos: top-right"></ScInput>
+												<ul class="sc-vue-errors">
+													<li v-if="!$v.form1.id.required">
+														Field is required
+													</li>
+												</ul>
+											</div>
+										</div> -->
 									</div>
 								</fieldset>
 								<div class="uk-margin-top">
@@ -54,7 +72,7 @@
 										Search
 									</button> -->
 									<button class="sc-button sc-button-primary" :class="{'sc-button-progress-overlay': submitStatus1 === 'PENDING'}" :disabled="submitStatus1 === 'PENDING'" @click.prevent="submitForm1($event)">
-										<span>Search</span>
+										<span>Load</span>
 										<transition name="scale-up">
 											<span v-show="submitStatus1 === 'PENDING'" class="sc-button-progress-layer">
 												<ScProgressCircular></ScProgressCircular>
@@ -67,13 +85,18 @@
 					</ScCard>
 				</div>
 			</div>
-
-			<div class="uk-grid" data-uk-grid>
+			
+			<div class="uk-flex-center uk-grid" data-uk-grid v-if="flag_load">
 				<div class="uk-width-1-4@l">
 					<ScCard>
-						<ScCardTitle>
-							Networks Details
-						</ScCardTitle>
+						<ScCardHeader>
+							<div class="uk-flex uk-flex-middle">
+								<i class="mdi mdi-book-open sc-icon-24 uk-margin-medium-right"></i>
+								<ScCardTitle>
+									Networks Overview
+								</ScCardTitle>
+							</div>
+						</ScCardHeader>
 						<ScCardBody>
 							<div class="uk-overflow-auto">
 								<table class="uk-table uk-table-striped">
@@ -108,9 +131,14 @@
 				</div>
 				<div class="uk-width-3-4@l">
 					<ScCard>
-						<ScCardTitle>
-							Labels
-						</ScCardTitle>
+						<ScCardHeader>
+							<div class="uk-flex uk-flex-middle">
+								<i class="mdi mdi-book-open sc-icon-24 uk-margin-medium-right"></i>
+								<ScCardTitle>
+									Network Labels
+								</ScCardTitle>
+							</div>
+						</ScCardHeader>
 						<ScCardBody>
 							<div class="uk-overflow-auto">
 								<table class="uk-table uk-table-striped">
@@ -139,21 +167,26 @@
 				</div>
 			</div>
 
-			<div class="uk-grid" data-uk-grid v-if="flag">
-				<div class="uk-width-1-4@l">
+			<div class="uk-flex-center uk-grid" data-uk-grid v-if="flag_load">
+				<div class="uk-width-xxlarge">
 					<ScCard>
-						<ScCardTitle>
-							Queries
-						</ScCardTitle>
+						<ScCardHeader>
+							<div class="uk-flex uk-flex-middle">
+								<i class="mdi mdi-book-search sc-icon-24 uk-margin-medium-right"></i>
+								<ScCardTitle>
+									Analysis form
+								</ScCardTitle>
+							</div>
+						</ScCardHeader>
 						<ScCardBody>
 							<form>
 								<fieldset class="uk-fieldset md-bg-grey-100 sc-padding">
 									<!-- <p class="sc-text-semibold uk-text-large uk-margin-remove-top">
-										Personal info
+										Consult
 									</p> -->
-									<div class="uk-child-width-1-1@m uk-grid" data-uk-grid>
+									<div class="uk-child-width-1-2@m uk-grid" data-uk-grid>
 										<div>
-											<label class="uk-form-label">
+											<label class="uk-form-label" for="f-f-name">
 												Group
 											</label>
 											<div class="uk-form-controls">
@@ -176,7 +209,66 @@
 											</div>
 										</div>
 										<div>
-											<label class="uk-form-label">
+											<label class="uk-form-label" for="f-l-name">
+												Show by
+											</label>
+											<div class="uk-form-controls">
+												<span class="uk-margin-right">
+													<PrettyRadio
+														v-model="form2.plot"
+														:error-state="$v.form2.plot.$error" :validator="$v.form2.plot"
+														value="correlation"
+														class="p-radio"
+														data-uk-tooltip="title: ...; pos: top-right"
+													>
+														Correlation nodes
+													</PrettyRadio>
+												</span>
+												<span class="uk-margin-right">
+													<PrettyRadio
+														v-model="form2.plot"
+														:error-state="$v.form2.plot.$error" :validator="$v.form2.plot.type"
+														value="correlation_neighbors"
+														class="p-radio"
+														data-uk-tooltip="title: ...; pos: top-right"
+													>
+													Correlation + neighbors nodes
+													</PrettyRadio>
+												</span>
+												<ul class="sc-vue-errors">
+													<li v-if="!$v.form2.plot.required">
+														Field is required
+													</li>
+												</ul>
+											</div>
+										</div>
+									</div>
+									<div class="uk-child-width-1-2@m uk-margin-top uk-grid" data-uk-grid>
+										<div>
+											<label class="uk-form-label" for="f-f-name">
+												{{ getType(form2.type) }}
+											</label>
+											<div class="uk-form-controls">
+												<client-only>
+													<Select2
+														v-model="form2.nodes"
+														:options="usNodes"
+														:settings="{ 'width': '100%', 'placeholder': 'Select item...', 'closeOnSelect': false }"
+														:error-state="$v.form2.nodes.$error" 
+														:validator="$v.form2.nodes"
+														multiple
+														data-uk-tooltip="title: ...; pos: top-right"
+													></Select2>
+												</client-only>
+												<ul class="sc-vue-errors">
+													<li v-if="!$v.form2.nodes.required">
+														Field is required
+													</li>
+												</ul>
+											</div>
+										</div>
+										<div>
+											<label class="uk-form-label" for="f-l-name">
 												Name by
 											</label>
 											<div class="uk-form-controls">
@@ -223,68 +315,11 @@
 												</ul>
 											</div>
 										</div>
-										<div>
-											<label class="uk-form-label">
-												Plot by
-											</label>
-											<div class="uk-form-controls">
-												<span class="uk-margin-right">
-													<PrettyRadio
-														v-model="form2.plot"
-														:error-state="$v.form2.plot.$error" :validator="$v.form2.plot"
-														value="correlation"
-														class="p-radio"
-														data-uk-tooltip="title: ...; pos: top-right"
-													>
-														Correlation nodes
-													</PrettyRadio>
-												</span>
-												<span class="uk-margin-right">
-													<PrettyRadio
-														v-model="form2.plot"
-														:error-state="$v.form2.plot.$error" :validator="$v.form2.plot.type"
-														value="correlation_neighbors"
-														class="p-radio"
-														data-uk-tooltip="title: ...; pos: top-right"
-													>
-													Correlation + neighbors nodes
-													</PrettyRadio>
-												</span>
-												<ul class="sc-vue-errors">
-													<li v-if="!$v.form2.plot.required">
-														Field is required
-													</li>
-												</ul>
-											</div>
-										</div>
-										<div>
-											<label class="uk-form-label">
-												{{ getType(form2.type) }}
-											</label>
-											<div class="uk-form-controls">
-												<client-only>
-													<Select2
-														v-model="form2.nodes"
-														:options="usNodes"
-														:settings="{ 'width': '100%', 'placeholder': 'Select item...', 'closeOnSelect': false }"
-														:error-state="$v.form2.nodes.$error" 
-														:validator="$v.form2.nodes"
-														multiple
-														data-uk-tooltip="title: ...; pos: top-right"
-													></Select2>
-												</client-only>
-												<ul class="sc-vue-errors">
-													<li v-if="!$v.form2.nodes.required">
-														Field is required
-													</li>
-												</ul>
-											</div>
-										</div>
 									</div>
 								</fieldset>
 								<div class="uk-margin-top">
 									<button class="sc-button sc-button-primary" :class="{'sc-button-progress-overlay': submitStatus2 === 'PENDING'}" :disabled="submitStatus2 === 'PENDING'" @click.prevent="submitForm2($event)">
-										<span>Plot</span>
+										<span>Load</span>
 										<transition name="scale-up">
 											<span v-show="submitStatus2 === 'PENDING'" class="sc-button-progress-layer">
 												<ScProgressCircular></ScProgressCircular>
@@ -296,14 +331,17 @@
 						</ScCardBody>
 					</ScCard>
 				</div>
+			</div>
 
-				<div class="uk-width-3-4@l">
+			<div class="uk-flex-center uk-grid" data-uk-grid v-if="flag_load">
+				<div class="uk-width-1-2@l">
 					<ScCard :full-screen="cardBFullScreen">
 						<ScCardHeader> <!-- separator> -->
 							<div class="uk-flex uk-flex-middle">
-								<div class="uk-flex-1">
+								<i class="mdi mdi-book-open sc-icon-24 uk-margin-medium-right"></i>
+								<div class="uk-flex-1">									
 									<ScCardTitle>
-										Similarity analysis
+										Similarity Analysis
 									</ScCardTitle>
 									<!-- <ScCardMeta>
 										<time datetime="2019-01-01">
@@ -423,9 +461,40 @@
 										</div>
 									</div>
 								</div> -->
-								<div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle" id="degree-network"></div>
+							</ScCardBody>
+						</ScCardContent>
+					</ScCard>
+				</div>
+				<div class="uk-width-1-2@l">
+					<ScCard :full-screen="cardBFullScreen">
+						<ScCardHeader> <!-- separator> -->
+							<div class="uk-flex uk-flex-middle">
+								<i class="mdi mdi-book-open sc-icon-24 uk-margin-medium-right"></i>
+								<div class="uk-flex-1">
+									<ScCardTitle>
+										Extras
+									</ScCardTitle>
+									<!-- <ScCardMeta>
+										<time datetime="2019-01-01">
+											Jan 01, 2021
+										</time>
+									</ScCardMeta> -->
+								</div>
+								<ScCardActions>
+									<a
+										href="javascript:void(0)"
+										class="sc-actions-icon mdi mdi-fullscreen"
+										:class="{'mdi-fullscreen' : !cardBFullScreen, 'mdi-fullscreen-exit' : cardBFullScreen }"
+										@click.prevent="cardBFullScreen = !cardBFullScreen"
+									></a>
+								</ScCardActions>
+							</div>
+						</ScCardHeader>
+						<ScCardContent>
+							<ScCardBody>
 								<div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle" id="heatmap"></div>
 								<div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle" id="heatmap_ratio"></div>
+								<div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle" id="degree-network"></div>
 							</ScCardBody>
 						</ScCardContent>
 					</ScCard>
@@ -483,7 +552,6 @@ export default {
 	mixins: [validationMixin],
 	data: () => ({
 		status: "",
-		flag: false,
 		submitStatus1: null,
 		submitStatus2: null,
 
@@ -527,6 +595,10 @@ export default {
 		degress: [],
 
 		flag_select: false,
+		// flag: false,
+		flag_load: false,
+		flag_similarity: false,
+		flag_div2: false,
 
 		select_settings: {
 			cssClass: 'ms-header ms-footer',
@@ -662,22 +734,36 @@ export default {
 		msDeselectAll () {
 			this.$refs.msPublicMethods.deselect_all()
 		},
+		filterGraph: function (event) {
+			this.flag_select = false;
+
+			let edges = this.filterLabels(this.edges_response);
+			edges = this.filterEdges(edges);
+			let nodes = this.filterNodes(this.nodes_response);
+			this.metabolomic_network(nodes, edges, false);
+
+			this.flag_select = true;
+
+		},
 		resetGraph: function (event) {
 			this.flag_select = false;
 
 			// this.edges_response = response.data.data.changes_sub;
 			this.metabolomic_network(this.nodes_response, this.edges_response, true);
 
-			// this.biocyc = response.data.data.biocyc;
+			/* // this.biocyc = response.data.data.biocyc;
 			this.heatmap_biocyc(this.biocyc);
 			this.heatmap_biocyc_ratio(this.biocyc);
 
 			// this.deegres = response.data.data.degrees;
-			this.degree_network(this.deegres);
+			this.degree_network(this.deegres); */
 			
 			this.is_all_selected_labels = false;
 			this.selectAllEdgeLabels();
 
+			this.msDeselectAll();
+
+			this.flag_select = true;
 		},
 		filterLabels (edges_response) {
 			const edges_filter = [];
@@ -705,12 +791,6 @@ export default {
 				}
 			}
 			return edges_filter;
-		},
-		filterGraph: function (event) {
-			let edges = this.filterLabels(this.edges_response);
-			edges = this.filterEdges(edges);
-			let nodes = this.filterNodes(this.nodes_response);
-			this.metabolomic_network(nodes, edges, false);
 		},
 		selectLabel (id) {
       		console.log('event fired for: ' + id);
@@ -787,7 +867,9 @@ export default {
 			} else {
 				this.submitStatus1 = 'PENDING';
 
-				this.flag = false;
+				// this.flag = false;
+				this.flag_load = false;
+
 				this.graph_details = [];
 				this.graph_nodes = [];
 				this.groups = [];
@@ -807,7 +889,8 @@ export default {
 							'success'
 						);
 						this.form2.id = this.form1.id;
-						this.flag = true;
+						// this.flag = true;
+						this.flag_load = true;
 
 						this.graph_details = response.data.data.details;
 						this.graph_nodes = response.data.data.nodes;
@@ -844,6 +927,8 @@ export default {
 				this.submitStatus2 = 'PENDING';
 				
 				this.flag_select = false;
+				this.flag_similarity = false;
+				this.flag_div2 = false;
 
 				await this.$axios.post("/api/experiments-consult/", this.form2).then((response) => {
 					console.log(1, response.data);
@@ -856,6 +941,7 @@ export default {
 
 						// this.selected_nodes = [];
 						// this.selected_edges = [];
+						this.flag_div2 = true;
 						
 						this.nodes_response = response.data.data.nodes;						
 						this.edges_response = response.data.data.edges;
@@ -867,7 +953,8 @@ export default {
 
 						// this.heatmap_biocyc(this.biocyc);
 						this.heatmap_biocyc_all(biocyc_all);
-						this.heatmap_biocyc_ratio(this.biocyc);
+						// this.heatmap_biocyc_ratio(this.biocyc);
+						this.heatmap_biocyc_ratio_all(biocyc_all);
 
 						// const deegres = response.data.data.degrees;
 						this.deegres = response.data.data.degrees;
@@ -875,6 +962,9 @@ export default {
 						
 						this.is_all_selected_labels = false;
 						this.selectAllEdgeLabels();
+
+						// this.flag_similarity = true;
+						this.flag_select = true;
 
 					}
 				}).catch((error) => {
@@ -1106,8 +1196,6 @@ export default {
 					console.log("Other case");
 				}
 			});
-
-			this.flag_select = true;
 		},
 
 		heatmap_biocyc (matrix) {
@@ -1379,13 +1467,140 @@ export default {
 
 			// let group = this.form2.group.split("-");
 			// let yData = [group[0] + " (before)", group[1] + " (after)"]; // Object.keys(matrix[0]);
-			let yData = ["Ratio"]
+			let yData = ["Ratio"];
 			let xData = []; // Object.keys(matrix);
 			
 			let data = [];
 			for (let i = 0; i < matrix.length; i++) {
 				xData.push(matrix[i].ID);
 				data.push([i, 0, matrix[i].Ratio]);
+			}
+	
+			var minValue = Math.min.apply(null, data.map(item => item[2]));
+			var maxValue = Math.max.apply(null, data.map(item => item[2]));
+
+			option = {
+				title: {
+					// text: 'Les Miserables',
+					// subtext: 'Heatmap',
+					top: 'top',
+					left: 'center'
+				},
+				tooltip: {
+					position: 'top',
+					trigger: 'item', // Tooltip trigger on data item
+					formatter: function(params) {
+						// Customize the tooltip content
+						// console.log(params);
+						return 'Name: ' + params.name + '<br/> Value: ' + params.value[2];
+					}
+				},
+				grid: {
+					// height: '50%',
+					// top: '15%'
+				},
+				xAxis: {
+					type: 'category',
+					data: xData
+				},
+				yAxis: {
+					type: 'category',
+					data: yData
+				},
+				visualMap: {
+					min: minValue,
+					max: maxValue,
+					calculable: true,
+					orient: 'vertical',
+    				left: 'right',
+    				// bottom: '84%',					
+					realtime: false,
+					inRange: {
+						color: [
+							'#313695',
+							'#4575b4',
+							'#74add1',
+							'#abd9e9',
+							'#e0f3f8',
+							'#ffffbf',
+							'#fee090',
+							'#fdae61',
+							'#f46d43',
+							'#d73027',
+							'#a50026'
+						]
+					}
+				},
+				series: [
+					{
+						name: 'Correlation',
+						type: 'heatmap',
+						data: data,
+						label: {
+							show: false
+						},
+						emphasis: {
+								itemStyle: {
+								borderColor: '#333',
+								borderWidth: 1
+							}
+						},
+						// progressive: 1000,
+						animation: false
+					}
+				],
+				/* dataZoom: [{
+					type: 'inside', // Use inside type dataZoom for zooming within the chart area
+					xAxisIndex: 0,  // Specify the index of the xAxis component
+					filterMode: 'none', // Keep the original data range
+				}], */
+				dataZoom: [
+					{
+						type: 'slider', // Use slider type dataZoom for horizontal zooming
+						xAxisIndex: 0,
+						filterMode: 'none',
+					},
+					/* {
+						type: 'slider', // Use slider type dataZoom for vertical zooming
+						yAxisIndex: 0,
+						filterMode: 'none',
+						orient: 'vertical', // Set orientation to vertical
+					} */
+				]
+			};
+			
+			option && myChart.setOption(option);			
+		},
+
+		heatmap_biocyc_ratio_all (list_matrix) {
+			// set the dimensions and margins of the graph
+			
+			/* const source = [...new Set(data.map(obj => obj.source))];
+			const target = [...new Set(data.map(obj => obj.target))];
+
+			console.log(source);
+			console.log(target); */
+
+			var chartDom = document.getElementById('heatmap_ratio');
+			var myChart = echarts.init(chartDom);
+			var option;
+
+			// let group = this.form2.group.split("-");
+			// let yData = [group[0] + " (before)", group[1] + " (after)"]; // Object.keys(matrix[0]);
+			let yData = this.form2.groups;
+			let xData = []; // Object.keys(matrix);
+			
+			let data = [];
+			let matrix = [];
+			for (let i = 0; i < this.form2.groups.length; i++) {
+				matrix = list_matrix[this.form2.groups[i]];
+				for (let j = 0; j < matrix.length; j++) {
+					if (i == 0) {
+						xData.push(matrix[j].ID);
+						// data.push([j, 0, matrix[j].Before]);
+					}
+					data.push([j, i, matrix[j].Ratio]);
+				}
 			}
 	
 			var minValue = Math.min.apply(null, data.map(item => item[2]));
@@ -1493,7 +1708,7 @@ export default {
 			var x = degrees.map(d => this.nodes_detail.find((obj) => obj.id == d[0])[this.form2.type]);
 			var y = degrees.map(d => d[1]);
 
-			console.log(x);
+			// console.log(x);
 
 			option = {
 				title: {
@@ -2070,7 +2285,7 @@ export default {
 	@import '~scss/vue/_pretty_checkboxes';
 </style>
 <style scoped>
-	.uk-height-large {
+	/* .uk-height-large {
   		height: 560px;
-	}
+	} */
 </style>

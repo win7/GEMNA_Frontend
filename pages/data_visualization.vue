@@ -729,6 +729,17 @@ export default {
 		
 	},
 	methods: {
+		showNotification (text, pos, status, persistent) {
+			var config = {};
+			config.timeout = persistent ? !persistent : 3000;
+			if(status) {
+				config.status = status;
+			}
+			if(pos) {
+				config.pos = pos;
+			}
+			UIkit.notification(text, config);
+		},
 		msSelectAll () {
 			this.$refs.msPublicMethods.select_all()
 		},
@@ -744,6 +755,8 @@ export default {
 			this.metabolomic_network(nodes, edges, false);
 
 			this.flag_select = true;
+
+			this.showNotification('Successful Filtration', 'top-center', 'success');
 
 		},
 		resetGraph: function (event) {
@@ -765,6 +778,8 @@ export default {
 			this.msDeselectAll();
 
 			this.flag_select = true;
+
+			this.showNotification('Successful Reset', 'top-center', 'success');
 		},
 		filterLabels (edges_response) {
 			const edges_filter = [];
@@ -884,11 +899,12 @@ export default {
 				await this.$axios.get(`/api/experiments/${this.form1.id}/`).then((response) => {
 					console.log(1, response.data);
 					if (response.status === 200) {
-						swal.fire(
+						/* swal.fire(
 							response.data.message,
 							``,
 							'success'
-						);
+						); */
+						this.showNotification(response.data.message, 'top-center', 'success');
 						this.form2.id = this.form1.id;
 						// this.flag = true;
 						this.flag_load = true;
@@ -907,11 +923,12 @@ export default {
 					}
 				}).catch((error) => {
 					console.log(error.response);
-					swal.fire(
+					this.showNotification(response.data.message, 'top-center', 'warning');
+					/* swal.fire(
 						error.response.data.message,
 						'',
 						'error'
-					);
+					); */
 				});
 			}
 			this.submitStatus1 = 'OK'
@@ -934,11 +951,12 @@ export default {
 				await this.$axios.post("/api/experiments-consult/", this.form2).then((response) => {
 					console.log(1, response.data);
 					if (response.status === 200) {
-						swal.fire(
+						/* swal.fire(
 							response.data.message,
 							``,
 							'success'
-						);
+						); */
+						this.showNotification(response.data.message, 'top-center', 'success');
 
 						// this.selected_nodes = [];
 						// this.selected_edges = [];
@@ -963,11 +981,12 @@ export default {
 					}
 				}).catch((error) => {
 					console.log(error.response);
-					swal.fire(
+					/* swal.fire(
 						error.response.data.message,
 						'',
 						'error'
-					);
+					); */
+					this.showNotification(response.data.message, 'top-center', 'warning');
 				});
 			}
 			this.submitStatus2 = 'OK'

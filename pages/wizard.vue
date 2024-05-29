@@ -65,6 +65,17 @@ export default {
 
 	},
 	methods: {
+		showNotification (text, pos, status, persistent) {
+			var config = {};
+			config.timeout = persistent ? !persistent : 3000;
+			if(status) {
+				config.status = status;
+			}
+			if(pos) {
+				config.pos = pos;
+			}
+			UIkit.notification(text, config);
+		},
 		validateStep (name) {
 			var refToValidate = this.$refs[name];
 			return refToValidate.validate();
@@ -90,16 +101,16 @@ export default {
 			// this.$nuxt.$loading.start();
 			await this.$axios.post("/api/experiments/", form, {headers : {'content-type': 'multipart/form-data'}}).then((response) => {				
 				if (response.status === 201) {
-					swal.fire(
+					/* swal.fire(
 						response.data.message,
 						`Results will be sent to your e-mail: <span class="uk-text-bold"> ${response.data.data.email} </span>`,
 						'success'
-					);
-				} else {
-
+					); */
+					this.showNotification(response.data.message, 'top-center', 'success');
 				}
 			}).catch((error) => {
 				console.log(error.response);
+				this.showNotification(response.data.message, 'top-center', 'warning');
 			});
 		},
 	}

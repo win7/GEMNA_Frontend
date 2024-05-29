@@ -593,8 +593,8 @@ export default {
 		nodes_response: [],
 		edges_response: [],
 		// biocyc: [],
-		biocyc_all: [],
-		degress: [],
+		biocyc_all_response: [],
+		degrees_response: [],
 
 		flag_select: false,
 		// flag: false,
@@ -609,16 +609,6 @@ export default {
 		}
 	}),
 	computed: {
-		msPublicMethodsOptions () {
-			let options = [];
-			for (let i = 1; i < 200; i++) {
-				options.push({
-					value: 'el-' + i,
-					text: "name" + i
-				})
-			}
-			return 	options;
-		},
 		msSearchableOptions () {
 			let options_node = [];
 			for (var k in this.nodes) {
@@ -748,6 +738,7 @@ export default {
 			this.$refs.msPublicMethods.deselect_all()
 		},
 		filterGraph: function (event) {
+			// Networks
 			this.flag_select = false;
 
 			let edges = this.filterLabels(this.edges_response);
@@ -755,10 +746,18 @@ export default {
 			let nodes = this.filterNodes(this.nodes_response);
 			this.metabolomic_network(nodes, edges, false);
 
+			// Heatmap, degrees
+			
+			let biocyc_all = this.filterBioCyc(this.biocyc_all_response);
+			this.heatmap_biocyc_all(biocyc_all);
+			this.heatmap_biocyc_ratio_all(biocyc_all);
+
+			let degrees = this.filterDegrees(this.degrees_response);
+			this.degree_network(degrees);
+			
 			this.flag_select = true;
 
 			this.showNotification('Successful Filtration', 'top-center', 'success');
-
 		},
 		resetGraph: function (event) {
 			this.flag_select = false;
@@ -766,12 +765,10 @@ export default {
 			// this.edges_response = response.data.data.changes_sub;
 			this.metabolomic_network(this.nodes_response, this.edges_response, true);
 
-			/* // this.biocyc = response.data.data.biocyc;
-			this.heatmap_biocyc(this.biocyc);
-			this.heatmap_biocyc_ratio(this.biocyc);
+			this.heatmap_biocyc_all(this.biocyc_all_response);
+			this.heatmap_biocyc_ratio_all(this.biocyc_all_response);
 
-			// this.deegres = response.data.data.degrees;
-			this.degree_network(this.deegres); */
+			this.degree_network(this.degrees_response);
 			
 			this.is_all_selected_labels = false;
 			this.selectAllEdgeLabels();
@@ -782,8 +779,34 @@ export default {
 
 			this.showNotification('Successful Reset', 'top-center', 'success');
 		},
+		filterDegrees (degrees_response) {
+			let degrees_filter = [];
+			for (var k in degrees_response) {
+				if (this.selected_nodes.includes(degrees_response[k][0])){
+					degrees_filter.push(degrees_response[k]);
+				}
+			}
+			return degrees_filter;
+		},
+		filterBioCyc (biocyc_all_response) {
+			let biocyc_all_filter = new Object();
+			let biocyc = [];
+			let biocyc_temp = [];
+
+			for (let i = 0; i < this.form2.groups.length; i++) {
+				biocyc_temp = [];
+				biocyc = biocyc_all_response[this.form2.groups[i]];
+				for (var j in biocyc) {
+					if (this.selected_nodes.includes(biocyc[j].id)){
+						biocyc_temp.push(biocyc[j]);
+					}
+				}
+				biocyc_all_filter[this.form2.groups[i]] = biocyc_temp;
+			}
+			return biocyc_all_filter;
+		},
 		filterLabels (edges_response) {
-			const edges_filter = [];
+			let edges_filter = [];
 			for (var k in edges_response) {
 				if (this.selected_labels.includes(edges_response[k].label)){
 					edges_filter.push(edges_response[k]);
@@ -792,7 +815,7 @@ export default {
 			return edges_filter;
 		},
 		filterNodes (nodes_response) {
-			const nodes_filter = [];
+			let nodes_filter = [];
 			for (var k in nodes_response) {
 				if (this.selected_nodes.includes(nodes_response[k].id)){
 					nodes_filter.push(nodes_response[k]);
@@ -801,7 +824,7 @@ export default {
 			return nodes_filter;
 		},
 		filterEdges (edges_response) {
-			const edges_filter = [];
+			let edges_filter = [];
 			for (var k in edges_response) {
 				if (this.selected_nodes.includes(edges_response[k].source) && this.selected_nodes.includes(edges_response[k].target)){
 					edges_filter.push(edges_response[k]);
@@ -843,13 +866,14 @@ export default {
 			console.log(this.form2.group);
 			this.nodes_detail = this.graph_nodes[this.form2.group];
 			
-			this.options = [];
+			this.options = [{id: "-1", text: "Select all"}];
 			for (let i = 0; i < this.nodes_detail.length; i++) {
 				this.options.push({
 					id: this.nodes_detail[i]["id"],
 					text: this.nodes_detail[i][this.form2.type]
 				})
 			}
+			console.log(this.nodes_detail);
 		},
 		onChangeGroup: function(event){
 			this.loadParams();
@@ -965,13 +989,13 @@ export default {
 						
 						this.nodes_response = response.data.data.nodes;						
 						this.edges_response = response.data.data.edges;
-						this.biocyc_all = response.data.data.biocyc_all;
-						this.deegres = response.data.data.degrees;
+						this.biocyc_all_response = response.data.data.biocyc_all;
+						this.degrees_response = response.data.data.degrees;
 
 						this.metabolomic_network(this.nodes_response, this.edges_response, true);
-						this.heatmap_biocyc_all(this.biocyc_all);
-						this.heatmap_biocyc_ratio_all(this.biocyc_all);
-						this.degree_network(this.deegres);
+						this.heatmap_biocyc_all(this.biocyc_all_response);
+						this.heatmap_biocyc_ratio_all(this.biocyc_all_response);
+						this.degree_network(this.degrees_response);
 						
 						this.is_all_selected_labels = false;
 						this.selectAllEdgeLabels();
@@ -991,72 +1015,6 @@ export default {
 				});
 			}
 			this.submitStatus2 = 'OK'
-		},
-
-		testok () {
-			var chartContainer = document.getElementById('main');
-			var myChart = echarts.init(chartContainer);
-
-			// Sample data for the graph nodes and edges
-			var nodes = [
-			{ name: 'Node A' },
-			{ name: 'Node B' },
-			{ name: 'Node C' },
-			];
-
-			var edges = [
-			{ source: 'Node A', target: 'Node B', value: 5, label: 'Edge Label 1' },
-			{ source: 'Node B', target: 'Node C', value: 8, label: 'Edge Label 2' },
-			{ source: 'Node C', target: 'Node A', value: 3, label: 'Edge Label 3' },
-			];
-
-			// ECharts option object
-			var option = {
-				series: [
-					{
-					type: 'graph',
-					layout: 'force',
-					roam: true,
-					data: nodes,
-					links: edges,
-					edgeSymbol: ['none', 'arrow'], // Optional: Arrow symbol for directed edges
-					edgeSymbolSize: 8, // Optional: Arrow size for directed edges
-					label: {
-						show: true, // Show the edge labels
-						position: 'middle', // Position of the edge labels (middle of the edge)
-						fontSize: 12, // Font size for the edge labels
-						color: '#333', // Font color for the edge labels
-						formatter: function (params) {
-							// Custom formatter function for the edge labels
-							return params.data.label; // Use the 'label' property from the edge data
-						},
-					},
-					lineStyle: {
-						// Set the line style for the edges
-						width: 2,
-					},
-					},
-				],
-				legend: {
-					data: edges.map((edge) => edge.label), // Use the edge labels as legend data
-					formatter: function (name) {
-					// Custom legend formatter
-					var edge = edges.find((edge) => edge.label === name);
-					return `{line|${name}}`;
-					},
-					textStyle: {
-					rich: {
-						line: {
-						width: 30,
-						},
-					},
-					},
-				},
-			};
-
-			// Set the option to the chart and render it
-			myChart.setOption(option);
-
 		},
 
 		metabolomic_network (nodes_response, edges_response, is_init) {
@@ -1363,7 +1321,7 @@ export default {
 				matrix = list_matrix[this.form2.groups[i]];
 				for (let j = 0; j < matrix.length; j++) {
 					if (i == 0) {
-						xData.push(matrix[j].ID);
+						xData.push(this.nodes_detail.find((obj) => obj.id == matrix[j].id)[this.form2.type]);
 						data.push([j, 0, matrix[j].Before]);
 					}
 					data.push([j, i + 1, matrix[j].After]);
@@ -1610,7 +1568,7 @@ export default {
 				matrix = list_matrix[this.form2.groups[i]];
 				for (let j = 0; j < matrix.length; j++) {
 					if (i == 0) {
-						xData.push(matrix[j].ID);
+						xData.push(this.nodes_detail.find((obj) => obj.id == matrix[j].id)[this.form2.type]);
 						// data.push([j, 0, matrix[j].Before]);
 					}
 					data.push([j, i, matrix[j].Ratio]);
@@ -2289,7 +2247,73 @@ export default {
 
 			// Set the options to the chart
 			myChart.setOption(option);
-		}
+		},
+
+		testok () {
+			var chartContainer = document.getElementById('main');
+			var myChart = echarts.init(chartContainer);
+
+			// Sample data for the graph nodes and edges
+			var nodes = [
+			{ name: 'Node A' },
+			{ name: 'Node B' },
+			{ name: 'Node C' },
+			];
+
+			var edges = [
+			{ source: 'Node A', target: 'Node B', value: 5, label: 'Edge Label 1' },
+			{ source: 'Node B', target: 'Node C', value: 8, label: 'Edge Label 2' },
+			{ source: 'Node C', target: 'Node A', value: 3, label: 'Edge Label 3' },
+			];
+
+			// ECharts option object
+			var option = {
+				series: [
+					{
+					type: 'graph',
+					layout: 'force',
+					roam: true,
+					data: nodes,
+					links: edges,
+					edgeSymbol: ['none', 'arrow'], // Optional: Arrow symbol for directed edges
+					edgeSymbolSize: 8, // Optional: Arrow size for directed edges
+					label: {
+						show: true, // Show the edge labels
+						position: 'middle', // Position of the edge labels (middle of the edge)
+						fontSize: 12, // Font size for the edge labels
+						color: '#333', // Font color for the edge labels
+						formatter: function (params) {
+							// Custom formatter function for the edge labels
+							return params.data.label; // Use the 'label' property from the edge data
+						},
+					},
+					lineStyle: {
+						// Set the line style for the edges
+						width: 2,
+					},
+					},
+				],
+				legend: {
+					data: edges.map((edge) => edge.label), // Use the edge labels as legend data
+					formatter: function (name) {
+					// Custom legend formatter
+					var edge = edges.find((edge) => edge.label === name);
+					return `{line|${name}}`;
+					},
+					textStyle: {
+					rich: {
+						line: {
+						width: 30,
+						},
+					},
+					},
+				},
+			};
+
+			// Set the option to the chart and render it
+			myChart.setOption(option);
+
+		},
 	}
 }
 </script>

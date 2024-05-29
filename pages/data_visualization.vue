@@ -335,7 +335,7 @@
 
 			<div class="uk-flex-center uk-grid" data-uk-grid v-if="flag_load">
 				<div class="uk-width-1-2@l">
-					<ScCard :full-screen="cardBFullScreen">
+					<ScCard :full-screen="cardBFullScreen1">
 						<ScCardHeader> <!-- separator> -->
 							<div class="uk-flex uk-flex-middle">
 								<i class="mdi mdi-book-open sc-icon-24 uk-margin-medium-right"></i>
@@ -353,8 +353,8 @@
 									<a
 										href="javascript:void(0)"
 										class="sc-actions-icon mdi mdi-fullscreen"
-										:class="{'mdi-fullscreen' : !cardBFullScreen, 'mdi-fullscreen-exit' : cardBFullScreen }"
-										@click.prevent="cardBFullScreen = !cardBFullScreen"
+										:class="{'mdi-fullscreen' : !cardBFullScreen1, 'mdi-fullscreen-exit' : cardBFullScreen1 }"
+										@click.prevent="cardBFullScreen1 = !cardBFullScreen1"
 									></a>
 								</ScCardActions>
 							</div>
@@ -466,7 +466,7 @@
 					</ScCard>
 				</div>
 				<div class="uk-width-1-2@l">
-					<ScCard :full-screen="cardBFullScreen">
+					<ScCard :full-screen="cardBFullScreen2">
 						<ScCardHeader> <!-- separator> -->
 							<div class="uk-flex uk-flex-middle">
 								<i class="mdi mdi-book-open sc-icon-24 uk-margin-medium-right"></i>
@@ -484,8 +484,8 @@
 									<a
 										href="javascript:void(0)"
 										class="sc-actions-icon mdi mdi-fullscreen"
-										:class="{'mdi-fullscreen' : !cardBFullScreen, 'mdi-fullscreen-exit' : cardBFullScreen }"
-										@click.prevent="cardBFullScreen = !cardBFullScreen"
+										:class="{'mdi-fullscreen' : !cardBFullScreen2, 'mdi-fullscreen-exit' : cardBFullScreen2 }"
+										@click.prevent="cardBFullScreen2 = !cardBFullScreen2"
 									></a>
 								</ScCardActions>
 							</div>
@@ -574,7 +574,8 @@ export default {
 		options: [],
 		groups: [],
 
-		cardBFullScreen: false,
+		cardBFullScreen1: false,
+		cardBFullScreen2: false,
 
 		nodes: [],
 		labels: [],

@@ -599,8 +599,8 @@ export default {
 		flag_select: false,
 		// flag: false,
 		flag_load: false,
-		flag_similarity: false,
-		flag_div2: false,
+		// flag_similarity: false,
+		// flag_div2: false,
 
 		select_settings: {
 			cssClass: 'ms-header ms-footer',
@@ -909,7 +909,10 @@ export default {
 				this.submitStatus1 = 'PENDING';
 
 				// this.flag = false;
+
+				this.flag_select = false;
 				this.flag_load = false;
+				// this.flag_similarity = false;
 
 				this.graph_details = [];
 				this.graph_nodes = [];
@@ -970,8 +973,8 @@ export default {
 				this.submitStatus2 = 'PENDING';
 				
 				this.flag_select = false;
-				this.flag_similarity = false;
-				this.flag_div2 = false;
+				// this.flag_similarity = false;
+				// this.flag_div2 = false;
 
 				await this.$axios.post("/api/experiments-consult/", this.form2).then((response) => {
 					console.log(1, response.data);
@@ -985,7 +988,7 @@ export default {
 
 						// this.selected_nodes = [];
 						// this.selected_edges = [];
-						this.flag_div2 = true;
+						// this.flag_div2 = true;
 						
 						this.nodes_response = response.data.data.nodes;						
 						this.edges_response = response.data.data.edges;

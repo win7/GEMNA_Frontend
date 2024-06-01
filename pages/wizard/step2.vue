@@ -16,7 +16,7 @@
 								:options="methods"
 								:settings="{'width': '100%', 'placeholder': 'Select a method...'}"
 								:error-state="$v.form.method.$error"
-								data-uk-tooltip="title: Method for generate embeddgins. The best model in the experiments was VGAE.; pos: top-right"
+								data-uk-tooltip="title: Method for generate embeddings. The best model in the experiments was 'LVGAE'.; pos: top-right"
 							></Select2>
 						</client-only>
 						<ul class="sc-vue-errors">
@@ -33,15 +33,15 @@
 					<div class="uk-form-controls">
 						<client-only>
 							<Select2
-								v-model="form.option"
-								:options="options"
+								v-model="form.data_variation"
+								:options="data_variations"
 								:settings="{'width': '100%', 'placeholder': 'Select a data variation...'}"
-								:error-state="$v.form.option.$error"
-								data-uk-tooltip="title: Technique to modify corpus graph. The best technique in the experiments was str.; pos: top-right"
+								:error-state="$v.form.data_variation.$error"
+								data-uk-tooltip="title: Technique to modify networks. The best technique in the experiments was 'dyn'.; pos: top-right"
 							></Select2>
 						</client-only>
 						<ul class="sc-vue-errors">
-							<li v-if="!$v.form.option.required">
+							<li v-if="!$v.form.data_variation.required">
 								Field is required
 							</li>
 						</ul>
@@ -54,7 +54,12 @@
 						Embeddings dimension
 					</label>
 					<div class="uk-form-controls">
-						<ScInput v-model.trim="form.dimension" :error-state="$v.form.dimension.$error" :validator="$v.form.dimension" mode="outline" type="number" data-uk-tooltip="title: Dimension of the embeddings to represent the nodes and edges of the graph.; pos: top-right"></ScInput>
+						<ScInput 
+							v-model.trim="form.dimension" 
+							:error-state="$v.form.dimension.$error" 
+							:validator="$v.form.dimension" 
+							mode="outline" type="number" 
+							data-uk-tooltip="title: Dimension of the embeddings to represent the nodes and edges of the network (the smaller the dimension, the shorter the runtime).; pos: top-right"></ScInput>
 						<ul class="sc-vue-errors">
 							<li v-if="!$v.form.dimension.required">
 								Field is required
@@ -64,22 +69,22 @@
 				</div>
 				<div>
 					<label class="uk-form-label">
-						Control
+						Controls
 					</label>
 					<div class="uk-form-controls">
 						<client-only>
 							<Select2
-								v-model="form.control"
+								v-model="form.controls"
 								:options="controls"
-								:settings="{ 'width': '100%', 'placeholder': 'Select control...' }"
-								:error-state="$v.form.control.$error" 
-								:validator="$v.form.control"
+								:settings="{ 'width': '100%', 'placeholder': 'Select control...', 'closeOnSelect': false}"
+								:error-state="$v.form.controls.$error"
+								:validator="$v.form.controls"
 								multiple
-								data-uk-tooltip="title: ...; pos: top-right"
+								data-uk-tooltip="title: The control phenotype will compare with the other phenotypes. You can select one or more.; pos: top-right"
 							></Select2>
 						</client-only>
 						<ul class="sc-vue-errors">
-							<li v-if="!$v.form.control.required">
+							<li v-if="!$v.form.controls.required">
 								Field is required
 							</li>
 						</ul>						
@@ -184,7 +189,7 @@
 import { scHelpers } from "~/assets/js/utils";
 
 const methods = [{"id": "vgae-line", "name": "LVGAE"}, {"id": "vgae-base", "name": "VGAE"}, {"id": "argva-base", "name": "ARGVA"}, {"id": "dgi-tran", "name": "DGI"}];
-const options = [{"id": "none", "name": "none"}, {"id": "str", "name": "str"}, {"id": "dyn", "name": "dyn"}];
+const data_variations = [{"id": "none", "name": "none"}, {"id": "str", "name": "str"}, {"id": "dyn", "name": "dyn"}];
 const transformations = [{"id": true, "name": "Yes"}, {"id": false, "name": "No"}];
 
 import ScInput from '~/components/Input'
@@ -210,8 +215,8 @@ export default {
 		form: {
 			method: "",
 			dimension: "3",
-			option: "",
-			control: [],
+			data_variation: "",
+			controls: [],
 			transformation: false,
 			threshold_corr: "0.3",
 			threshold_log2: "0",
@@ -226,8 +231,8 @@ export default {
 				return obj;
 			});
 		},
-		options () {
-			return options.map(function (obj) {
+		data_variations () {
+			return data_variations.map(function (obj) {
 				obj.id = obj.id || obj.code;
 				obj.text = obj.text || obj.name;
 				return obj;
@@ -266,10 +271,10 @@ export default {
 			dimension: {
 				required,
 			},
-			option: {
+			data_variation: {
 				required
 			},
-			control: {
+			controls: {
 				required
 			},
 			transformation: {

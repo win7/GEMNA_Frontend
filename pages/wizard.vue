@@ -89,9 +89,9 @@ export default {
 			let form = new FormData();
 			form.append('raw_data', this.finalModel.raw_data);
 			form.append('method', this.finalModel.method);
-			form.append('data_variation', this.finalModel.option);
+			form.append('data_variation', this.finalModel.data_variation);
 			form.append('dimension', this.finalModel.dimension);
-			form.append('control', this.finalModel.control.join(","));
+			form.append('controls', this.finalModel.controls.join(","));
 			form.append('transformation', this.finalModel.transformation);
 			form.append('threshold_corr', this.finalModel.threshold_corr);
 			form.append('threshold_log2', this.finalModel.threshold_log2);

@@ -18,8 +18,8 @@
 			<span class="uk-text-muted uk-text-default">
 				Data variation:
 			</span>
-			<span v-if="data.option">
-				{{ getOption(data.option) }}
+			<span v-if="data.data_variation">
+				{{ getDataVariation(data.data_variation) }}
 			</span><br>
 			<span class="uk-text-muted uk-text-default">
 				Dimension:
@@ -27,8 +27,8 @@
 			<span class="uk-text-muted uk-text-default">
 				Control:
 			</span>
-			<span v-if="data.control">
-				{{ getControl(data.control) }}
+			<span v-if="data.controls">
+				{{ getControl(data.controls) }}
 			</span><br>
 			<span class="uk-text-muted uk-text-default">
 				Tranformation:
@@ -70,7 +70,7 @@ export default {
 			});
 			return result[0].name;
 		},
-		getOption (id) {
+		getDataVariation (id) {
 			var result = options.filter(obj => {
 				return obj.id == id
 			});

@@ -219,6 +219,7 @@
 														:error-state="$v.form2.plot.$error" :validator="$v.form2.plot"
 														value="correlation"
 														class="p-radio"
+														:disabled="disable_show"
 														data-uk-tooltip="title: ...; pos: top-right"
 													>
 														Correlation nodes
@@ -230,6 +231,7 @@
 														:error-state="$v.form2.plot.$error" :validator="$v.form2.plot.type"
 														value="correlation_neighbors"
 														class="p-radio"
+														:disabled="disable_show"
 														data-uk-tooltip="title: ...; pos: top-right"
 													>
 													Correlation + neighbors nodes
@@ -257,6 +259,7 @@
 														:error-state="$v.form2.nodes.$error" 
 														:validator="$v.form2.nodes"
 														multiple
+														@change="onChangeNodes($event)"
 														data-uk-tooltip="title: ...; pos: top-right"
 													></Select2>
 												</client-only>
@@ -493,7 +496,7 @@
 						<ScCardContent>
 							<ScCardBody>
 								<div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle" id="heatmap"></div>
-								<div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle" id="heatmap_ratio"></div>
+								<div class="uk-height-large uk-flex uk-flex-center uk-flex-middle" id="heatmap_ratio"></div>
 								<div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle" id="degree-network"></div>
 							</ScCardBody>
 						</ScCardContent>
@@ -601,6 +604,7 @@ export default {
 		flag_load: false,
 		// flag_similarity: false,
 		// flag_div2: false,
+		disable_show: false,
 
 		select_settings: {
 			cssClass: 'ms-header ms-footer',
@@ -877,6 +881,14 @@ export default {
 		},
 		onChangeGroup: function(event){
 			this.loadParams();
+    	},
+		onChangeNodes: function(event){
+			// console.log(this.form2.nodes);
+			if (this.form2.nodes.includes("-1")) {
+				this.disable_show = true;
+			} else {
+				this.disable_show = false;
+			}
     	},
 		onChangeType: function(event){
 			this.loadParams();			
@@ -1309,30 +1321,44 @@ export default {
 
 			// let group = this.form2.group.split("-");
 			// let yData = [group[0] + " (before)", group[1] + " (after)"]; // Object.keys(matrix[0]);
-			let group_ = this.form2.group.split("-");
-			let yData = [group_[0]]; // this.form2.group.split("-");
+			let group = [];
+			let groups_new = [];
+			const group_aux = this.form2.group.split("-");
+
+			let yData = []; // this.form2.group.split("-");
 			for (let k = 0; k < this.form2.groups.length; k++) { // improve iterations
-				group_ = this.form2.groups[k].split("-");
-				yData.push(group_[1]);
+				group = this.form2.groups[k].split("-")
+				if (group_aux[0] == group[0]) {
+					if (yData.length == 0) {
+						yData.push(group[0]);
+					}
+					yData.push(group[1]);
+					groups_new.push(this.form2.groups[k])
+				}
+				/* if (!yData.includes(group[1])) {
+					yData.push(group[1]);
+				} */
+				// yData.push(group[1]);
 			}
 
 			let xData = []; // Object.keys(matrix);
 			
 			let data = [];
 			let matrix = [];
-			for (let i = 0; i < this.form2.groups.length; i++) {
-				matrix = list_matrix[this.form2.groups[i]];
+			for (let i = 0; i < groups_new.length; i++) {
+				matrix = list_matrix[groups_new[i]];
 				for (let j = 0; j < matrix.length; j++) {
 					if (i == 0) {
 						xData.push(this.nodes_detail.find((obj) => obj.id == matrix[j].id)[this.form2.type]);
-						data.push([j, 0, matrix[j].Before]);
+						data.push([j, i, matrix[j].Before]);
 					}
 					data.push([j, i + 1, matrix[j].After]);
 				}
 			}
 
-			var minValue = Math.min.apply(null, data.map(item => item[2]));
-			var maxValue = Math.max.apply(null, data.map(item => item[2]));
+			const minValue = Math.min.apply(null, data.map(item => item[2]));
+			const maxValue = Math.max.apply(null, data.map(item => item[2]));
+			console.log(minValue, maxValue);
 
 			option = {
 				title: {
@@ -1578,8 +1604,8 @@ export default {
 				}
 			}
 	
-			var minValue = Math.min.apply(null, data.map(item => item[2]));
-			var maxValue = Math.max.apply(null, data.map(item => item[2]));
+			const minValue = Math.min.apply(null, data.map(item => item[2]));
+			const maxValue = Math.max.apply(null, data.map(item => item[2]));
 
 			option = {
 				title: {

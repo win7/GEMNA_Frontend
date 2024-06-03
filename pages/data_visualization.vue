@@ -1754,6 +1754,16 @@ export default {
 					top: 'top',
 					left: 'center'
 				},
+				toolbox: {
+					show: true,
+					feature: {
+						saveAsImage: { 
+							show: true,
+							name: "Neighbors_" + this.form2.group
+						}
+						// dataView: { show: true, readOnly: false }
+					}
+				},
 				tooltip: {
 					position: 'top',
 					trigger: 'item', // Tooltip trigger on data item

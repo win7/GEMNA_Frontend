@@ -198,7 +198,7 @@
 														:error-state="$v.form2.group.$error" 
 														:validator="$v.form2.group"
 														@change="onChangeGroup($event)"
-														data-uk-tooltip="title: ...; pos: top-right"
+														data-uk-tooltip="title: Interaction between two 2notypes; pos: top-right"
 													></Select2>
 												</client-only>
 												<ul class="sc-vue-errors">
@@ -210,7 +210,7 @@
 										</div>
 										<div>
 											<label class="uk-form-label" for="f-l-name">
-												Show by
+												Show with
 											</label>
 											<div class="uk-form-controls">
 												<span class="uk-margin-right">
@@ -220,7 +220,7 @@
 														value="correlation"
 														class="p-radio"
 														:disabled="disable_show"
-														data-uk-tooltip="title: ...; pos: top-right"
+														data-uk-tooltip="title: Show results with correlation.; pos: top-right"
 													>
 														Correlation nodes
 													</PrettyRadio>
@@ -232,7 +232,7 @@
 														value="correlation_neighbors"
 														class="p-radio"
 														:disabled="disable_show"
-														data-uk-tooltip="title: ...; pos: top-right"
+														data-uk-tooltip="title: Show results with correlation and their neighbors.; pos: top-right"
 													>
 													Correlation + neighbors nodes
 													</PrettyRadio>
@@ -260,7 +260,7 @@
 														:validator="$v.form2.nodes"
 														multiple
 														@change="onChangeNodes($event)"
-														data-uk-tooltip="title: ...; pos: top-right"
+														data-uk-tooltip="title: Metabolote for analysis.; pos: top-right"
 													></Select2>
 												</client-only>
 												<ul class="sc-vue-errors">
@@ -282,7 +282,7 @@
 														value="id"
 														class="p-radio"
 														@change="onChangeType($event)"
-														data-uk-tooltip="title: ...; pos: top-right"
+														data-uk-tooltip="title: Show results by Alignment ID; pos: top-right"
 													>
 														Alignment ID
 													</PrettyRadio>
@@ -294,7 +294,7 @@
 														value="mz"
 														class="p-radio"
 														@change="onChangeType($event)"
-														data-uk-tooltip="title: ...; pos: top-right"
+														data-uk-tooltip="title: Show results by Average Mz; pos: top-right"
 													>
 														Average Mz
 													</PrettyRadio>
@@ -306,7 +306,7 @@
 														value="name"
 														class="p-radio"
 														@change="onChangeType($event)"
-														data-uk-tooltip="title: ...; pos: top-right"
+														data-uk-tooltip="title: Show results by Metabolite name; pos: top-right"
 													>
 														Metabolite name
 													</PrettyRadio>
@@ -1103,6 +1103,16 @@ export default {
 					top: 'top',
 					left: 'center'
 				},
+				toolbox: {
+					show: true,
+					feature: {
+						saveAsImage: { 
+							show: true,
+							name: "Network_" + this.form2.group
+						}
+						// dataView: { show: true, readOnly: false }
+					}
+				},
 				tooltip: {},
 				/* grid: {
 					// height: '50%',
@@ -1350,14 +1360,18 @@ export default {
 				for (let j = 0; j < matrix.length; j++) {
 					if (i == 0) {
 						xData.push(this.nodes_detail.find((obj) => obj.id == matrix[j].id)[this.form2.type]);
-						data.push([j, i, matrix[j].Before]);
+						if (matrix[j].Before != "-") {
+							data.push([j, i, matrix[j].Before]);
+						}
 					}
-					data.push([j, i + 1, matrix[j].After]);
+					if (matrix[j].After != "-") {
+						data.push([j, i + 1, matrix[j].After]);
+					}
 				}
 			}
 
-			const minValue = Math.min.apply(null, data.map(item => item[2]));
-			const maxValue = Math.max.apply(null, data.map(item => item[2]));
+			const minValue = Math.floor(Math.min.apply(null, data.map(item => item[2])));
+			const maxValue = Math.ceil(Math.max.apply(null, data.map(item => item[2])));
 			console.log(minValue, maxValue);
 
 			option = {
@@ -1366,6 +1380,16 @@ export default {
 					subtext: 'Heatmap',
 					top: 'top',
 					left: 'center'
+				},
+				toolbox: {
+					show: true,
+					feature: {
+						saveAsImage: { 
+							show: true,
+							name: "Heatmap_" + this.form2.group
+						}
+						// dataView: { show: true, readOnly: false }
+					}
 				},
 				tooltip: {
 					position: 'top',
@@ -1600,12 +1624,14 @@ export default {
 						xData.push(this.nodes_detail.find((obj) => obj.id == matrix[j].id)[this.form2.type]);
 						// data.push([j, 0, matrix[j].Before]);
 					}
-					data.push([j, i, matrix[j].Ratio]);
+					if (matrix[j].Ratio != "-") {
+						data.push([j, i, matrix[j].Ratio]);
+					}
 				}
 			}
 	
-			const minValue = Math.min.apply(null, data.map(item => item[2]));
-			const maxValue = Math.max.apply(null, data.map(item => item[2]));
+			const minValue = Math.floor(Math.min.apply(null, data.map(item => item[2])));
+			const maxValue = Math.ceil(Math.max.apply(null, data.map(item => item[2])));
 
 			option = {
 				title: {
@@ -1613,6 +1639,16 @@ export default {
 					subtext: 'Ratios',
 					top: 'top',
 					left: 'center'
+				},
+				toolbox: {
+					show: true,
+					feature: {
+						saveAsImage: { 
+							show: true,
+							name: "Ratios_" + this.form2.group
+						}
+						// dataView: { show: true, readOnly: false }
+					}
 				},
 				tooltip: {
 					position: 'top',

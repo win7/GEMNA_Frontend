@@ -159,7 +159,8 @@
 						Threshold (log2)
 					</label>
 					<div class="uk-form-controls">
-						<ScInput v-model.trim="form.threshold_log2" :error-state="$v.form.threshold_log2.$error" :validator="$v.form.threshold_log2" mode="outline" type="number" data-uk-tooltip="title: ...; pos: top-right"></ScInput>
+						<ScInput v-model.trim="form.threshold_log2" :error-state="$v.form.threshold_log2.$error" :validator="$v.form.threshold_log2" mode="outline" type="number" 
+							data-uk-tooltip="title: Ratio of changes in log2.; pos: top-right"></ScInput>
 						<ul class="sc-vue-errors">
 							<li v-if="!$v.form.threshold_log2.required">
 								Field is required

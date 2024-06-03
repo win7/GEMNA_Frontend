@@ -81,7 +81,7 @@ export default {
 	mixins: [validationMixin],
 	data: () => ({
 		form: {
-			email: "win7.eam@gmail.com",
+			email: "",
 			raw_data: "",
 			file_name: "",
 		}

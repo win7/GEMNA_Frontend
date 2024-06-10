@@ -219,7 +219,7 @@ export default {
 			data_variation: "",
 			controls: [],
 			transformation: false,
-			threshold_corr: "0.3",
+			threshold_corr: "0.5",
 			threshold_log2: "0",
 			alpha: "0.05",
 		},

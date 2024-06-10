@@ -52,19 +52,40 @@
 												</ul>
 											</div>
 										</div>
-										<!-- <div>
+										<div>
 											<label class="uk-form-label">
-												Other
+												Filter quality
 											</label>
 											<div class="uk-form-controls">
-												<ScInput v-model.trim="form1.id" :error-state="$v.form1.id.$error" :validator="$v.form1.id" mode="outline" data-uk-tooltip="title: This code was sent to your email.; pos: top-right"></ScInput>
+												<span class="uk-margin-right">
+													<PrettyRadio
+														v-model="form1.quality"
+														:error-state="$v.form1.quality.$error" :validator="$v.form1.quality"
+														value="f1"
+														class="p-radio"
+														data-uk-tooltip="title: Show results with robustness.; pos: top-right"
+													>
+													Robustness
+													</PrettyRadio>
+												</span>
+												<span class="uk-margin-right">
+													<PrettyRadio
+														v-model="form1.quality"
+														:error-state="$v.form1.quality.$error" :validator="$v.form1.quality"
+														value="f2"
+														class="p-radio"
+														data-uk-tooltip="title: Show results with sensitivity.; pos: top-right"
+													>
+													Sensitivity
+													</PrettyRadio>
+												</span>
 												<ul class="sc-vue-errors">
-													<li v-if="!$v.form1.id.required">
+													<li v-if="!$v.form1.quality.required">
 														Field is required
 													</li>
 												</ul>
 											</div>
-										</div> -->
+										</div>
 									</div>
 								</fieldset>
 								<div class="uk-margin-top">
@@ -86,8 +107,8 @@
 				</div>
 			</div>
 			
-			<div class="uk-flex-center uk-grid" data-uk-grid v-if="flag_load">
-				<div class="uk-width-1-4@l">
+			<div class="uk-flex-center uk-grid" data-uk-grid> <!-- v-if="flag_load" -->
+				<div class="uk-width-1-3@l">
 					<ScCard>
 						<ScCardHeader>
 							<div class="uk-flex uk-flex-middle">
@@ -129,7 +150,7 @@
 						</ScCardBody>
 					</ScCard>
 				</div>
-				<div class="uk-width-3-4@l">
+				<div class="uk-width-1-3@l">
 					<ScCard>
 						<ScCardHeader>
 							<div class="uk-flex uk-flex-middle">
@@ -162,6 +183,21 @@
 									</tbody>
 								</table>
 							</div>
+						</ScCardBody>
+					</ScCard>
+				</div>
+				<div class="uk-width-1-3@l">
+					<ScCard>
+						<ScCardHeader>
+							<div class="uk-flex uk-flex-middle">
+								<i class="mdi mdi-book-open sc-icon-24 uk-margin-medium-right"></i>
+								<ScCardTitle>
+									Clusters
+								</ScCardTitle>
+							</div>
+						</ScCardHeader>
+						<ScCardBody>
+							<div class="uk-height-large uk-flex uk-flex-center uk-flex-middle" id="clustering"></div>
 						</ScCardBody>
 					</ScCard>
 				</div>
@@ -560,6 +596,7 @@ export default {
 
 		form1: {
 			id: "",
+			quality: "f1"
 		},
 		form2: {
 			id: "",
@@ -699,6 +736,9 @@ export default {
 	validations: {
 		form1: {
 			id: {
+				required,
+			},
+			quality: {
 				required,
 			}
 		},
@@ -936,7 +976,7 @@ export default {
 				// this.form2.type = "id";
 				// this.form2.plot = "correlation";
 
-				await this.$axios.get(`/api/experiments/${this.form1.id}/`).then((response) => {
+				await this.$axios.get(`/api/experiments/${this.form1.id}/`, {params: this.form1}).then((response) => {
 					console.log(1, response.data);
 					if (response.status === 200) {
 						/* swal.fire(
@@ -951,6 +991,8 @@ export default {
 
 						this.graph_details = response.data.data.details;
 						this.graph_nodes = response.data.data.nodes;
+						let cluster = response.data.data.cluster;
+
 						// this.groups = [];
 						this.form2.groups = [];
 						for (let i = 0; i < this.graph_details.length; i++) {
@@ -960,6 +1002,8 @@ export default {
 								text: this.graph_details[i].name
 							})
 						}
+
+						this.clustering(cluster);
 					}
 				}).catch((error) => {
 					console.log(error.response);
@@ -1793,6 +1837,56 @@ export default {
 					// start: 0,       // Initial zoom starting position
 					// end: 10,        // Initial zoom ending position
 				}]
+			};
+
+			option && myChart.setOption(option);
+		},
+
+		clustering (data) {
+			var chartDom = document.getElementById('clustering');
+			var myChart = echarts.init(chartDom);
+			var option;
+			var colorAll = [
+				'#bbb',
+				'#37A2DA',
+				'#e06343',
+				'#37a354',
+				'#b55dba',
+				'#b5bd48',
+				'#8378EA',
+				'#96BFFF'
+			];
+
+			var series = [];
+			var legendData = [];
+
+			for (var d in data) {
+				series.push({
+					name: data[d][2],
+					type: 'scatter',
+					data: [[data[d][0], data[d][1]]],
+					itemStyle: { 
+					color:  colorAll[data[d][2]]
+					},
+					symbolSize: 15
+				});
+				legendData.push(data[d][2]);
+			}
+
+			option = {
+				/* title: {
+					text: 'Scatter Plot with Legend by Color'
+				}, */
+				legend: {
+					data: legendData
+				},
+				xAxis: {
+					type: 'value'
+				},
+				yAxis: {
+					type: 'value'
+				},
+				series: series
 			};
 
 			option && myChart.setOption(option);

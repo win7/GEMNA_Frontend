@@ -108,7 +108,7 @@
 			</div>
 			
 			<div class="uk-flex-center uk-grid" data-uk-grid> <!-- v-if="flag_load" -->
-				<div class="uk-width-1-3@l">
+				<div class="uk-width-1-4@l">
 					<ScCard>
 						<ScCardHeader>
 							<div class="uk-flex uk-flex-middle">
@@ -150,7 +150,7 @@
 						</ScCardBody>
 					</ScCard>
 				</div>
-				<div class="uk-width-1-3@l">
+				<div class="uk-width-expand">
 					<ScCard>
 						<ScCardHeader>
 							<div class="uk-flex uk-flex-middle">
@@ -986,6 +986,7 @@ export default {
 						); */
 						this.showNotification(response.data.message, 'top-center', 'success');
 						this.form2.id = this.form1.id;
+						this.form2.quality = this.form1.quality;
 						// this.flag = true;
 						this.flag_load = true;
 
@@ -1031,7 +1032,7 @@ export default {
 				this.flag_select = false;
 				// this.flag_similarity = false;
 				// this.flag_div2 = false;
-
+				
 				await this.$axios.post("/api/experiments-consult/", this.form2).then((response) => {
 					console.log(1, response.data);
 					if (response.status === 200) {
@@ -1868,7 +1869,7 @@ export default {
 					itemStyle: { 
 					color:  colorAll[data[d][2]]
 					},
-					symbolSize: 15
+					symbolSize: 10
 				});
 				legendData.push(data[d][2]);
 			}
@@ -1877,6 +1878,16 @@ export default {
 				/* title: {
 					text: 'Scatter Plot with Legend by Color'
 				}, */
+				toolbox: {
+					show: true,
+					feature: {
+						saveAsImage: { 
+							show: true,
+							name: "Clusters_" + this.form2.group
+						}
+						// dataView: { show: true, readOnly: false }
+					}
+				},
 				legend: {
 					data: legendData
 				},

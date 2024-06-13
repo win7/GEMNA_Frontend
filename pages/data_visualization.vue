@@ -913,7 +913,7 @@ export default {
 			this.options = [{id: "-1", text: "Select all"}];
 			for (let i = 0; i < this.nodes_detail.length; i++) {
 				this.options.push({
-					id: this.nodes_detail[i]["id"],
+					id: this.nodes_detail[i]["id"].toString(),
 					text: this.nodes_detail[i][this.form2.type]
 				})
 			}
@@ -1218,12 +1218,12 @@ export default {
 							fontSize: 12, // 16
 							color: "black"
 						},
-						/* emphasis: {
+						emphasis: {
 							focus: 'adjacency',
 							lineStyle: {
 								width: 3
 							}
-						} */
+						}
 					}
 				]
 			};

@@ -12,6 +12,7 @@ const _2b3e7e5f = () => interopDefault(import('../pages/data_visualization_v2.vu
 const _2b4c95e0 = () => interopDefault(import('../pages/data_visualization_v3.vue' /* webpackChunkName: "pages/data_visualization_v3" */))
 const _2b5aad61 = () => interopDefault(import('../pages/data_visualization_v4.vue' /* webpackChunkName: "pages/data_visualization_v4" */))
 const _2b68c4e2 = () => interopDefault(import('../pages/data_visualization_v5.vue' /* webpackChunkName: "pages/data_visualization_v5" */))
+const _2b76dc63 = () => interopDefault(import('../pages/data_visualization_v6.vue' /* webpackChunkName: "pages/data_visualization_v6" */))
 const _4000437c = () => interopDefault(import('../pages/login_page.vue' /* webpackChunkName: "pages/login_page" */))
 const _f2378796 = () => interopDefault(import('../pages/login_page_auth.vue' /* webpackChunkName: "pages/login_page_auth" */))
 const _123914f0 = () => interopDefault(import('../pages/wizard.vue' /* webpackChunkName: "pages/wizard" */))
@@ -179,6 +180,10 @@ export const routerOptions = {
     path: "/data_visualization_v5",
     component: _2b68c4e2,
     name: "data_visualization_v5"
+  }, {
+    path: "/data_visualization_v6",
+    component: _2b76dc63,
+    name: "data_visualization_v6"
   }, {
     path: "/login_page",
     component: _4000437c,

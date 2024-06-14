@@ -367,32 +367,6 @@
 									</button>
 								</div>
 							</form>
-
-							<!-- -->
-							<div class="uk-margin-top">
-								<VueGoodTable
-									:columns="columns"
-									:rows="rows"
-									style-class="uk-table uk-table-divider uk-table-striped uk-table-small scutum-vgt"
-									:select-options="{ 
-										enabled: true,
-										selectOnCheckboxOnly: true,
-										disableSelectInfo: true,
-									}"
-									:search-options="{
-										enabled: true,
-										persistSelected: true
-									}"
-									:pagination-options="{
-										enabled: true,
-										perPmz: 10,
-										perPageDropdown: [5, 10, 15, 20]
-									}"
-									@on-selected-rows-change="onSelectChanged"
-								/>
-							</div>
-							
-							<!-- -->
 						</ScCardBody>
 					</ScCard>
 				</div>
@@ -583,9 +557,6 @@ import { ScProgressCircular } from '~/components/progress'
 import { scHelpers } from "~/assets/js/utils";
 const { splitArr } = scHelpers;
 
-import 'vue-good-table/dist/vue-good-table.css'
-import { VueGoodTable } from 'vue-good-table';
-
 require('~/plugins/jquery');
 if(process.client) {
 	require('~/assets/js/vendor/jquery.quicksearch.js');
@@ -616,44 +587,19 @@ export default {
 		Select2: process.client ? () => import('~/components/Select2') : null,
 		MultiSelect: process.client ? () => import('~/components/Multiselect') : null,
 		ScProgressCircular,
-		VueGoodTable,
 	},
 	mixins: [validationMixin],
 	data: () => ({
-		//---
-		columns: [
-			{
-				label: 'Id',
-				field: 'id',
-			},
-			{
-				label: 'Mz',
-				field: 'mz',
-			},
-			{
-				label: 'Name',
-				field: 'name',
-			}
-		],
-		rows: [
-			/* { id:1, name:"John", age: 20, createdAt: '2019-10-12', score: 0.241 },
-			{ id:2, name:"Jane", age: 24, createdAt: '2019-10-31', score: 0.03343 },
-			{ id:3, name:"Susan", age: 16, createdAt: '2019-10-14', score: 1.00 },
-			{ id:4, name:"Chris", age: 55, createdAt: '2019-10-11', score: 0.081 },
-			{ id:5, name:"Dan", age: 40, createdAt: '2019-10-25', score: 0.052 },
-			{ id:6, name:"John", age: 20, createdAt: '2019-10-30', score: 0.0012 }, */
-		],
-		//---
 		status: "",
 		submitStatus1: null,
 		submitStatus2: null,
 
 		form1: {
-			id: "25d3d362-e676-4185-a877-7667eba62795",
+			id: "",
 			quality: "f1"
 		},
 		form2: {
-			id: "25d3d362-e676-4185-a877-7667eba62795",
+			id: "",
 			nodes: [], // ["74.0249", "129.0192", "130.0875"], // ["100.00072", "128.89351", "132.88524", "135.54123", "152.99445"],
 			group: "", // "WT-pck1", // "FCSglc-DMA"
 			groups: [],
@@ -818,14 +764,6 @@ export default {
 		
 	},
 	methods: {
-		onSelectChanged (params) {
-			const selectedIds = params.selectedRows.reduce((acc, row) => {
-				acc.push(row.id);
-				return acc;
-			}, params.selectedRows);
-			console.log(params.selectedRows);
-			console.log(selectedIds)
-		},
 		showNotification (text, pos, status, persistent) {
 			var config = {};
 			config.timeout = persistent ? !persistent : 3000;
@@ -973,18 +911,10 @@ export default {
 			this.nodes_detail = this.graph_nodes[this.form2.group];
 			
 			this.options = [{id: "-1", text: "Select all"}];
-			this.rows = []; // table
 			for (let i = 0; i < this.nodes_detail.length; i++) {
 				this.options.push({
 					id: this.nodes_detail[i]["id"].toString(),
-					text: this.nodes_detail[i]["id"] + " || " + this.nodes_detail[i]["mz"] + " || " + this.nodes_detail[i]["name"] // this.nodes_detail[i][this.form2.type]
-				})
-
-				// rows for table
-				this.rows.push({
-					id: this.nodes_detail[i]["id"].toString(),
-					mz: this.nodes_detail[i]["mz"],
-					name: this.nodes_detail[i]["name"]
+					text: this.nodes_detail[i][this.form2.type]
 				})
 			}
 			console.log(this.nodes_detail);
@@ -1221,7 +1151,7 @@ export default {
 				toolbox: {
 					show: true,
 					feature: {
-						saveAsImmz: { 
+						saveAsImage: { 
 							show: true,
 							name: "Network_" + this.form2.group
 						}
@@ -1504,7 +1434,7 @@ export default {
 				toolbox: {
 					show: true,
 					feature: {
-						saveAsImmz: { 
+						saveAsImage: { 
 							show: true,
 							name: "Heatmap_" + this.form2.group
 						}
@@ -1763,7 +1693,7 @@ export default {
 				toolbox: {
 					show: true,
 					feature: {
-						saveAsImmz: { 
+						saveAsImage: { 
 							show: true,
 							name: "Ratios_" + this.form2.group
 						}
@@ -1877,7 +1807,7 @@ export default {
 				toolbox: {
 					show: true,
 					feature: {
-						saveAsImmz: { 
+						saveAsImage: { 
 							show: true,
 							name: "Neighbors_" + this.form2.group
 						}
@@ -1956,7 +1886,7 @@ export default {
 				toolbox: {
 					show: true,
 					feature: {
-						saveAsImmz: { 
+						saveAsImage: { 
 							show: true,
 							name: "Clusters_" + this.form2.group
 						}
@@ -2576,7 +2506,6 @@ export default {
 <style lang="scss">
 	@import "~scss/common/md_colors";
 	@import '~scss/vue/_pretty_checkboxes';
-	@import '~scss/plugins/vue-good-table.scss';
 </style>
 <style scoped>
 	/* .uk-height-large {

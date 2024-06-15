@@ -12,7 +12,8 @@ const _2b3e7e5f = () => interopDefault(import('../pages/data_visualization_v2.vu
 const _2b4c95e0 = () => interopDefault(import('../pages/data_visualization_v3.vue' /* webpackChunkName: "pages/data_visualization_v3" */))
 const _2b5aad61 = () => interopDefault(import('../pages/data_visualization_v4.vue' /* webpackChunkName: "pages/data_visualization_v4" */))
 const _2b68c4e2 = () => interopDefault(import('../pages/data_visualization_v5.vue' /* webpackChunkName: "pages/data_visualization_v5" */))
-const _a38e5c1c = () => interopDefault(import('../pages/data_visualization_v6 (ok).vue' /* webpackChunkName: "pages/data_visualization_v6 (ok)" */))
+const _2d97d66c = () => interopDefault(import('../pages/data_visualization_v6 (form).vue' /* webpackChunkName: "pages/data_visualization_v6 (form)" */))
+const _fa730d8a = () => interopDefault(import('../pages/data_visualization_v7 (form table).vue' /* webpackChunkName: "pages/data_visualization_v7 (form table)" */))
 const _3438dfe2 = () => interopDefault(import('../pages/finetune.vue' /* webpackChunkName: "pages/finetune" */))
 const _4000437c = () => interopDefault(import('../pages/login_page.vue' /* webpackChunkName: "pages/login_page" */))
 const _f2378796 = () => interopDefault(import('../pages/login_page_auth.vue' /* webpackChunkName: "pages/login_page_auth" */))
@@ -182,9 +183,13 @@ export const routerOptions = {
     component: _2b68c4e2,
     name: "data_visualization_v5"
   }, {
-    path: "/data_visualization_v6%20(ok)",
-    component: _a38e5c1c,
-    name: "data_visualization_v6 (ok)"
+    path: "/data_visualization_v6%20(form)",
+    component: _2d97d66c,
+    name: "data_visualization_v6 (form)"
+  }, {
+    path: "/data_visualization_v7%20(form%20table)",
+    component: _fa730d8a,
+    name: "data_visualization_v7 (form table)"
   }, {
     path: "/finetune",
     component: _3438dfe2,

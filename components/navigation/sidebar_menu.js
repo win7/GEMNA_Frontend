@@ -29,6 +29,11 @@ export const menuEntries = [
 			},
 			{
 				id: uniqueID(),
+				title: "Finetune",
+				page: "/finetune"
+			},
+			{
+				id: uniqueID(),
 				title: "Consult",
 				page: "/data_visualization"
 			},

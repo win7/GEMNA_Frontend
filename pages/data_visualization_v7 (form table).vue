@@ -91,7 +91,7 @@
 			</div>
 			
 			<div class="uk-flex-center uk-grid" data-uk-grid> <!-- v-if="flag_load" -->
-				<div class="uk-width-1-3@l">
+				<div class="uk-width-1-4@l">
 					<ScCard>
 						<ScCardHeader>
 							<div class="uk-flex uk-flex-middle">
@@ -102,36 +102,38 @@
 							</div>
 						</ScCardHeader>
 						<ScCardBody>
-							<div class="uk-child-width-1-1@l uk-child-width-1-1@m uk-grid uk-grid-divider" data-uk-grid>
-								<div>
-									<client-only>
-										<IonRangeSlider v-model="rangeSlider.d"
-											:settings="{grid: true, min: 18, max: 70, from: 30, prefix: 'Age ', max_postfix: '+'}"
-										></IonRangeSlider>
-									</client-only>
-									<span class="sc-color-secondary uk-text-small">Data: {{ rangeSlider.d }}</span>
-								</div>
-								<div>
-									<client-only>
-										<IonRangeSlider v-model="rangeSlider.e"
-											:settings="{type: 'double', min: 1000000, max: 2000000, grid: true, force_edges: true}"
-										></IonRangeSlider>
-									</client-only>
-									<span class="sc-color-secondary uk-text-small">Data: {{ rangeSlider.e }}</span>
-								</div>
-								<div>
-									<client-only>
-										<IonRangeSlider v-model="rangeSlider.f"
-											:settings="{type: 'single', min: 0, max: 10, step: 2.34, grid: true, grid_snap: true}"
-										></IonRangeSlider>
-									</client-only>
-									<span class="sc-color-secondary uk-text-small">Data: {{ rangeSlider.f }}</span>
-								</div>
+							<div class="uk-overflow-auto">
+								<table class="uk-table uk-table-striped">
+									<thead>
+										<tr>
+											<th class="uk-text-nowrap">
+												Group
+											</th>
+											<th class="uk-text-nowrap">
+												Nodes
+											</th>
+											<th class="uk-text-nowrap">
+												Edges
+											</th>
+											<th class="uk-text-nowrap">
+												Density
+											</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr v-for="item in graph_details">
+											<td> {{ item.name }} </td>
+											<td> {{ item.nodes }} </td>
+											<td> {{ item.edges }} </td>
+											<td> {{ item.density }} </td>
+										</tr>
+									</tbody>
+								</table>
 							</div>
 						</ScCardBody>
 					</ScCard>
 				</div>
-				<div class="uk-width-1-3@l">
+				<div class="uk-width-expand">
 					<ScCard>
 						<ScCardHeader>
 							<div class="uk-flex uk-flex-middle">
@@ -142,7 +144,28 @@
 							</div>
 						</ScCardHeader>
 						<ScCardBody>
-							<div class="uk-height-large uk-flex uk-flex-center uk-flex-middle" id="histogram"></div>
+							<div class="uk-overflow-auto">
+								<table class="uk-table uk-table-striped">
+									<thead>
+										<tr>
+											<th class="uk-text-nowrap">
+												Group
+											</th>
+											<th v-for="item in labels_all" class="uk-text-nowrap">
+												{{ item }}
+											</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr v-for="item1 in graph_details">
+											<td> {{ item1.name }} </td>
+											<td v-for="item2 in item1.labels">
+												{{ item2.count }}
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
 						</ScCardBody>
 					</ScCard>
 				</div>
@@ -162,7 +185,373 @@
 					</ScCard>
 				</div>
 			</div>
-			<hr/>
+
+			<div class="uk-flex-center uk-grid" data-uk-grid v-if="flag_load">
+				<div class="uk-width-xxlarge">
+					<ScCard>
+						<ScCardHeader>
+							<div class="uk-flex uk-flex-middle">
+								<i class="mdi mdi-book-search sc-icon-24 uk-margin-medium-right"></i>
+								<ScCardTitle>
+									Analysis form
+								</ScCardTitle>
+							</div>
+						</ScCardHeader>
+						<ScCardBody>
+							<div> <!-- Before form -->
+								<fieldset class="uk-fieldset md-bg-grey-100 sc-padding">
+									<!-- <p class="sc-text-semibold uk-text-large uk-margin-remove-top">
+										Consult
+									</p> -->
+									<div uk-grid>
+										<div class="uk-width-1-2@m">
+											<div>
+												<label class="uk-form-label" for="f-f-name">
+													Group
+												</label>
+												<div class="uk-form-controls">
+													<client-only>
+														<Select2
+															v-model="form2.group"
+															:options="usGroups"
+															:settings="{ 'width': '100%', 'placeholder': 'Select item...', 'closeOnSelect': true }"
+															:error-state="$v.form2.group.$error" 
+															:validator="$v.form2.group"
+															@change="onChangeGroup($event)"
+															data-uk-tooltip="title: Interaction between two phenotypes; pos: top-right"
+														></Select2>
+													</client-only>
+													<ul class="sc-vue-errors">
+														<li v-if="!$v.form2.group.required">
+															Field is required
+														</li>
+													</ul>
+												</div>
+											</div>
+											
+											<div class="uk-margin-top">
+												<label class="uk-form-label" for="f-l-name">
+													Show with
+												</label>
+												<div class="uk-form-controls">
+													<span class="uk-margin-right">
+														<PrettyRadio
+															v-model="form2.plot"
+															:error-state="$v.form2.plot.$error" :validator="$v.form2.plot"
+															value="correlation"
+															class="p-radio"
+															:disabled="disable_show"
+															data-uk-tooltip="title: Show results with correlation.; pos: top-right"
+														>
+															Correlation nodes
+														</PrettyRadio>
+													</span>
+													<span class="uk-margin-right">
+														<PrettyRadio
+															v-model="form2.plot"
+															:error-state="$v.form2.plot.$error" :validator="$v.form2.plot.type"
+															value="correlation_neighbors"
+															class="p-radio"
+															:disabled="disable_show"
+															data-uk-tooltip="title: Show results with correlation and their neighbors.; pos: top-right"
+														>
+														Correlation + neighbors nodes
+														</PrettyRadio>
+													</span>
+													<ul class="sc-vue-errors">
+														<li v-if="!$v.form2.plot.required">
+															Field is required
+														</li>
+													</ul>
+												</div>
+											</div>
+											
+											<div class="uk-margin-top">
+												<label class="uk-form-label" for="f-l-name">
+													Name by
+												</label>
+												<div class="uk-form-controls">
+													<span class="uk-margin-right">
+														<PrettyRadio
+															v-model="form2.type"
+															:error-state="$v.form2.type.$error" :validator="$v.form2.type"
+															value="id"
+															class="p-radio"
+															@change="onChangeType($event)"
+															data-uk-tooltip="title: Show results by Alignment ID; pos: top-right"
+														>
+															Alignment ID
+														</PrettyRadio>
+													</span>
+													<span class="uk-margin-right">
+														<PrettyRadio
+															v-model="form2.type"
+															:error-state="$v.form2.type.$error" :validator="$v.form2.type"
+															value="mz"
+															class="p-radio"
+															@change="onChangeType($event)"
+															data-uk-tooltip="title: Show results by Average Mz; pos: top-right"
+														>
+															Average Mz
+														</PrettyRadio>
+													</span>
+													<span>
+														<PrettyRadio
+															v-model="form2.type"
+															:error-state="$v.form2.type.$error" :validator="$v.form2.type"
+															value="name"
+															class="p-radio"
+															@change="onChangeType($event)"
+															data-uk-tooltip="title: Show results by Metabolite name; pos: top-right"
+														>
+															Metabolite name
+														</PrettyRadio>
+													</span>
+													<ul class="sc-vue-errors">
+														<li v-if="!$v.form2.type.required">
+															Field is required
+														</li>
+													</ul>
+												</div>
+											</div>
+										</div>
+										<div class="uk-width-1-2@m">
+											<div>
+												<label class="uk-form-label" for="f-f-name">
+													{{ getType(form2.type) }}
+												</label>
+												<div class="uk-form-controls">
+													<!-- <client-only>
+														<Select2
+															v-model="form2.nodes"
+															:options="usNodes"
+															:settings="{ 'width': '100%', 'placeholder': 'Search item...', 'closeOnSelect': false }"
+															:error-state="$v.form2.nodes.$error" 
+															:validator="$v.form2.nodes"
+															multiple
+															@change="onChangeNodes($event)"
+															data-uk-tooltip="title: Metabolite for analysis.; pos: top-right"
+														></Select2>
+													</client-only>
+													<ul class="sc-vue-errors">
+														<li v-if="!$v.form2.nodes.required">
+															Field is required
+														</li>
+													</ul> -->
+													<!-- -->
+													<VueGoodTable
+														:columns="columns1"
+														:rows="rows1"
+														theme="polar-bear"
+														:error-state="$v.form2.nodes.$error" 
+														:validator="$v.form2.nodes"
+														style-class="uk-table uk-table-divider uk-table-small uk-table-hover uk-text-truncate uk-background-default scutum-vgt"
+														:select-options="{ 
+															enabled: true,
+															selectOnCheckboxOnly: false,
+															disableSelectInfo: true,
+														}"
+														:pagination-options="{
+															enabled: true,
+															perPmz: 10,
+															perPageDropdown: [5, 10, 15, 20]
+														}"
+														@on-row-click="onRowClick1"
+														@on-search="onSearch1"
+														@on-select-all="onSelectAll1">
+													</VueGoodTable>
+													<ul class="sc-vue-errors">
+														{{ form2.nodes }}
+														<li v-if="!$v.form2.nodes.required">
+															Field is required
+														</li>
+													</ul>
+													<!-- -->
+												</div>
+											</div>
+										</div>
+									</div>
+								</fieldset>
+								<div class="uk-margin-top">
+									<button class="sc-button sc-button-primary" :class="{'sc-button-progress-overlay': submitStatus2 === 'PENDING'}" :disabled="submitStatus2 === 'PENDING'" @click.prevent="submitForm2($event)">
+										<span>Load</span>
+										<transition name="scale-up">
+											<span v-show="submitStatus2 === 'PENDING'" class="sc-button-progress-layer">
+												<ScProgressCircular></ScProgressCircular>
+											</span>
+										</transition>
+									</button>
+								</div>
+							</div>
+						</ScCardBody>
+					</ScCard>
+				</div>
+			</div>
+
+			<div class="uk-flex-center uk-grid" data-uk-grid v-if="flag_load">
+				<div class="uk-width-1-2@l">
+					<ScCard :full-screen="cardBFullScreen1">
+						<ScCardHeader> <!-- separator> -->
+							<div class="uk-flex uk-flex-middle">
+								<i class="mdi mdi-book-open sc-icon-24 uk-margin-medium-right"></i>
+								<div class="uk-flex-1">									
+									<ScCardTitle>
+										Similarity Analysis
+									</ScCardTitle>
+									<!-- <ScCardMeta>
+										<time datetime="2019-01-01">
+											Jan 01, 2021
+										</time>
+									</ScCardMeta> -->
+								</div>
+								<ScCardActions>
+									<a
+										href="javascript:void(0)"
+										class="sc-actions-icon mdi mdi-fullscreen"
+										:class="{'mdi-fullscreen' : !cardBFullScreen1, 'mdi-fullscreen-exit' : cardBFullScreen1 }"
+										@click.prevent="cardBFullScreen1 = !cardBFullScreen1"
+									></a>
+								</ScCardActions>
+							</div>
+						</ScCardHeader>
+						<ScCardContent>
+							<ScCardBody>
+								<div class="uk-height-large uk-flex uk-flex-center uk-flex-middle" id="metabolomic-network"></div>
+								<div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle" id="degree-network"></div>
+
+								<!-- <div class="uk-child-width-1-2@s" uk-grid>
+									<div>
+										<pre class="uk-resize-vertical">
+											<div class="uk-flex uk-flex-center uk-flex-middle" id="metabolomic-network"></div>
+										</pre>
+									</div>
+								</div> -->
+								<div class="uk-height-large uk-flex-center uk-flex-middle" v-if="flag_select">
+									<form>
+										<fieldset class="uk-fieldset md-bg-grey-100 sc-padding">
+											<!-- <p class="sc-text-semibold uk-text-large uk-margin-remove-top">
+												Personal info
+											</p> -->
+											<div class="uk-child-width-1-1@m uk-grid" data-uk-grid>
+												<div>
+													<label class="uk-form-label" for="f-f-name">
+														{{ getType(form2.type) }}
+													</label>
+													<div class="uk-form-controls">
+														<VueGoodTable
+															:columns="columns1"
+															:rows="rows2"
+															theme="polar-bear"
+															:error-state="$v.form2.nodes.$error" 
+															:validator="$v.form2.nodes"
+															style-class="uk-table uk-table-divider uk-table-small uk-table-hover uk-text-truncate uk-background-default scutum-vgt"
+															:select-options="{ 
+																enabled: true,
+																selectOnCheckboxOnly: false,
+																disableSelectInfo: true,
+															}"
+															:pagination-options="{
+																enabled: true,
+																perPmz: 10,
+																perPageDropdown: [5, 10, 15, 20]
+															}"
+															@on-row-click="onRowClick2"
+															@on-search="onSearch2"
+															@on-select-all="onSelectAll2">
+														</VueGoodTable>
+														<ul class="sc-vue-errors">
+															{{ form2.nodes }}
+															<li v-if="!$v.form2.nodes.required">
+																Field is required
+															</li>
+														</ul>
+														<!-- -->
+													</div>
+												</div>
+												<div>
+													<label class="uk-form-label">
+														Correlations labels
+													</label>
+													<div class="uk-form-controls">
+														<!-- <p class="uk-margin-small-bottom">
+															Correlations labels
+														</p> -->
+														<div class="uk-grid-small uk-child-width-auto uk-grid" data-uk-grid>
+															<label v-for="label in labels" :key="label" :value="label">
+																<input class="uk-checkbox" type="checkbox" :key="label" :value="label" v-model="selected_labels"> {{ label }} <!-- @click.prevent="selectLabel(label)" -->
+															</label>
+															<label><input class="uk-checkbox" type="checkbox" :checked="is_all_selected_labels" @click="selectAllEdgeLabels">Select all</label>
+														</div>
+													</div>
+												</div>
+											</div>
+										</fieldset>
+										<div class="uk-margin-top">
+											<button class="sc-button sc-button-primary" @click.prevent="filterGraph">
+												<span>Filter</span>
+											</button>
+											<button class="sc-button sc-button-default" @click.prevent="resetGraph">
+												<span>Reset</span>
+											</button>
+										</div>
+									</form>
+								</div>
+
+								<!-- <span>selected_labels: {{ selected_labels }}</span><br>
+								<span>selected_nodes: {{ selected_nodes }}</span><br> -->
+
+								<!-- <div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle" id="metabolomic-names">
+									<div class="uk-child-width-expand@l uk-grid" data-uk-grid>
+										<div v-for="(nodes, index) in splitNodes(4)" :key="index" class="uk-margin-remove">
+											<ul class="uk-list">
+												<li v-for="node in nodes" :key="node.id">
+													<PrettyCheck v-model="selected_nodes" :value="node.id" class="p-icon">
+														<i slot="extra" class="icon mdi mdi-check"></i>
+														{{ node.name }}
+													</PrettyCheck>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div> -->
+							</ScCardBody>
+						</ScCardContent>
+					</ScCard>
+				</div>
+				<div class="uk-width-1-2@l">
+					<ScCard :full-screen="cardBFullScreen2">
+						<ScCardHeader> <!-- separator> -->
+							<div class="uk-flex uk-flex-middle">
+								<i class="mdi mdi-book-open sc-icon-24 uk-margin-medium-right"></i>
+								<div class="uk-flex-1">
+									<ScCardTitle>
+										Extras
+									</ScCardTitle>
+									<!-- <ScCardMeta>
+										<time datetime="2019-01-01">
+											Jan 01, 2021
+										</time>
+									</ScCardMeta> -->
+								</div>
+								<ScCardActions>
+									<a
+										href="javascript:void(0)"
+										class="sc-actions-icon mdi mdi-fullscreen"
+										:class="{'mdi-fullscreen' : !cardBFullScreen2, 'mdi-fullscreen-exit' : cardBFullScreen2 }"
+										@click.prevent="cardBFullScreen2 = !cardBFullScreen2"
+									></a>
+								</ScCardActions>
+							</div>
+						</ScCardHeader>
+						<ScCardContent>
+							<ScCardBody>
+								<div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle" id="heatmap"></div>
+								<div class="uk-height-large uk-flex uk-flex-center uk-flex-middle" id="heatmap_ratio"></div>
+							</ScCardBody>
+						</ScCardContent>
+					</ScCard>
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -215,26 +604,21 @@ export default {
 		MultiSelect: process.client ? () => import('~/components/Multiselect') : null,
 		ScProgressCircular,
 		VueGoodTable,
-		IonRangeSlider: process.client ? () => import('~/components/RangeSlider') : null
 	},
 	mixins: [validationMixin],
 	data: () => ({
-		rangeSlider: {
-			a: 550,
-			b: '200;800',
-			c: 5,
-			d: 30,
-			e: '1000000;2000000',
-			f: 0,
-			custom: 8,
-			customSettings: {
-				min: 1,
-				max: 10
-			},
-			defaultCustomSettings: true
-		},
 		//---
+		searchTerm: "",
 		columns1: [
+			{
+				label: 'Id',
+				field: 'id',
+				type: 'number',
+				filterOptions: {
+					enabled: true
+				},
+				sortable: true,
+			},
 			{
 				label: 'Id',
 				field: 'id',
@@ -781,8 +1165,6 @@ export default {
 						}
 
 						this.clustering(cluster);
-
-						this.histogram();
 					}
 				}).catch((error) => {
 					console.log(error.response);
@@ -1697,67 +2079,6 @@ export default {
 					type: 'value'
 				},
 				series: series
-			};
-
-			option && myChart.setOption(option);
-		},
-
-		histogram () {
-			var chartDom = document.getElementById('histogram');
-			var myChart = echarts.init(chartDom);
-			var option;
-			
-			// Sample data
-			const data = [10, 20, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200];
-
-			// Define the number of bins
-			const binCount = 10;
-
-			// Calculate the bin width
-			const min = Math.min(...data);
-			const max = Math.max(...data);
-			const binWidth = (max - min) / binCount;
-
-			// Initialize the bins
-			const bins = new Array(binCount).fill(0);
-			const binEdges = [];
-
-			for (let i = 0; i <= binCount; i++) {
-				binEdges.push(min + i * binWidth);
-			}
-
-			// Count the number of data points in each bin
-			data.forEach(value => {
-				const binIndex = Math.floor((value - min) / binWidth);
-				if (binIndex < binCount) {
-					bins[binIndex]++;
-				} else {
-					bins[binCount - 1]++;
-				}
-			});
-
-			// Prepare the data for ECharts
-			const xAxisData = binEdges.slice(0, -1).map((edge, index) => `${edge.toFixed(1)} - ${(edge + binWidth).toFixed(1)}`);
-			const seriesData = bins;
-
-			option = {
-				title: {
-					text: 'Histogram'
-				},
-				tooltip: {},
-				xAxis: {
-					type: 'category',
-					data: xAxisData,
-					name: 'Bins'
-				},
-				yAxis: {
-					type: 'value',
-					name: 'Frequency'
-				},
-				series: [{
-					type: 'bar',
-					data: seriesData
-				}]
 			};
 
 			option && myChart.setOption(option);

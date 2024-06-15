@@ -72,9 +72,6 @@
 									</div>
 								</fieldset>
 								<div class="uk-margin-top">
-									<!-- <button class="sc-button sc-button-primary" :disabled="submitStatus1 === 'PENDING'" @click.prevent="submitForm1($event)">
-										Search
-									</button> -->
 									<button class="sc-button sc-button-primary" :class="{'sc-button-progress-overlay': submitStatus1 === 'PENDING'}" :disabled="submitStatus1 === 'PENDING'" @click.prevent="submitForm1($event)">
 										<span>Load</span>
 										<transition name="scale-up">
@@ -184,6 +181,289 @@
 						</ScCardBody>
 					</ScCard>
 				</div>
+			</div>
+
+			<!-- Analysis form -->
+			<div class="uk-flex-center uk-grid" data-uk-grid>
+				<div class="uk-width-xxlarge">
+					<ScCard>
+						<ScCardHeader>
+							<div class="uk-flex uk-flex-middle">
+								<i class="mdi mdi-book-search sc-icon-24 uk-margin-medium-right"></i>
+								<ScCardTitle>
+									Analysis form
+								</ScCardTitle>
+							</div>
+						</ScCardHeader>
+						<ScCardBody>
+							<div class="uk-flex-center uk-grid" data-uk-grid>
+								<div class="uk-width-1-2@l">
+									<form>
+										<fieldset class="uk-fieldset md-bg-grey-100 sc-padding">
+											<p class="sc-text-semibold uk-text-large uk-margin-remove-top">
+												General info
+											</p>
+											<div class="uk-child-width-1-1@m uk-grid" data-uk-grid>
+												<div>
+													<label class="uk-form-label" for="">
+														Groups
+													</label>
+													<div class="uk-form-controls">
+														<client-only>
+															<Select2
+																v-model="form2.group"
+																:options="usGroups"
+																:settings="{ 'width': '100%', 'placeholder': 'Select item...', 'closeOnSelect': true }"
+																:error-state="$v.form2.group.$error" 
+																:validator="$v.form2.group"
+																@change="onChangeGroup($event)"
+																data-uk-tooltip="title: Interaction between two phenotypes; pos: top-right"
+															></Select2>
+														</client-only>
+														<ul class="sc-vue-errors">
+															<li v-if="!$v.form2.group.required">
+																Field is required
+															</li>
+														</ul>
+													</div>
+												</div>
+												<!-- <div>
+													<label class="uk-form-label" for="f-l-name">
+														Last Name
+													</label>
+													<div class="uk-form-controls">
+														<ScInput id="f-l-name" mode="outline"></ScInput>
+													</div>
+												</div> -->
+											</div>
+											<div class="uk-child-width-1-1@m uk-flex uk-flex-top uk-margin-top uk-grid" data-uk-grid>
+												<div>
+													<label class="uk-form-label" for="">
+														Filtered data
+													</label>
+													<div class="uk-form-controls">
+														<VueGoodTable
+															:columns="columns1"
+															:rows="rows1"
+															theme="polar-bear"
+															:error-state="$v.form2.nodes.$error" 
+															:validator="$v.form2.nodes"
+															style-class="uk-table uk-table-divider uk-table-small uk-table-hover uk-text-truncate uk-background-default scutum-vgt"
+															:select-options="{ 
+																enabled: true,
+																selectOnCheckboxOnly: false,
+																disableSelectInfo: true,
+															}"
+															:pagination-options="{
+																enabled: true,
+																perPmz: 10,
+																perPageDropdown: [5, 10, 15, 20]
+															}"
+															@on-row-click="onRowClick1"
+															@on-search="onSearch1"
+															@on-select-all="onSelectAll1">
+														</VueGoodTable>
+														<ul class="sc-vue-errors">
+															{{ form2.nodes }}
+															<li v-if="!$v.form2.nodes.required">
+																Field is required
+															</li>
+														</ul>
+													</div>
+												</div>
+												<div>
+													<label class="uk-form-label" for="">
+														Visualization type
+													</label>
+													<div class="uk-margin-small-top uk-margin-small-left">
+														<span class="uk-margin-right">
+															<PrettyRadio
+																v-model="form2.plot"
+																:error-state="$v.form2.plot.$error" :validator="$v.form2.plot"
+																value="correlation"
+																class="p-radio"
+																:disabled="disable_show"
+																data-uk-tooltip="title: Show results with correlation.; pos: top-right"
+															>
+																Correlation nodes
+															</PrettyRadio>
+														</span>
+														<span>
+															<PrettyRadio
+																v-model="form2.plot"
+																:error-state="$v.form2.plot.$error" :validator="$v.form2.plot.type"
+																value="correlation_neighbors"
+																class="p-radio"
+																:disabled="disable_show"
+																data-uk-tooltip="title: Show results with correlation and their neighbors.; pos: top-right"
+															>
+															Correlation + neighbors nodes
+															</PrettyRadio>
+														</span>
+														<ul class="sc-vue-errors">
+															<li v-if="!$v.form2.plot.required">
+																Field is required
+															</li>
+														</ul>
+													</div>
+												</div>
+											</div>
+											<div class="uk-margin-top">
+												<button class="sc-button sc-button-primary" :class="{'sc-button-progress-overlay': submitStatus2 === 'PENDING'}" :disabled="submitStatus2 === 'PENDING'" @click.prevent="submitForm2($event)">
+													<span>Load</span>
+													<transition name="scale-up">
+														<span v-show="submitStatus2 === 'PENDING'" class="sc-button-progress-layer">
+															<ScProgressCircular></ScProgressCircular>
+														</span>
+													</transition>
+												</button>
+											</div>
+										</fieldset>
+									</form>
+								</div>
+								<div class="uk-width-1-2@l">
+									<form>
+										<fieldset class="uk-fieldset md-bg-grey-100 sc-padding">
+											<p class="sc-text-semibold uk-text-large uk-margin-remove-top">
+												Specific info
+											</p>
+											<div class="uk-child-width-1-1@m uk-grid" data-uk-grid>
+												<div>
+													<label class="uk-form-label" for="">
+														Visualization type
+													</label>
+													<div class="uk-margin-small-top uk-margin-small-left">
+														<span class="uk-margin-right">
+															<PrettyRadio
+																v-model="form2.type"
+																:error-state="$v.form2.type.$error" :validator="$v.form2.type"
+																value="id"
+																class="p-radio"
+																@change="onChangeType($event)"
+																data-uk-tooltip="title: Show results by Alignment ID; pos: top-right"
+															>
+																Alignment ID
+															</PrettyRadio>
+														</span>
+														<span class="uk-margin-right">
+															<PrettyRadio
+																v-model="form2.type"
+																:error-state="$v.form2.type.$error" :validator="$v.form2.type"
+																value="mz"
+																class="p-radio"
+																@change="onChangeType($event)"
+																data-uk-tooltip="title: Show results by Average Mz; pos: top-right"
+															>
+																Average Mz
+															</PrettyRadio>
+														</span>
+														<span>
+															<PrettyRadio
+																v-model="form2.type"
+																:error-state="$v.form2.type.$error" :validator="$v.form2.type"
+																value="name"
+																class="p-radio"
+																@change="onChangeType($event)"
+																data-uk-tooltip="title: Show results by Metabolite name; pos: top-right"
+															>
+																Metabolite name
+															</PrettyRadio>
+														</span>
+														<ul class="sc-vue-errors">
+															<li v-if="!$v.form2.type.required">
+																Field is required
+															</li>
+														</ul>
+													</div>
+												</div>
+												<!-- <div>
+													<label class="uk-form-label" for="f-l-name">
+														Last Name
+													</label>
+													<div class="uk-form-controls">
+														<ScInput id="f-l-name" mode="outline"></ScInput>
+													</div>
+												</div> -->
+											</div>
+											<div class="uk-child-width-1-1@m uk-flex uk-flex-top uk-margin-top uk-grid" data-uk-grid>
+												<div>
+													<label class="uk-form-label" for="">
+														Filtered data
+													</label>
+													<div class="uk-form-controls">
+														<VueGoodTable
+															:columns="columns1"
+															:rows="rows2"
+															theme="polar-bear"
+															:error-state="$v.form2.nodes.$error" 
+															:validator="$v.form2.nodes"
+															style-class="uk-table uk-table-divider uk-table-small uk-table-hover uk-text-truncate uk-background-default scutum-vgt"
+															:select-options="{ 
+																enabled: true,
+																selectOnCheckboxOnly: false,
+																disableSelectInfo: true,
+															}"
+															:pagination-options="{
+																enabled: true,
+																perPmz: 10,
+																perPageDropdown: [5, 10, 15, 20]
+															}"
+															@on-row-click="onRowClick2"
+															@on-search="onSearch2"
+															@on-select-all="onSelectAll2">
+														</VueGoodTable>
+														<ul class="sc-vue-errors">
+															{{ form2.nodes }}
+															<li v-if="!$v.form2.nodes.required">
+																Field is required
+															</li>
+														</ul>
+													</div>
+												</div>
+												<div>
+													<label class="uk-form-label" for="">
+														Correlations labels
+													</label>
+													<div class="uk-margin-small-top uk-margin-small-left">
+														<div class="uk-grid-small uk-child-width-auto uk-grid" data-uk-grid>
+															<label v-for="label in labels" :key="label" :value="label">
+																<input class="uk-checkbox" type="checkbox" :key="label" :value="label" v-model="selected_labels"> {{ label }} <!-- @click.prevent="selectLabel(label)" -->
+															</label>
+															<label><input class="uk-checkbox" type="checkbox" :checked="is_all_selected_labels" @click="selectAllEdgeLabels">Select all</label>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="uk-margin-top">
+												<button class="sc-button sc-button-primary" @click.prevent="filterGraph">
+													<span>Filter</span>
+												</button>
+												<button class="sc-button sc-button-default" @click.prevent="resetGraph">
+													<span>Reset</span>
+												</button>
+											</div>
+										</fieldset>
+									</form>
+								</div>
+							</div>
+						</ScCardBody>
+					</ScCard>
+				</div>
+				<!-- <div class="uk-width-1-2@l">
+					<ScCard>
+						<ScCardHeader>
+							<div class="uk-flex uk-flex-middle">
+								<i class="mdi mdi-book-open sc-icon-24 uk-margin-medium-right"></i>
+								<ScCardTitle>
+									Networks Overview
+								</ScCardTitle>
+							</div>
+						</ScCardHeader>
+						<ScCardBody>
+							
+						</ScCardBody>
+					</ScCard>
+				</div> -->
 			</div>
 
 			<div class="uk-flex-center uk-grid" data-uk-grid v-if="flag_load">
@@ -610,6 +890,15 @@ export default {
 		//---
 		searchTerm: "",
 		columns1: [
+			/* {
+				label: 'Group',
+				field: 'group',
+				filterOptions: {
+					enabled: true,
+					filterDropdownItems: []
+				},
+				sortable: true,
+			}, */
 			{
 				label: 'Id',
 				field: 'id',
@@ -625,7 +914,8 @@ export default {
 				// type: 'decimal',
 				filterOptions: {
 					enabled: true
-				}
+				},
+				tdClass: 'uk-text-nowrap uk-text-left'
 			},
 			{
 				label: 'Name',

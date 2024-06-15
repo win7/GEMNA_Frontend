@@ -56,11 +56,18 @@
     "_name": "_2b68c4e2"
   },
   {
-    "name": "data_visualization_v6",
-    "path": "/data_visualization_v6",
-    "component": "/home/win7/Projects/NuxtJs/MetaNet_Nuxt/pages/data_visualization_v6.vue",
-    "chunkName": "pages/data_visualization_v6",
-    "_name": "_2b76dc63"
+    "name": "data_visualization_v6 (ok)",
+    "path": "/data_visualization_v6%20(ok)",
+    "component": "/home/win7/Projects/NuxtJs/MetaNet_Nuxt/pages/data_visualization_v6 (ok).vue",
+    "chunkName": "pages/data_visualization_v6 (ok)",
+    "_name": "_a38e5c1c"
+  },
+  {
+    "name": "finetune",
+    "path": "/finetune",
+    "component": "/home/win7/Projects/NuxtJs/MetaNet_Nuxt/pages/finetune.vue",
+    "chunkName": "pages/finetune",
+    "_name": "_3438dfe2"
   },
   {
     "name": "login_page",

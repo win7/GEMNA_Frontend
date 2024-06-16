@@ -250,8 +250,6 @@
 															:columns="columns1"
 															:rows="rows1"
 															theme="polar-bear"
-															:error-state="$v.form2.nodes.$error" 
-															:validator="$v.form2.nodes"
 															style-class="uk-table uk-table-divider uk-table-small uk-table-hover uk-text-truncate uk-background-default scutum-vgt"
 															:select-options="{ 
 																enabled: true,
@@ -271,8 +269,23 @@
 															@on-search="onSearch1"
 															@on-select-all="onSelectAll1">
 														</VueGoodTable>
+														<!-- <ScInput v-model="form2.nodes" :error-state="$v.form2.nodes.$error" :validator="$v.form2.nodes"/>
 														<ul class="sc-vue-errors">
-															{{ form2.nodes }}
+															<li v-if="!$v.form2.nodes.required">
+																Field is required
+															</li>
+														</ul> -->
+														<client-only >
+															<Select2
+																v-show="hidden"
+																v-model="form2.nodes"
+																:settings="{ 'width': '100%', 'placeholder': 'Select item...', 'closeOnSelect': false }"
+																:error-state="$v.form2.nodes.$error" 
+																:validator="$v.form2.nodes"
+																multiple
+															></Select2>
+														</client-only>
+														<ul class="sc-vue-errors">
 															<li v-if="!$v.form2.nodes.required">
 																Field is required
 															</li>
@@ -343,8 +356,8 @@
 													<div class="uk-margin-small-top uk-margin-small-left">
 														<span class="uk-margin-right">
 															<PrettyRadio
-																v-model="form2.type"
-																:error-state="$v.form2.type.$error" :validator="$v.form2.type"
+																v-model="form3.type"
+																:error-state="$v.form3.type.$error" :validator="$v.form3.type"
 																value="id"
 																class="p-radio"
 																data-uk-tooltip="title: Show results by Alignment ID; pos: top-right"
@@ -354,8 +367,8 @@
 														</span>
 														<span class="uk-margin-right">
 															<PrettyRadio
-																v-model="form2.type"
-																:error-state="$v.form2.type.$error" :validator="$v.form2.type"
+																v-model="form3.type"
+																:error-state="$v.form3.type.$error" :validator="$v.form3.type"
 																value="mz"
 																class="p-radio"
 																data-uk-tooltip="title: Show results by Average Mz; pos: top-right"
@@ -365,8 +378,8 @@
 														</span>
 														<span>
 															<PrettyRadio
-																v-model="form2.type"
-																:error-state="$v.form2.type.$error" :validator="$v.form2.type"
+																v-model="form3.type"
+																:error-state="$v.form3.type.$error" :validator="$v.form3.type"
 																value="name"
 																class="p-radio"
 																data-uk-tooltip="title: Show results by Metabolite name; pos: top-right"
@@ -375,7 +388,7 @@
 															</PrettyRadio>
 														</span>
 														<ul class="sc-vue-errors">
-															<li v-if="!$v.form2.type.required">
+															<li v-if="!$v.form3.type.required">
 																Field is required
 															</li>
 														</ul>
@@ -400,8 +413,6 @@
 															:columns="columns1"
 															:rows="rows2"
 															theme="polar-bear"
-															:error-state="$v.form2.nodes.$error" 
-															:validator="$v.form2.nodes"
 															style-class="uk-table uk-table-divider uk-table-small uk-table-hover uk-text-truncate uk-background-default scutum-vgt"
 															:select-options="{ 
 																enabled: true,
@@ -421,9 +432,18 @@
 															@on-search="onSearch2"
 															@on-select-all="onSelectAll2">
 														</VueGoodTable>
+														<client-only >
+															<Select2
+																v-show="hidden"
+																v-model="form3.nodes"
+																:settings="{ 'width': '100%', 'placeholder': 'Select item...', 'closeOnSelect': false }"
+																:error-state="$v.form3.nodes.$error" 
+																:validator="$v.form3.nodes"
+																multiple
+															></Select2>
+														</client-only>
 														<ul class="sc-vue-errors">
-															{{ form2.nodes }}
-															<li v-if="!$v.form2.nodes.required">
+															<li v-if="!$v.form3.nodes.required">
 																Field is required
 															</li>
 														</ul>
@@ -436,7 +456,7 @@
 													<div class="uk-margin-small-top uk-margin-small-left">
 														<div class="uk-grid-small uk-child-width-auto uk-grid" data-uk-grid>
 															<label v-for="label in labels" :key="label" :value="label">
-																<input class="uk-checkbox" type="checkbox" :key="label" :value="label" v-model="selected_labels"> {{ label }} <!-- @click.prevent="selectLabel(label)" -->
+																<input class="uk-checkbox" type="checkbox" :key="label" :value="label" v-model="form3.labels"> {{ label }} <!-- @click.prevent="selectLabel(label)" -->
 															</label>
 															<label><input class="uk-checkbox" type="checkbox" :checked="is_all_selected_labels" @click="selectAllEdgeLabels">All</label>
 														</div>
@@ -444,9 +464,17 @@
 												</div>
 											</div>
 											<div class="uk-margin-top">
-												<button class="sc-button sc-button-primary" @click.prevent="filterGraph">
+												<button class="sc-button sc-button-primary" :class="{'sc-button-progress-overlay': submitStatus3 === 'PENDING'}" :disabled="submitStatus3 === 'PENDING'" @click.prevent="submitForm3($event)">
 													<span>Filter</span>
+													<transition name="scale-up">
+														<span v-show="submitStatus3 === 'PENDING'" class="sc-button-progress-layer">
+															<ScProgressCircular></ScProgressCircular>
+														</span>
+													</transition>
 												</button>
+												<!-- <button class="sc-button sc-button-primary" @click.prevent="filterGraph">
+													<span>Filter</span>
+												</button> -->
 												<!-- <button class="sc-button sc-button-default" @click.prevent="resetGraph">
 													<span>Reset</span>
 												</button> -->
@@ -605,6 +633,7 @@ export default {
 	mixins: [validationMixin],
 	data: () => ({
 		//---
+		hidden: false,
 		searchTerm: "",
 		columns1: [
 			/* {
@@ -648,6 +677,7 @@ export default {
 		status: "",
 		submitStatus1: null,
 		submitStatus2: null,
+		submitStatus3: null,
 
 		form1: {
 			id: "25d3d362-e676-4185-a877-7667eba62795",
@@ -660,6 +690,11 @@ export default {
 			groups: [],
 			type: "name", // id, name
 			plot: "correlation"
+		},
+		form3: {
+			nodes: [],
+			type: "name",
+			labels: []
 		},
 
 		graph_details: [],
@@ -675,7 +710,7 @@ export default {
 		nodes: [],
 		labels: [],
 		selected_nodes: [], // no used
-		selected_labels: [],
+		selected_labels: [], // no used
 		selected_nodes_rows1: [],
 		selected_nodes_rows2: [],
 		
@@ -693,7 +728,7 @@ export default {
 		biocyc_all_response: [],
 		degrees_response: [],
 
-		flag_select: false,
+		flag_select: false, // no used
 		// flag: false,
 		flag_load: false,
 		flag_analisys: false,
@@ -815,6 +850,17 @@ export default {
 				required
 			},
 			plot: {
+				required
+			}
+		},
+		form3: {
+			nodes: {
+				required,
+			},
+			type: {
+				required
+			},
+			labels: {
 				required
 			}
 		}
@@ -948,7 +994,7 @@ export default {
 		msDeselectAll () {
 			this.$refs.msPublicMethods.deselect_all()
 		},
-		filterGraph: function (event) {
+		filterGraph: function (event) { // no used
 			// filter by checkbox
 			this.selected_nodes_rows2 = this.rows2.filter(obj => obj.vgtSelected == true).map(obj => obj.id);
 
@@ -1021,7 +1067,7 @@ export default {
 		filterLabels (edges_response) {
 			let edges_filter = [];
 			for (var k in edges_response) {
-				if (this.selected_labels.includes(edges_response[k].label)){
+				if (this.form3.labels.includes(edges_response[k].label)){
 					edges_filter.push(edges_response[k]);
 				}
 			}
@@ -1050,12 +1096,12 @@ export default {
     	},
 		selectAllEdgeLabels () {
 			if (this.is_all_selected_labels) {
-				this.selected_labels = [];
+				this.form3.labels = [];
 				this.is_all_selected_labels = false;
 			} else {
-				this.selected_labels = [];
+				this.form3.labels = [];
 				for (var k in this.labels) {
-					this.selected_labels.push(this.labels[k]);
+					this.form3.labels.push(this.labels[k]);
 				}
 				this.is_all_selected_labels = true;
 			}
@@ -1208,7 +1254,8 @@ export default {
 			e.preventDefault();
 			this.$v.form2.$touch();
 			if (this.$v.form2.$invalid) {
-				this.submitStatus2 = 'ERROR'
+				this.submitStatus2 = 'ERROR';
+				// console.log("this.$v.form2.$invalid");
 			} else {
 				console.log(this.form2);
 
@@ -1259,6 +1306,41 @@ export default {
 				});
 			}
 			this.submitStatus2 = 'OK'
+		},
+		async submitForm3 (e) {
+			// filter by selected checkbox
+			this.selected_nodes_rows2 = this.rows2.filter(obj => obj.vgtSelected == true).map(obj => obj.id);
+			this.form3.nodes = this.selected_nodes_rows2;
+
+			e.preventDefault();
+			this.$v.form3.$touch();
+			if (this.$v.form3.$invalid) {
+				this.submitStatus3 = 'ERROR';
+			} else {
+				console.log(this.form3);
+				this.submitStatus3 = 'PENDING';
+
+				// Networks
+				this.flag_select = false;
+
+				let edges = this.filterLabels(this.edges_response);
+				edges = this.filterEdges(edges);
+				let nodes = this.filterNodes(this.nodes_response);
+				this.metabolomic_network(nodes, edges, false);
+
+				// Heatmap, degrees
+				let biocyc_all = this.filterBioCyc(this.biocyc_all_response);
+				this.heatmap_biocyc_all(biocyc_all);
+				this.heatmap_biocyc_ratio_all(biocyc_all);
+
+				let degrees = this.filterDegrees(this.degrees_response);
+				this.degree_network(degrees);
+
+				this.flag_select = true;
+
+				this.showNotification('Successful Filtration', 'top-center', 'success');				
+			}
+			this.submitStatus3 = 'OK'
 		},
 
 		metabolomic_network (nodes_response, edges_response, is_init) {

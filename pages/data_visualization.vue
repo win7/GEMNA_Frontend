@@ -18,9 +18,9 @@
 						<ScCardBody>
 							<form>
 								<fieldset class="uk-fieldset md-bg-grey-100 sc-padding">
-									<!-- <p class="sc-text-semibold uk-text-large uk-margin-remove-top">
-										Consult
-									</p> -->
+									<p class="sc-text-semibold uk-text-large uk-margin-remove-top">
+										Experiment info
+									</p>
 									<div class="uk-child-width-1-2@m uk-grid" data-uk-grid>
 										<div>
 											<label class="uk-form-label">
@@ -70,24 +70,28 @@
 											</div>
 										</div>
 									</div>
+									<div class="uk-margin-top">
+										<button class="sc-button sc-button-primary" :class="{'sc-button-progress-overlay': submitStatus1 === 'PENDING'}" :disabled="submitStatus1 === 'PENDING'" @click.prevent="submitForm1($event)">
+											<span>Load</span>
+											<transition name="scale-up">
+												<span v-show="submitStatus1 === 'PENDING'" class="sc-button-progress-layer">
+													<ScProgressCircular></ScProgressCircular>
+												</span>
+											</transition>
+										</button>
+										<button class="sc-button sc-button-default" @click.prevent="clearAll">
+											<span>Clear</span>
+										</button>
+									</div>
 								</fieldset>
-								<div class="uk-margin-top">
-									<button class="sc-button sc-button-primary" :class="{'sc-button-progress-overlay': submitStatus1 === 'PENDING'}" :disabled="submitStatus1 === 'PENDING'" @click.prevent="submitForm1($event)">
-										<span>Load</span>
-										<transition name="scale-up">
-											<span v-show="submitStatus1 === 'PENDING'" class="sc-button-progress-layer">
-												<ScProgressCircular></ScProgressCircular>
-											</span>
-										</transition>
-									</button>
-								</div>
 							</form>
 						</ScCardBody>
 					</ScCard>
 				</div>
 			</div>
 			
-			<div class="uk-flex-center uk-grid" data-uk-grid> <!-- v-if="flag_load" -->
+			<!-- Summary -->
+			<div class="uk-flex-center uk-grid" data-uk-grid v-if="flag_load">
 				<div class="uk-width-1-4@l">
 					<ScCard>
 						<ScCardHeader>
@@ -130,7 +134,7 @@
 						</ScCardBody>
 					</ScCard>
 				</div>
-				<div class="uk-width-expand">
+				<div class="uk-width-3-4@l"> <!-- <div class="uk-width-expand"> -->
 					<ScCard>
 						<ScCardHeader>
 							<div class="uk-flex uk-flex-middle">
@@ -166,7 +170,7 @@
 						</ScCardBody>
 					</ScCard>
 				</div>
-				<div class="uk-width-1-3@l">
+				<!-- <div class="uk-width-1-3@l">
 					<ScCard>
 						<ScCardHeader>
 							<div class="uk-flex uk-flex-middle">
@@ -180,11 +184,11 @@
 							<div class="uk-height-large uk-flex uk-flex-center uk-flex-middle" id="clustering"></div>
 						</ScCardBody>
 					</ScCard>
-				</div>
+				</div> -->
 			</div>
 
 			<!-- Analysis form -->
-			<div class="uk-flex-center uk-grid" data-uk-grid>
+			<div class="uk-flex-center uk-grid" data-uk-grid v-if="flag_load">
 				<div class="uk-width-xxlarge">
 					<ScCard>
 						<ScCardHeader>
@@ -196,9 +200,9 @@
 							</div>
 						</ScCardHeader>
 						<ScCardBody>
-							<div class="uk-flex-center uk-grid" data-uk-grid>
+							<div class="uk-flex uk-grid" data-uk-grid>
 								<div class="uk-width-1-2@l">
-									<form>
+									<div> <!-- form-->
 										<fieldset class="uk-fieldset md-bg-grey-100 sc-padding">
 											<p class="sc-text-semibold uk-text-large uk-margin-remove-top">
 												General info
@@ -259,6 +263,10 @@
 																perPmz: 10,
 																perPageDropdown: [5, 10, 15, 20]
 															}"
+															:sort-options="{
+																enabled: true,
+																initialSortBy: {field: 'id', type: 'asc'}
+															}"
 															@on-row-click="onRowClick1"
 															@on-search="onSearch1"
 															@on-select-all="onSelectAll1">
@@ -310,7 +318,7 @@
 											</div>
 											<div class="uk-margin-top">
 												<button class="sc-button sc-button-primary" :class="{'sc-button-progress-overlay': submitStatus2 === 'PENDING'}" :disabled="submitStatus2 === 'PENDING'" @click.prevent="submitForm2($event)">
-													<span>Load</span>
+													<span>Filter</span>
 													<transition name="scale-up">
 														<span v-show="submitStatus2 === 'PENDING'" class="sc-button-progress-layer">
 															<ScProgressCircular></ScProgressCircular>
@@ -319,10 +327,10 @@
 												</button>
 											</div>
 										</fieldset>
-									</form>
+									</div>
 								</div>
-								<div class="uk-width-1-2@l">
-									<form>
+								<div class="uk-width-1-2@l" v-if="flag_analisys">
+									<div> <!-- form-->
 										<fieldset class="uk-fieldset md-bg-grey-100 sc-padding">
 											<p class="sc-text-semibold uk-text-large uk-margin-remove-top">
 												Specific info
@@ -330,7 +338,7 @@
 											<div class="uk-child-width-1-1@m uk-grid" data-uk-grid>
 												<div>
 													<label class="uk-form-label" for="">
-														Visualization type
+														Visualization by
 													</label>
 													<div class="uk-margin-small-top uk-margin-small-left">
 														<span class="uk-margin-right">
@@ -339,7 +347,6 @@
 																:error-state="$v.form2.type.$error" :validator="$v.form2.type"
 																value="id"
 																class="p-radio"
-																@change="onChangeType($event)"
 																data-uk-tooltip="title: Show results by Alignment ID; pos: top-right"
 															>
 																Alignment ID
@@ -351,7 +358,6 @@
 																:error-state="$v.form2.type.$error" :validator="$v.form2.type"
 																value="mz"
 																class="p-radio"
-																@change="onChangeType($event)"
 																data-uk-tooltip="title: Show results by Average Mz; pos: top-right"
 															>
 																Average Mz
@@ -363,7 +369,6 @@
 																:error-state="$v.form2.type.$error" :validator="$v.form2.type"
 																value="name"
 																class="p-radio"
-																@change="onChangeType($event)"
 																data-uk-tooltip="title: Show results by Metabolite name; pos: top-right"
 															>
 																Metabolite name
@@ -408,6 +413,10 @@
 																perPmz: 10,
 																perPageDropdown: [5, 10, 15, 20]
 															}"
+															:sort-options="{
+																enabled: true,
+																initialSortBy: {field: 'id', type: 'asc'}
+															}"
 															@on-row-click="onRowClick2"
 															@on-search="onSearch2"
 															@on-select-all="onSelectAll2">
@@ -429,7 +438,7 @@
 															<label v-for="label in labels" :key="label" :value="label">
 																<input class="uk-checkbox" type="checkbox" :key="label" :value="label" v-model="selected_labels"> {{ label }} <!-- @click.prevent="selectLabel(label)" -->
 															</label>
-															<label><input class="uk-checkbox" type="checkbox" :checked="is_all_selected_labels" @click="selectAllEdgeLabels">Select all</label>
+															<label><input class="uk-checkbox" type="checkbox" :checked="is_all_selected_labels" @click="selectAllEdgeLabels">All</label>
 														</div>
 													</div>
 												</div>
@@ -438,12 +447,12 @@
 												<button class="sc-button sc-button-primary" @click.prevent="filterGraph">
 													<span>Filter</span>
 												</button>
-												<button class="sc-button sc-button-default" @click.prevent="resetGraph">
+												<!-- <button class="sc-button sc-button-default" @click.prevent="resetGraph">
 													<span>Reset</span>
-												</button>
+												</button> -->
 											</div>
 										</fieldset>
-									</form>
+									</div>
 								</div>
 							</div>
 						</ScCardBody>
@@ -466,208 +475,7 @@
 				</div> -->
 			</div>
 
-			<div class="uk-flex-center uk-grid" data-uk-grid v-if="flag_load">
-				<div class="uk-width-xxlarge">
-					<ScCard>
-						<ScCardHeader>
-							<div class="uk-flex uk-flex-middle">
-								<i class="mdi mdi-book-search sc-icon-24 uk-margin-medium-right"></i>
-								<ScCardTitle>
-									Analysis form
-								</ScCardTitle>
-							</div>
-						</ScCardHeader>
-						<ScCardBody>
-							<div> <!-- Before form -->
-								<fieldset class="uk-fieldset md-bg-grey-100 sc-padding">
-									<!-- <p class="sc-text-semibold uk-text-large uk-margin-remove-top">
-										Consult
-									</p> -->
-									<div uk-grid>
-										<div class="uk-width-1-2@m">
-											<div>
-												<label class="uk-form-label" for="f-f-name">
-													Group
-												</label>
-												<div class="uk-form-controls">
-													<client-only>
-														<Select2
-															v-model="form2.group"
-															:options="usGroups"
-															:settings="{ 'width': '100%', 'placeholder': 'Select item...', 'closeOnSelect': true }"
-															:error-state="$v.form2.group.$error" 
-															:validator="$v.form2.group"
-															@change="onChangeGroup($event)"
-															data-uk-tooltip="title: Interaction between two phenotypes; pos: top-right"
-														></Select2>
-													</client-only>
-													<ul class="sc-vue-errors">
-														<li v-if="!$v.form2.group.required">
-															Field is required
-														</li>
-													</ul>
-												</div>
-											</div>
-											
-											<div class="uk-margin-top">
-												<label class="uk-form-label" for="f-l-name">
-													Show with
-												</label>
-												<div class="uk-form-controls">
-													<span class="uk-margin-right">
-														<PrettyRadio
-															v-model="form2.plot"
-															:error-state="$v.form2.plot.$error" :validator="$v.form2.plot"
-															value="correlation"
-															class="p-radio"
-															:disabled="disable_show"
-															data-uk-tooltip="title: Show results with correlation.; pos: top-right"
-														>
-															Correlation nodes
-														</PrettyRadio>
-													</span>
-													<span class="uk-margin-right">
-														<PrettyRadio
-															v-model="form2.plot"
-															:error-state="$v.form2.plot.$error" :validator="$v.form2.plot.type"
-															value="correlation_neighbors"
-															class="p-radio"
-															:disabled="disable_show"
-															data-uk-tooltip="title: Show results with correlation and their neighbors.; pos: top-right"
-														>
-														Correlation + neighbors nodes
-														</PrettyRadio>
-													</span>
-													<ul class="sc-vue-errors">
-														<li v-if="!$v.form2.plot.required">
-															Field is required
-														</li>
-													</ul>
-												</div>
-											</div>
-											
-											<div class="uk-margin-top">
-												<label class="uk-form-label" for="f-l-name">
-													Name by
-												</label>
-												<div class="uk-form-controls">
-													<span class="uk-margin-right">
-														<PrettyRadio
-															v-model="form2.type"
-															:error-state="$v.form2.type.$error" :validator="$v.form2.type"
-															value="id"
-															class="p-radio"
-															@change="onChangeType($event)"
-															data-uk-tooltip="title: Show results by Alignment ID; pos: top-right"
-														>
-															Alignment ID
-														</PrettyRadio>
-													</span>
-													<span class="uk-margin-right">
-														<PrettyRadio
-															v-model="form2.type"
-															:error-state="$v.form2.type.$error" :validator="$v.form2.type"
-															value="mz"
-															class="p-radio"
-															@change="onChangeType($event)"
-															data-uk-tooltip="title: Show results by Average Mz; pos: top-right"
-														>
-															Average Mz
-														</PrettyRadio>
-													</span>
-													<span>
-														<PrettyRadio
-															v-model="form2.type"
-															:error-state="$v.form2.type.$error" :validator="$v.form2.type"
-															value="name"
-															class="p-radio"
-															@change="onChangeType($event)"
-															data-uk-tooltip="title: Show results by Metabolite name; pos: top-right"
-														>
-															Metabolite name
-														</PrettyRadio>
-													</span>
-													<ul class="sc-vue-errors">
-														<li v-if="!$v.form2.type.required">
-															Field is required
-														</li>
-													</ul>
-												</div>
-											</div>
-										</div>
-										<div class="uk-width-1-2@m">
-											<div>
-												<label class="uk-form-label" for="f-f-name">
-													{{ getType(form2.type) }}
-												</label>
-												<div class="uk-form-controls">
-													<!-- <client-only>
-														<Select2
-															v-model="form2.nodes"
-															:options="usNodes"
-															:settings="{ 'width': '100%', 'placeholder': 'Search item...', 'closeOnSelect': false }"
-															:error-state="$v.form2.nodes.$error" 
-															:validator="$v.form2.nodes"
-															multiple
-															@change="onChangeNodes($event)"
-															data-uk-tooltip="title: Metabolite for analysis.; pos: top-right"
-														></Select2>
-													</client-only>
-													<ul class="sc-vue-errors">
-														<li v-if="!$v.form2.nodes.required">
-															Field is required
-														</li>
-													</ul> -->
-													<!-- -->
-													<VueGoodTable
-														:columns="columns1"
-														:rows="rows1"
-														theme="polar-bear"
-														:error-state="$v.form2.nodes.$error" 
-														:validator="$v.form2.nodes"
-														style-class="uk-table uk-table-divider uk-table-small uk-table-hover uk-text-truncate uk-background-default scutum-vgt"
-														:select-options="{ 
-															enabled: true,
-															selectOnCheckboxOnly: false,
-															disableSelectInfo: true,
-														}"
-														:pagination-options="{
-															enabled: true,
-															perPmz: 10,
-															perPageDropdown: [5, 10, 15, 20]
-														}"
-														@on-row-click="onRowClick1"
-														@on-search="onSearch1"
-														@on-select-all="onSelectAll1">
-													</VueGoodTable>
-													<ul class="sc-vue-errors">
-														{{ form2.nodes }}
-														<li v-if="!$v.form2.nodes.required">
-															Field is required
-														</li>
-													</ul>
-													<!-- -->
-												</div>
-											</div>
-										</div>
-									</div>
-								</fieldset>
-								<div class="uk-margin-top">
-									<button class="sc-button sc-button-primary" :class="{'sc-button-progress-overlay': submitStatus2 === 'PENDING'}" :disabled="submitStatus2 === 'PENDING'" @click.prevent="submitForm2($event)">
-										<span>Load</span>
-										<transition name="scale-up">
-											<span v-show="submitStatus2 === 'PENDING'" class="sc-button-progress-layer">
-												<ScProgressCircular></ScProgressCircular>
-											</span>
-										</transition>
-									</button>
-								</div>
-							</div>
-						</ScCardBody>
-					</ScCard>
-				</div>
-			</div>
-
+			<!-- Visualization -->
 			<div class="uk-flex-center uk-grid" data-uk-grid v-if="flag_load">
 				<div class="uk-width-1-2@l">
 					<ScCard :full-screen="cardBFullScreen1">
@@ -698,102 +506,6 @@
 							<ScCardBody>
 								<div class="uk-height-large uk-flex uk-flex-center uk-flex-middle" id="metabolomic-network"></div>
 								<div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle" id="degree-network"></div>
-
-								<!-- <div class="uk-child-width-1-2@s" uk-grid>
-									<div>
-										<pre class="uk-resize-vertical">
-											<div class="uk-flex uk-flex-center uk-flex-middle" id="metabolomic-network"></div>
-										</pre>
-									</div>
-								</div> -->
-								<div class="uk-height-large uk-flex-center uk-flex-middle" v-if="flag_select">
-									<form>
-										<fieldset class="uk-fieldset md-bg-grey-100 sc-padding">
-											<!-- <p class="sc-text-semibold uk-text-large uk-margin-remove-top">
-												Personal info
-											</p> -->
-											<div class="uk-child-width-1-1@m uk-grid" data-uk-grid>
-												<div>
-													<label class="uk-form-label" for="f-f-name">
-														{{ getType(form2.type) }}
-													</label>
-													<div class="uk-form-controls">
-														<VueGoodTable
-															:columns="columns1"
-															:rows="rows2"
-															theme="polar-bear"
-															:error-state="$v.form2.nodes.$error" 
-															:validator="$v.form2.nodes"
-															style-class="uk-table uk-table-divider uk-table-small uk-table-hover uk-text-truncate uk-background-default scutum-vgt"
-															:select-options="{ 
-																enabled: true,
-																selectOnCheckboxOnly: false,
-																disableSelectInfo: true,
-															}"
-															:pagination-options="{
-																enabled: true,
-																perPmz: 10,
-																perPageDropdown: [5, 10, 15, 20]
-															}"
-															@on-row-click="onRowClick2"
-															@on-search="onSearch2"
-															@on-select-all="onSelectAll2">
-														</VueGoodTable>
-														<ul class="sc-vue-errors">
-															{{ form2.nodes }}
-															<li v-if="!$v.form2.nodes.required">
-																Field is required
-															</li>
-														</ul>
-														<!-- -->
-													</div>
-												</div>
-												<div>
-													<label class="uk-form-label">
-														Correlations labels
-													</label>
-													<div class="uk-form-controls">
-														<!-- <p class="uk-margin-small-bottom">
-															Correlations labels
-														</p> -->
-														<div class="uk-grid-small uk-child-width-auto uk-grid" data-uk-grid>
-															<label v-for="label in labels" :key="label" :value="label">
-																<input class="uk-checkbox" type="checkbox" :key="label" :value="label" v-model="selected_labels"> {{ label }} <!-- @click.prevent="selectLabel(label)" -->
-															</label>
-															<label><input class="uk-checkbox" type="checkbox" :checked="is_all_selected_labels" @click="selectAllEdgeLabels">Select all</label>
-														</div>
-													</div>
-												</div>
-											</div>
-										</fieldset>
-										<div class="uk-margin-top">
-											<button class="sc-button sc-button-primary" @click.prevent="filterGraph">
-												<span>Filter</span>
-											</button>
-											<button class="sc-button sc-button-default" @click.prevent="resetGraph">
-												<span>Reset</span>
-											</button>
-										</div>
-									</form>
-								</div>
-
-								<!-- <span>selected_labels: {{ selected_labels }}</span><br>
-								<span>selected_nodes: {{ selected_nodes }}</span><br> -->
-
-								<!-- <div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle" id="metabolomic-names">
-									<div class="uk-child-width-expand@l uk-grid" data-uk-grid>
-										<div v-for="(nodes, index) in splitNodes(4)" :key="index" class="uk-margin-remove">
-											<ul class="uk-list">
-												<li v-for="node in nodes" :key="node.id">
-													<PrettyCheck v-model="selected_nodes" :value="node.id" class="p-icon">
-														<i slot="extra" class="icon mdi mdi-check"></i>
-														{{ node.name }}
-													</PrettyCheck>
-												</li>
-											</ul>
-										</div>
-									</div>
-								</div> -->
 							</ScCardBody>
 						</ScCardContent>
 					</ScCard>
@@ -957,8 +669,10 @@ export default {
 
 		nodes: [],
 		labels: [],
-		selected_nodes: [],
+		selected_nodes: [], // no used
 		selected_labels: [],
+		selected_nodes_rows1: [],
+		selected_nodes_rows2: [],
 		
 		is_all_selected_labels: false,
 		is_all_selected_nodes: true,
@@ -977,6 +691,7 @@ export default {
 		flag_select: false,
 		// flag: false,
 		flag_load: false,
+		flag_analisys: false,
 		// flag_similarity: false,
 		// flag_div2: false,
 		disable_show: false,
@@ -1068,10 +783,6 @@ export default {
 
 	},
 	mounted () {
-		/* setTimeout(() => {
-			this.appMounted = true;
-			console.log(this);
-		}, 200); */
 
 	},
 	validations: {
@@ -1105,9 +816,14 @@ export default {
 		
 	},
 	methods: {
+		clearAll: function (event) {
+			Object.assign(this.$data, this.$options.data.call(this));
+			this.showNotification('Successful Reset', 'top-center', 'success');
+		},
 		onSelectAll1(params) {
 			// params.selected - whether the select-all checkbox is checked or unchecked
 			// params.selectedRows - all rows that are selected (this page)
+			console.log("onSelectAll1", params.selected);
 
 			/* let selected_all = false;
 			if (this.flag_selected_table1) {
@@ -1125,16 +841,14 @@ export default {
 					vgtSelected: selected_all,
 				};
 			}); */
-			console.log(params.selected);
 		},
 		onSearch1 (params) {
 			// params.searchTerm - term being searched for
 			// params.rowCount - number of rows that match search
-			console.log(1, params.searchTerm);
-			console.log(4, this.rows1);
+			// console.log("onSearch1", params.searchTerm);
 		},
 		onRowClick1 (params){
-			console.log(2, params.selected, params.row.id);
+			console.log("onRowClick1", params.selected, params.row.id);
 
 			this.rows1 = this.rows1.map((obj) => {
 				if (obj.id == params.row.id) {
@@ -1145,7 +859,6 @@ export default {
 				}
 				return obj;
 			});
-			console.log(3, this.rows1);
 		},
 		onSelectAll2(params) {
 			// params.selected - whether the select-all checkbox is checked or unchecked
@@ -1169,8 +882,7 @@ export default {
 		onSearch2 (params) {
 			// params.searchTerm - term being searched for
 			// params.rowCount - number of rows that match search
-			console.log(1, params.searchTerm);
-			console.log(4, this.rows1);
+			// console.log("onSearch1", params.searchTerm);
 		},
 		onRowClick2 (params){
 			console.log(2, params.selected, params.row.id);
@@ -1213,8 +925,8 @@ export default {
 			this.$refs.msPublicMethods.deselect_all()
 		},
 		filterGraph: function (event) {
-			// filter by cheakbox
-			this.selected_nodes = this.rows2.filter(obj => obj.vgtSelected == true).map(obj => obj.id);
+			// filter by checkbox
+			this.selected_nodes_rows2 = this.rows2.filter(obj => obj.vgtSelected == true).map(obj => obj.id);
 
 			// Networks
 			this.flag_select = false;
@@ -1225,7 +937,6 @@ export default {
 			this.metabolomic_network(nodes, edges, false);
 
 			// Heatmap, degrees
-			
 			let biocyc_all = this.filterBioCyc(this.biocyc_all_response);
 			this.heatmap_biocyc_all(biocyc_all);
 			this.heatmap_biocyc_ratio_all(biocyc_all);
@@ -1260,7 +971,7 @@ export default {
 		filterDegrees (degrees_response) {
 			let degrees_filter = [];
 			for (var k in degrees_response) {
-				if (this.selected_nodes.includes(degrees_response[k][0])){
+				if (this.selected_nodes_rows2.includes(degrees_response[k][0])){
 					degrees_filter.push(degrees_response[k]);
 				}
 			}
@@ -1275,7 +986,7 @@ export default {
 				biocyc_temp = [];
 				biocyc = biocyc_all_response[this.form2.groups[i]];
 				for (var j in biocyc) {
-					if (this.selected_nodes.includes(biocyc[j].id)){
+					if (this.selected_nodes_rows2.includes(biocyc[j].id)){
 						biocyc_temp.push(biocyc[j]);
 					}
 				}
@@ -1295,7 +1006,7 @@ export default {
 		filterNodes (nodes_response) {
 			let nodes_filter = [];
 			for (var k in nodes_response) {
-				if (this.selected_nodes.includes(nodes_response[k].id)){
+				if (this.selected_nodes_rows2.includes(nodes_response[k].id)){
 					nodes_filter.push(nodes_response[k]);
 				}
 			}
@@ -1304,7 +1015,7 @@ export default {
 		filterEdges (edges_response) {
 			let edges_filter = [];
 			for (var k in edges_response) {
-				if (this.selected_nodes.includes(edges_response[k].source) && this.selected_nodes.includes(edges_response[k].target)){
+				if (this.selected_nodes_rows2.includes(edges_response[k].source) && this.selected_nodes_rows2.includes(edges_response[k].target)){
 					edges_filter.push(edges_response[k]);
 				}
 			}
@@ -1327,12 +1038,12 @@ export default {
 		},
 		selectAllNodes () {
 			if (this.is_all_selected_nodes) {
-				this.selected_nodes = [];
+				this.selected_nodes_rows2 = [];
 				this.is_all_selected_nodes = false;
 			} else {
-				this.selected_nodes = [];
+				this.selected_nodes_rows2 = [];
 				for (var k in this.nodes) {
-					this.selected_nodes.push(this.nodes[k].id);
+					this.selected_nodes_rows2.push(this.nodes[k].id);
 				}
 				this.is_all_selected_nodes = true;
 			}
@@ -1340,32 +1051,38 @@ export default {
 		splitNodes (n) {
 			return splitArr(this.nodes, n);
 		},
-		loadParams () {
-			console.log(this.form2.group);
+		loadRows1 () {
 			this.nodes_detail = this.graph_nodes[this.form2.group];
-			
-			this.options = [{id: "-1", text: "Select all"}];
-			this.rows1 = []; // table
-			for (let i = 0; i < this.nodes_detail.length; i++) {
-				this.options.push({
-					id: this.nodes_detail[i]["id"].toString(),
-					text: this.nodes_detail[i]["id"] + " || " + this.nodes_detail[i]["mz"] + " || " + this.nodes_detail[i]["name"] // this.nodes_detail[i][this.form2.type]
-				})
 
-				// rows for table
+			this.rows1 = [];
+			for (let i = 0; i < this.nodes_detail.length; i++) {
 				this.rows1.push({
 					id: this.nodes_detail[i]["id"].toString(),
 					mz: this.nodes_detail[i]["mz"],
 					name: this.nodes_detail[i]["name"],
-					vgtSelected: false
-				})
+					vgtSelected: this.selected_nodes_rows1.includes(this.nodes_detail[i]["id"].toString())
+				});
 			}
-			console.log(this.nodes_detail);
 		},
-		onChangeGroup: function(event){
-			this.loadParams();
+		loadRows2 () {
+			this.rows2 = [];
+			let obj = null;
+			for (let i = 0; i < this.nodes_response.length; i++) {
+				obj = this.rows1.find(item => item.id == this.nodes_response[i]["id"]);
+				this.rows2.push({
+					id: obj["id"].toString(),
+					mz: obj["mz"],
+					name: obj["name"],
+					vgtSelected: this.selected_nodes_rows2.includes(obj["id"])
+				});
+			}
+		},
+		onChangeGroup: function(event) {
+			console.log("onChangeGroup");
+
+			this.loadRows1();
     	},
-		onChangeNodes: function(event){
+		onChangeNodes: function(event) { // no used
 			// console.log(this.form2.nodes);
 			if (this.form2.nodes.includes("-1")) {
 				this.disable_show = true;
@@ -1373,8 +1090,8 @@ export default {
 				this.disable_show = false;
 			}
     	},
-		onChangeType: function(event){
-			this.loadParams();			
+		onChangeType: function(event) { // no used
+			this.loadRows1();			
     	},
 		getType (id) {
 			var result = types.filter(obj => {
@@ -1435,17 +1152,17 @@ export default {
 						this.graph_nodes = response.data.data.nodes;
 						let cluster = response.data.data.cluster;
 
-						// this.groups = [];
+						// store groups,;
 						this.form2.groups = [];
 						for (let i = 0; i < this.graph_details.length; i++) {
 							this.form2.groups.push(this.graph_details[i].name)
 							this.groups.push({
 								id: this.graph_details[i].name,
 								text: this.graph_details[i].name
-							})
+							});
 						}
 
-						this.clustering(cluster);
+						// this.clustering(cluster);
 					}
 				}).catch((error) => {
 					console.log(error.response);
@@ -1460,8 +1177,9 @@ export default {
 			this.submitStatus1 = 'OK'
 		},
 		async submitForm2 (e) {
-			// filter by cheakbox
-			this.form2.nodes = this.rows1.filter(obj => obj.vgtSelected == true).map(obj => obj.id);
+			// filter by selected checkbox
+			this.selected_nodes_rows1 = this.rows1.filter(obj => obj.vgtSelected == true).map(obj => obj.id);
+			this.form2.nodes = this.selected_nodes_rows1;
 
 			e.preventDefault();
 			this.$v.form2.$touch();
@@ -1473,8 +1191,6 @@ export default {
 				this.submitStatus2 = 'PENDING';
 				
 				this.flag_select = false;
-				// this.flag_similarity = false;
-				// this.flag_div2 = false;
 				
 				await this.$axios.post("/api/experiments-consult/", this.form2).then((response) => {
 					console.log(1, response.data);
@@ -1486,11 +1202,9 @@ export default {
 						); */
 						this.showNotification(response.data.message, 'top-center', 'success');
 
-						// this.selected_nodes = [];
-						// this.selected_edges = [];
-						// this.flag_div2 = true;
+						this.flag_analisys = true
 						
-						this.nodes_response = response.data.data.nodes;						
+						this.nodes_response = response.data.data.nodes;
 						this.edges_response = response.data.data.edges;
 						this.biocyc_all_response = response.data.data.biocyc_all;
 						this.degrees_response = response.data.data.degrees;
@@ -1500,18 +1214,7 @@ export default {
 						this.heatmap_biocyc_ratio_all(this.biocyc_all_response);
 						this.degree_network(this.degrees_response);
 						
-						// create rows2
-						this.rows2 = [];
-						let obj = null;
-						for (let i = 0; i < this.nodes_response.length; i++) {
-							obj = this.rows1.find(item => item.id == this.nodes_response[i]["id"]);
-							this.rows2.push({
-								id: obj["id"].toString(),
-								mz: obj["mz"],
-								name: obj["name"],
-								vgtSelected: false
-							})
-						}
+						this.loadRows2();						
 
 						this.is_all_selected_labels = false;
 						this.selectAllEdgeLabels();
@@ -1551,7 +1254,7 @@ export default {
 				});
 
 				/*/ for (var k in this.nodes) { // copy to selected
-					this.selected_nodes.push(this.nodes[k].id);
+					this.selected_nodes_rows2.push(this.nodes[k].id);
 				} */
 				//this.$refs.msPublicMethods.select_all()
 			}
@@ -1879,7 +1582,7 @@ export default {
 
 			const minValue = Math.floor(Math.min.apply(null, data.map(item => item[2])));
 			const maxValue = Math.ceil(Math.max.apply(null, data.map(item => item[2])));
-			console.log(minValue, maxValue);
+			// console.log(minValue, maxValue);
 
 			option = {
 				title: {

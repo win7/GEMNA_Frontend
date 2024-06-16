@@ -34,7 +34,7 @@ export const menuEntries = [
 			},
 			{
 				id: uniqueID(),
-				title: "Consult",
+				title: "Visualization",
 				page: "/data_visualization"
 			},
 		]

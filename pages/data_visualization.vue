@@ -708,7 +708,9 @@ export default {
 		},
 
 		flag_selected_table1: false,
-		flag_selected_table2: false
+		flag_selected_table2: false,
+
+		export_data: [],
 	}),
 	computed: {
 		msSearchableOptions () {
@@ -823,16 +825,12 @@ export default {
 	methods: {
 		exportBiocyc: function (event) {
 			console.log("export");
-
-			var arrData = [
-				{"id": 1, "Mz": 12.22, "Name": "abc1"},
-				{"id": 2, "Mz": 12.23, "Name": "abc2"},
-			];
+			console.log(this.export_data);
 
 			let csvContent = "data:text/csv;charset=utf-8,";
 			csvContent += [
-				Object.keys(arrData[0]).join("\t"),
-				...arrData.map(item => Object.values(item).join("\t"))
+				Object.keys(this.export_data[0]).join("\t"),
+				...this.export_data.map(item => Object.values(item).join("\t"))
 			]
 			.join("\n")
 			.replace(/(^\[)|(\]$)/gm, "");
@@ -845,7 +843,7 @@ export default {
 		},
 		clearAll: function (event) {
 			Object.assign(this.$data, this.$options.data.call(this));
-			this.showNotification('Successful Reset', 'top-center', 'success');
+			this.showNotification('Successful clear all', 'top-center', 'success');
 		},
 		onSelectAll1(params) {
 			// params.selected - whether the select-all checkbox is checked or unchecked
@@ -1161,7 +1159,7 @@ export default {
 				// this.form2.plot = "correlation";
 
 				await this.$axios.get(`/api/experiments/${this.form1.id}/`, {params: this.form1}).then((response) => {
-					console.log(1, response.data);
+					console.log(response.data);
 					if (response.status === 200) {
 						/* swal.fire(
 							response.data.message,
@@ -1219,7 +1217,7 @@ export default {
 				this.flag_select = false;
 				
 				await this.$axios.post("/api/experiments-consult/", this.form2).then((response) => {
-					console.log(1, response.data);
+					console.log(response.data);
 					if (response.status === 200) {
 						/* swal.fire(
 							response.data.message,
@@ -1553,13 +1551,18 @@ export default {
 		},
 
 		heatmap_biocyc_all (list_matrix) {
-			// set the dimensions and margins of the graph
-			
-			/* const source = [...new Set(data.map(obj => obj.source))];
-			const target = [...new Set(data.map(obj => obj.target))];
-
-			console.log(source);
-			console.log(target); */
+			// get data to export
+			this.export_data = list_matrix[this.form2.group].map((obj) => {
+				const row = this.rows1.find((obj_) => obj_.id == obj.id);
+				const { id, ...filter_row } = {
+					Id: row.id,
+					Mz: row.mz,
+					Name: row.name,
+					...obj
+				};
+				return filter_row;
+			});
+			// console.log(JSON.stringify(this.export_data, null, "\t"))
 
 			var chartDom = document.getElementById('heatmap');
 			var myChart = echarts.init(chartDom);

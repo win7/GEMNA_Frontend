@@ -528,6 +528,11 @@
 								<ScCardActions>
 									<a
 										href="javascript:void(0)"
+										class="sc-actions-icon mdi mdi-file-download-outline"
+										@click.prevent="exportBiocyc"
+									></a>
+									<a
+										href="javascript:void(0)"
 										class="sc-actions-icon mdi mdi-fullscreen"
 										:class="{'mdi-fullscreen' : !cardBFullScreen2, 'mdi-fullscreen-exit' : cardBFullScreen2 }"
 										@click.prevent="cardBFullScreen2 = !cardBFullScreen2"
@@ -816,6 +821,28 @@ export default {
 		
 	},
 	methods: {
+		exportBiocyc: function (event) {
+			console.log("export");
+
+			var arrData = [
+				{"id": 1, "Mz": 12.22, "Name": "abc1"},
+				{"id": 2, "Mz": 12.23, "Name": "abc2"},
+			];
+
+			let csvContent = "data:text/csv;charset=utf-8,";
+			csvContent += [
+				Object.keys(arrData[0]).join("\t"),
+				...arrData.map(item => Object.values(item).join("\t"))
+			]
+			.join("\n")
+			.replace(/(^\[)|(\]$)/gm, "");
+
+			const data = encodeURI(csvContent);
+			const link = document.createElement("a");
+			link.setAttribute("href", data);
+			link.setAttribute("download", "biocyc_" + this.form2.group + ".csv");
+			link.click();
+		},
 		clearAll: function (event) {
 			Object.assign(this.$data, this.$options.data.call(this));
 			this.showNotification('Successful Reset', 'top-center', 'success');
@@ -885,7 +912,7 @@ export default {
 			// console.log("onSearch1", params.searchTerm);
 		},
 		onRowClick2 (params){
-			console.log(2, params.selected, params.row.id);
+			console.log("onRowClick2", params.selected, params.row.id);
 
 			this.rows2 = this.rows2.map((obj) => {
 				if (obj.id == params.row.id) {
@@ -896,7 +923,6 @@ export default {
 				}
 				return obj;
 			});
-			console.log(3, this.rows1);
 		},
 		onSelectChanged (params) { // no use
 			/* const selectedIds = params.selectedRows.reduce((acc, row) => {
@@ -1150,7 +1176,7 @@ export default {
 
 						this.graph_details = response.data.data.details;
 						this.graph_nodes = response.data.data.nodes;
-						let cluster = response.data.data.cluster;
+						// let cluster = response.data.data.cluster;
 
 						// store groups,;
 						this.form2.groups = [];
@@ -1311,7 +1337,7 @@ export default {
 				toolbox: {
 					show: true,
 					feature: {
-						saveAsImmz: { 
+						saveAsImage: {
 							show: true,
 							name: "Network_" + this.form2.group
 						}
@@ -1594,7 +1620,7 @@ export default {
 				toolbox: {
 					show: true,
 					feature: {
-						saveAsImmz: { 
+						saveAsImage: { 
 							show: true,
 							name: "Heatmap_" + this.form2.group
 						}
@@ -1853,7 +1879,7 @@ export default {
 				toolbox: {
 					show: true,
 					feature: {
-						saveAsImmz: { 
+						saveAsImage: { 
 							show: true,
 							name: "Ratios_" + this.form2.group
 						}
@@ -1967,7 +1993,7 @@ export default {
 				toolbox: {
 					show: true,
 					feature: {
-						saveAsImmz: { 
+						saveAsImage: { 
 							show: true,
 							name: "Neighbors_" + this.form2.group
 						}
@@ -2046,7 +2072,7 @@ export default {
 				toolbox: {
 					show: true,
 					feature: {
-						saveAsImmz: { 
+						saveAsImage: { 
 							show: true,
 							name: "Clusters_" + this.form2.group
 						}

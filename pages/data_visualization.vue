@@ -655,6 +655,15 @@ export default {
 				sortable: true,
 			},
 			{
+				label: 'Rt',
+				field: 'rt',
+				// type: 'decimal',
+				filterOptions: {
+					enabled: true
+				},
+				tdClass: 'uk-text-nowrap uk-text-left'
+			},
+			{
 				label: 'Mz',
 				field: 'mz',
 				// type: 'decimal',
@@ -1128,6 +1137,7 @@ export default {
 			for (let i = 0; i < this.nodes_detail.length; i++) {
 				this.rows1.push({
 					id: this.nodes_detail[i]["id"].toString(),
+					rt: this.nodes_detail[i]["rt"],
 					mz: this.nodes_detail[i]["mz"],
 					name: this.nodes_detail[i]["name"],
 					vgtSelected: this.selected_nodes_rows1.includes(this.nodes_detail[i]["id"].toString())
@@ -1141,6 +1151,7 @@ export default {
 				obj = this.rows1.find(item => item.id == this.nodes_response[i]["id"]);
 				this.rows2.push({
 					id: obj["id"].toString(),
+					rt: obj["rt"],
 					mz: obj["mz"],
 					name: obj["name"],
 					vgtSelected: this.selected_nodes_rows2.includes(obj["id"])

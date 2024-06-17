@@ -5,7 +5,7 @@
 				Data for Analysis
 			</h3>
 			<div class="uk-flex-center uk-grid" data-uk-grid>
-				<div class="uk-width-4-5@l">
+				<div class="uk-width-xxlarge"> <!-- uk-width-4-5@l -->
 					<ScCard>
 						<ScCardBody>
 							<client-only>
@@ -61,6 +61,13 @@ export default {
 			
 		}
 	}),
+	mounted () {
+		this.$store.commit('sidebarMainToggle', true);
+		this.$store.commit('setSidebarMiniActive', true);
+	},
+	beforeDestroy () {
+		this.$store.commit('setSidebarMiniActive', false);
+	},
 	computed: {
 
 	},

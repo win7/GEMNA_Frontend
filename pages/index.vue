@@ -8,6 +8,14 @@
 
 <script>
 export default {
-	name: 'Index'
+	name: 'Index',
+
+	mounted () {
+		this.$store.commit('sidebarMainToggle', true);
+		this.$store.commit('setSidebarMiniActive', true);
+	},
+	beforeDestroy () {
+		this.$store.commit('setSidebarMiniActive', false);
+	}
 }
 </script>

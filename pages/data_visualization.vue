@@ -521,6 +521,13 @@
 									</ScCardMeta> -->
 								</div>
 								<ScCardActions>
+									<!-- class="sc-actions-icon mdi mdi-lock" -->
+									<a
+										href="javascript:void(0)"
+										class="sc-actions-icon mdi"
+										:class="{'mdi-lock-open-variant' : !flag_nodes_save, 'mdi-lock' : flag_nodes_save }"
+										@click.prevent="updateFlagSave"
+									></a>
 									<a
 										href="javascript:void(0)"
 										class="sc-actions-icon mdi mdi-fullscreen"
@@ -717,6 +724,7 @@ export default {
 		cardBFullScreen2: false,
 
 		nodes: [],
+		nodes_pos: [],
 		labels: [],
 		selected_nodes: [], // no used
 		selected_labels: [], // no used
@@ -733,6 +741,9 @@ export default {
 
 		nodes_response: [],
 		edges_response: [],
+		flag_nodes_save: false,
+		nodes_response_save: [],
+
 		// biocyc: [],
 		biocyc_all_response: [],
 		degrees_response: [],
@@ -755,17 +766,25 @@ export default {
 		flag_selected_table2: false,
 
 		export_data: [],
+
 	}),
+	mounted () {
+		this.$store.commit('sidebarMainToggle', true);
+		this.$store.commit('setSidebarMiniActive', true);
+	},
+	beforeDestroy () {
+		this.$store.commit('setSidebarMiniActive', false);
+	},
 	computed: {
-		msSearchableOptions () {
-			let options_node = [];
-			for (var k in this.nodes) {
+		msSearchableOptions () { // no used
+			/* let options_node = [];
+			for (var k in this. nodes) {
 				options_node.push({
-					value: this.nodes[k].id + "",
-					text: this.nodes[k].name
+					value: this. nodes[k].id + "",
+					text: this. nodes[k].name
 				});
 			}
-			return 	options_node;
+			return 	options_node; */
 
 			/* let options = [];
 			for (let i = 1; i < 10; i++) {
@@ -833,9 +852,6 @@ export default {
 	created () {
 
 	},
-	mounted () {
-
-	},
 	validations: {
 		form1: {
 			id: {
@@ -878,6 +894,26 @@ export default {
 		
 	},
 	methods: {
+		updateFlagSave: function (event) {
+			/* if (this.flag_nodes_save) {
+				this.nodes_pos = this.nodes;
+				// console.log(this.nodes_pos);
+
+				this.flag_nodes_save = false;
+			} else {
+				this.flag_nodes_save = true;
+			}
+			console.log(this.flag_nodes_save); */
+
+			this.flag_nodes_save = !this.flag_nodes_save;
+			console.log(this.flag_nodes_save);
+
+			if (this.flag_nodes_save) {
+				this.nodes_pos = this.nodes;
+				console.log(this.nodes_pos);
+			}
+
+		},
 		exportBiocyc: function (event) {
 			console.log("export");
 			console.log(this.export_data);
@@ -905,7 +941,7 @@ export default {
 			// params.selectedRows - all rows that are selected (this page)
 			console.log("onSelectAll1", params.selected);
 
-			/* let selected_all = false;
+			let selected_all = false;
 			if (this.flag_selected_table1) {
 				this.flag_selected_table1 = false;
 				selected_all = true;
@@ -920,7 +956,7 @@ export default {
 					...obj,
 					vgtSelected: selected_all,
 				};
-			}); */
+			});
 		},
 		onSearch1 (params) {
 			// params.searchTerm - term being searched for
@@ -1115,20 +1151,20 @@ export default {
 				this.is_all_selected_labels = true;
 			}
 		},
-		selectAllNodes () {
-			if (this.is_all_selected_nodes) {
+		selectAllNodes () { // no used
+			/* if (this.is_all_selected_nodes) {
 				this.selected_nodes_rows2 = [];
 				this.is_all_selected_nodes = false;
 			} else {
 				this.selected_nodes_rows2 = [];
-				for (var k in this.nodes) {
-					this.selected_nodes_rows2.push(this.nodes[k].id);
+				for (var k in this. nodes) {
+					this.selected_nodes_rows2.push(this. nodes[k].id);
 				}
 				this.is_all_selected_nodes = true;
-			}
+			} */
 		},
-		splitNodes (n) {
-			return splitArr(this.nodes, n);
+		splitNodes (n) { // no used
+			// return splitArr(this. nodes, n);
 		},
 		loadRows1 () {
 			this.nodes_detail = this.graph_nodes[this.form2.group];
@@ -1160,6 +1196,12 @@ export default {
 		},
 		onChangeGroup: function(event) {
 			console.log("onChangeGroup");
+			/* if (this.flag_nodes_save) {
+				this.nodes_response_save = this.nodes_response;
+				console.log("ok");
+			}
+			console.log(0, this.nodes_response);
+			console.log(1, this.nodes_response_save); */
 
 			this.loadRows1();
     	},
@@ -1303,7 +1345,7 @@ export default {
 
 						// this.flag_similarity = true;
 						this.flag_select = true;
-						this.flag_selected_table2 = false;
+						// this.flag_selected_table2 = false;
 
 					}
 				}).catch((error) => {
@@ -1358,25 +1400,24 @@ export default {
 			if (is_init) {
 				this.labels = Array.from(new Set(edges_response.map(d => d.label)));
 
-				/* this.nodes = Array.from(new Set(suits.flatMap(l => [l.source, l.target])), id => ({
+				/* this. nodes = Array.from(new Set(suits.flatMap(l => [l.source, l.target])), id => ({
 								id: id, name: this.nodes_detail.find((obj) => obj.id == id)[this.form2.type]})); */
 				
-				this.nodes = nodes_response.map(node => {
+				/* this. nodes = nodes_response.map(node => {
 					return {
 						id: node.id,
 						name: this.nodes_detail.find((obj) => obj.id == node.id)[this.form2.type],
 						x: node.pos[0],
 						y: node.pos[1]
 					};
-				});
+				}); */
 
-				/*/ for (var k in this.nodes) { // copy to selected
-					this.selected_nodes_rows2.push(this.nodes[k].id);
+				/*/ for (var k in this. nodes) { // copy to selected
+					this.selected_nodes_rows2.push(this. nodes[k].id);
 				} */
-				//this.$refs.msPublicMethods.select_all()
 			}
 			
-			const nodes = nodes_response.map(node => {
+			this.nodes = nodes_response.map(node => {
 				return {
 					id: node.id,
 					name: this.nodes_detail.find((obj) => obj.id == node.id)[this.form2.type],
@@ -1384,13 +1425,29 @@ export default {
 					y: node.pos[1]
 				};
 			});
+			// this.$refs.msPublicMethods.select_all()
+
+			console.log(10, this.nodes);
+			console.log(11, this.nodes_pos);
+			if (this.flag_nodes_save) {
+				for (let k = 0; k < this.nodes.length; k++) {
+					const node = this.nodes_pos.find((obj) => obj.id == this.nodes[k].id);
+					if (node) {
+						this.nodes[k].x = node.x;
+						this.nodes[k].y = node.y;
+					}
+				}
+			}
+			console.log(12, this.nodes);
+
+			let nodes = this.nodes;
 			const labels = Array.from(new Set(edges_response.map(d => d.label)));
 			const links = edges_response.map(obj => ({ ...obj, value: obj.label }));
 
 			// this.selected_labels = labels.sort(); // copy to selected
 
-			// console.log(11, this.labels);
-			// console.log(22, this.nodes);
+			// console.log(11, this. labels);
+			// console.log(22, this. nodes);
 			// console.log(33, links);
 
 			links.forEach(function (edge) {
@@ -1512,13 +1569,17 @@ export default {
 			myChart.setOption(option);
 
 			myChart.on('click', function (params) {
+				let that = this;
 				if (params.dataType === 'node') {
 					// Click event on a node
 					console.log('Clicked on node:', params.data.name);
+					console.log('Clicked on node:', params);
+
 					// Add your custom logic here
 				} else {
 					console.log("Other case");
 				}
+				console.log(100, params);
 			});
 		},
 

@@ -18,7 +18,7 @@ export const menuEntries = [
 		id: uniqueID(),
 		title: "Analysis",
 		page: "/dashboard",
-		icon: "mdi mdi-view-dashboard-variant",
+		icon: "mdi mdi-filter-outline",
 		isOpen: false,
 		level: 0,
 		submenu: [

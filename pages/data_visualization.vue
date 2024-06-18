@@ -724,12 +724,13 @@ export default {
 		cardBFullScreen2: false,
 
 		nodes: [],
-		nodes_pos: [],
+		nodes_save: [],
 		labels: [],
 		selected_nodes: [], // no used
 		selected_labels: [], // no used
 		selected_nodes_rows1: [],
 		selected_nodes_rows2: [],
+		flag_nodes_save: false,
 		
 		is_all_selected_labels: false,
 		is_all_selected_nodes: true,
@@ -741,8 +742,6 @@ export default {
 
 		nodes_response: [],
 		edges_response: [],
-		flag_nodes_save: false,
-		nodes_response_save: [],
 
 		// biocyc: [],
 		biocyc_all_response: [],
@@ -895,22 +894,11 @@ export default {
 	},
 	methods: {
 		updateFlagSave: function (event) {
-			/* if (this.flag_nodes_save) {
-				this.nodes_pos = this.nodes;
-				// console.log(this.nodes_pos);
-
-				this.flag_nodes_save = false;
-			} else {
-				this.flag_nodes_save = true;
-			}
-			console.log(this.flag_nodes_save); */
-
 			this.flag_nodes_save = !this.flag_nodes_save;
-			console.log(this.flag_nodes_save);
 
 			if (this.flag_nodes_save) {
-				this.nodes_pos = this.nodes;
-				console.log(this.nodes_pos);
+				this.nodes_save = this.nodes;
+				console.log(this.nodes_save);
 			}
 
 		},
@@ -1196,12 +1184,6 @@ export default {
 		},
 		onChangeGroup: function(event) {
 			console.log("onChangeGroup");
-			/* if (this.flag_nodes_save) {
-				this.nodes_response_save = this.nodes_response;
-				console.log("ok");
-			}
-			console.log(0, this.nodes_response);
-			console.log(1, this.nodes_response_save); */
 
 			this.loadRows1();
     	},
@@ -1417,28 +1399,26 @@ export default {
 				} */
 			}
 			
+			console.log(this.nodes_detail);
 			this.nodes = nodes_response.map(node => {
 				return {
 					id: node.id,
-					name: this.nodes_detail.find((obj) => obj.id == node.id)[this.form2.type],
+					name: this.nodes_detail.find((obj) => obj.id == node.id)[this.form3.type],
 					x: node.pos[0],
 					y: node.pos[1]
 				};
 			});
 			// this.$refs.msPublicMethods.select_all()
 
-			console.log(10, this.nodes);
-			console.log(11, this.nodes_pos);
 			if (this.flag_nodes_save) {
 				for (let k = 0; k < this.nodes.length; k++) {
-					const node = this.nodes_pos.find((obj) => obj.id == this.nodes[k].id);
+					const node = this.nodes_save.find((obj) => obj.id == this.nodes[k].id);
 					if (node) {
 						this.nodes[k].x = node.x;
 						this.nodes[k].y = node.y;
 					}
 				}
 			}
-			console.log(12, this.nodes);
 
 			let nodes = this.nodes;
 			const labels = Array.from(new Set(edges_response.map(d => d.label)));
@@ -1752,7 +1732,7 @@ export default {
 				matrix = list_matrix[groups_new[i]];
 				for (let j = 0; j < matrix.length; j++) {
 					if (i == 0) {
-						xData.push(this.nodes_detail.find((obj) => obj.id == matrix[j].id)[this.form2.type]);
+						xData.push(this.nodes_detail.find((obj) => obj.id == matrix[j].id)[this.form3.type]);
 						if (matrix[j].Before != "-") {
 							data.push([j, i, matrix[j].Before]);
 						}
@@ -2014,7 +1994,7 @@ export default {
 				matrix = list_matrix[this.form2.groups[i]];
 				for (let j = 0; j < matrix.length; j++) {
 					if (i == 0) {
-						xData.push(this.nodes_detail.find((obj) => obj.id == matrix[j].id)[this.form2.type]);
+						xData.push(this.nodes_detail.find((obj) => obj.id == matrix[j].id)[this.form3.type]);
 						// data.push([j, 0, matrix[j].Before]);
 					}
 					if (matrix[j].Ratio != "-") {

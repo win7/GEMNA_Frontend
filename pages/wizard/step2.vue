@@ -190,7 +190,7 @@
 import { scHelpers } from "~/assets/js/utils";
 
 const methods = [{"id": "vgae-line", "name": "LVGAE"}, {"id": "vgae-base", "name": "VGAE"}, {"id": "argva-base", "name": "ARGVA"}, {"id": "dgi-tran", "name": "DGI"}];
-const data_variations = [{"id": "none", "name": "none"}, {"id": "str", "name": "str"}, {"id": "dyn", "name": "dyn"}];
+const data_variations = [{"id": "none", "name": "none"}, {"id": "str", "name": "one-to-one"}, {"id": "dyn", "name": "many-to-many"}];
 const transformations = [{"id": true, "name": "Yes"}, {"id": false, "name": "No"}];
 
 import ScInput from '~/components/Input'

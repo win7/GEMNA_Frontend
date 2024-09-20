@@ -27,11 +27,11 @@ export const menuEntries = [
 				title: "Process",
 				page: "/wizard"
 			},
-			/* {
+			{
 				id: uniqueID(),
 				title: "Finetune",
 				page: "/finetune"
-			}, */
+			},
 			{
 				id: uniqueID(),
 				title: "Visualization",

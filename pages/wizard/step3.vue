@@ -53,7 +53,7 @@
 <script>
 
 const methods = [{"id": "vgae-line", "name": "LVGAE"}, {"id": "vgae-base", "name": "VGAE"}, {"id": "argva-base", "name": "ARGVA"}, {"id": "dgi-tran", "name": "DGI"}];
-const options = [{"id": "none", "name": "none"}, {"id": "str", "name": "str"}, {"id": "dyn", "name": "dyn"}];
+const options = [{"id": "none", "name": "none"}, {"id": "str", "name": "one-to-one"}, {"id": "dyn", "name": "many-to-many"}];
 
 export default {
 	name: 'FormsWizardStep3',

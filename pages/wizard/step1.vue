@@ -26,7 +26,7 @@
 						Raw data
 					</label>
 					<div class="uk-form-controls">
-						<input type="file" :error-state="$v.form.raw_data.$error" :validator="$v.form.raw_data" @change="loadFile" mode="outline" data-uk-tooltip="title: Upload raw data file. The first 3 columns are Alignment ID, Average Mz, Metabolite name, the rest of them are the measurements.; pos: top-right"/>
+						<input type="file" :error-state="$v.form.raw_data.$error" :validator="$v.form.raw_data" @change="loadFile" mode="outline" data-uk-tooltip="title: Upload raw data file. The first 4 columns are Alignment ID, Average Rt, Average Mz, Metabolite name, the rest of them are the measurements.; pos: top-right"/>
 						<!-- <ScInput @change="loadFile"
 							name="raw_data"
 							type="file"

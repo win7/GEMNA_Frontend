@@ -2,7 +2,7 @@
 	<div id="sc-page-wrapper">
 		<div id="sc-page-content">
 			<h3 class="uk-margin-bottom">
-				Data Visualization
+				Finetune
 			</h3>
 			<div class="uk-flex-center uk-grid" data-uk-grid>
 				<div class="uk-width-xxlarge">
@@ -102,30 +102,75 @@
 							</div>
 						</ScCardHeader>
 						<ScCardBody>
-							<div class="uk-child-width-1-1@l uk-child-width-1-1@m uk-grid uk-grid-divider" data-uk-grid>
-								<div>
-									<client-only>
-										<IonRangeSlider v-model="rangeSlider.d"
-											:settings="{grid: true, min: 18, max: 70, from: 30, prefix: 'Age ', max_postfix: '+'}"
-										></IonRangeSlider>
-									</client-only>
-									<span class="sc-color-secondary uk-text-small">Data: {{ rangeSlider.d }}</span>
-								</div>
-								<div>
-									<client-only>
-										<IonRangeSlider v-model="rangeSlider.e"
-											:settings="{type: 'double', min: 1000000, max: 2000000, grid: true, force_edges: true}"
-										></IonRangeSlider>
-									</client-only>
-									<span class="sc-color-secondary uk-text-small">Data: {{ rangeSlider.e }}</span>
-								</div>
-								<div>
-									<client-only>
-										<IonRangeSlider v-model="rangeSlider.f"
-											:settings="{type: 'single', min: 0, max: 10, step: 2.34, grid: true, grid_snap: true}"
-										></IonRangeSlider>
-									</client-only>
-									<span class="sc-color-secondary uk-text-small">Data: {{ rangeSlider.f }}</span>
+							<div class="uk-flex uk-grid" data-uk-grid>
+								<div class="uk-width-1-1@l">
+									<div> <!-- form-->
+										<fieldset class="uk-fieldset md-bg-grey-100 sc-padding">
+											<p class="sc-text-semibold uk-text-large uk-margin-remove-top">
+												Setup info
+											</p>
+											<div class="uk-child-width-1-1@m uk-grid" data-uk-grid>
+												<div>
+													<label class="uk-form-label" for="">
+														Outlier scores
+													</label>
+													<div class="uk-form-controls uk-background-default">
+														<client-only>
+															<IonRangeSlider
+																v-model="rangeSlider.f"
+																:settings="{type: 'single', min: 0, max: 100, step: 1, grid: true, grid_snap: true}"
+															></IonRangeSlider>
+														</client-only>
+														<span class="sc-color-secondary uk-text-small">Data: {{ rangeSlider.f }}</span>
+														<ul class="sc-vue-errors">
+															<li v-if="!$v.form2.group.required">
+																Field is required
+															</li>
+														</ul>
+													</div>
+												</div>
+												<!-- <div>
+													<label class="uk-form-label" for="f-l-name">
+														Last Name
+													</label>
+													<div class="uk-form-controls">
+														<ScInput id="f-l-name" mode="outline"></ScInput>
+													</div>
+												</div> -->
+											</div>
+											<div class="uk-child-width-1-1@m uk-flex uk-flex-top uk-margin-top uk-grid" data-uk-grid>
+												<div>
+													<label class="uk-form-label" for="">
+														CV (%)
+													</label>
+													<div class="uk-form-controls uk-background-default">
+														<client-only>
+															<IonRangeSlider
+																v-model="rangeSlider.f"
+																:settings="{type: 'single', min: 0, max: 100, step: 1, grid: true, grid_snap: true}"
+															></IonRangeSlider>
+														</client-only>
+														<span class="sc-color-secondary uk-text-small">Data: {{ rangeSlider.f }}</span>
+														<ul class="sc-vue-errors">
+															<li v-if="!$v.form2.group.required">
+																Field is required
+															</li>
+														</ul>
+													</div>
+												</div>
+											</div>
+											<div class="uk-margin-top">
+												<button class="sc-button sc-button-primary" :class="{'sc-button-progress-overlay': submitStatus2 === 'PENDING'}" :disabled="submitStatus2 === 'PENDING'" @click.prevent="submitForm2($event)">
+													<span>Filter</span>
+													<transition name="scale-up">
+														<span v-show="submitStatus2 === 'PENDING'" class="sc-button-progress-layer">
+															<ScProgressCircular></ScProgressCircular>
+														</span>
+													</transition>
+												</button>
+											</div>
+										</fieldset>
+									</div>
 								</div>
 							</div>
 						</ScCardBody>
@@ -268,11 +313,11 @@ export default {
 		submitStatus2: null,
 
 		form1: {
-			id: "25d3d362-e676-4185-a877-7667eba62795",
+			id: "565edbab-7dcc-4850-b89e-0fbf388afef4",
 			quality: "f1"
 		},
 		form2: {
-			id: "25d3d362-e676-4185-a877-7667eba62795",
+			id: "565edbab-7dcc-4850-b89e-0fbf388afef4",
 			nodes: [], // ["74.0249", "129.0192", "130.0875"], // ["100.00072", "128.89351", "132.88524", "135.54123", "152.99445"],
 			group: "", // "WT-pck1", // "FCSglc-DMA"
 			groups: [],
@@ -325,6 +370,13 @@ export default {
 		flag_selected_table1: false,
 		flag_selected_table2: false
 	}),
+	mounted () {
+		this.$store.commit('sidebarMainToggle', true);
+		this.$store.commit('setSidebarMiniActive', true);
+	},
+	beforeDestroy () {
+		this.$store.commit('setSidebarMiniActive', false);
+	},
 	computed: {
 		msSearchableOptions () {
 			let options_node = [];
@@ -400,13 +452,6 @@ export default {
 		}
 	},
 	created () {
-
-	},
-	mounted () {
-		/* setTimeout(() => {
-			this.appMounted = true;
-			console.log(this);
-		}, 200); */
 
 	},
 	validations: {
@@ -752,7 +797,7 @@ export default {
 				// this.form2.type = "id";
 				// this.form2.plot = "correlation";
 
-				await this.$axios.get(`/api/experiments/${this.form1.id}/`, {params: this.form1}).then((response) => {
+				await this.$axios.get(`/api/experiments-finetune/${this.form1.id}/`, {params: this.form1}).then((response) => {
 					console.log(1, response.data);
 					if (response.status === 200) {
 						/* swal.fire(

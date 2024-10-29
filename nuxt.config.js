@@ -25,7 +25,7 @@ module.exports = {
 		htmlAttrs: {
 			lang: 'en'
 		},
-		title: 'MetaNet',
+		title: 'GEMNA',
 		meta: [
 			{ charset: 'utf-8' },
 			{

@@ -1,5 +1,5 @@
-# GEMNA_Nuxt
-Based on Scutum Admin Template (Vue.js version)
+# GEMNA Frontend
+Based on Scutum Admin Template (Vue.js version with Nuxt)
 
 
 

@@ -28,8 +28,8 @@ $ npm install -g yarn
 
 # verifies the right yarn version is in the environment
 $ yarn -v # should print `v1.22.22`
-
 ```
+
 ## Quick Setup
 ``` bash
 # install dependencies

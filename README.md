@@ -1,4 +1,5 @@
-# Scutum Admin Template (Vue.js version)
+# GEMNA_Nuxt
+Based on Scutum Admin Template (Vue.js version)
 
 
 
@@ -47,6 +48,3 @@ $ yarn start
 # generate static project
 $ yarn run generate
 ```
-
-For detailed explanation on how things works, check Scutum Admin documentation.
-# MetaNet_Nuxt

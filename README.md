@@ -6,9 +6,6 @@ Based on Scutum Admin Template (Vue.js version with Nuxt)
 # install requirements
 $ apt install build-essential checkinstall libssl-dev
 
-# install node v14.x
-$ apt install build-essential checkinstall libssl-dev
-
 # installs nvm (Node Version Manager)
 $ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | bash
 

@@ -1,8 +1,6 @@
 # GEMNA Frontend
 Based on Scutum Admin Template (Vue.js version with Nuxt)
 
-
-
 ## Install requirements (Ubuntu/Linux Mint)
 ``` bash
 # install requirements

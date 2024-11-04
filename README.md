@@ -11,7 +11,7 @@ $ apt install build-essential checkinstall libssl-dev
 # installs nvm (Node Version Manager)
 $ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | bash
 ```
-Output:
+output:
 
 ![Alt text](/setup_img/install_nvm.png)
 
@@ -19,7 +19,7 @@ Output:
 # download and install Node.js (you may need to restart the terminal)
 $ nvm install 14
 ```
-Output:
+output:
 
 ![Alt text](/setup_img/install_node_14.png)
 
@@ -27,7 +27,7 @@ Output:
 # verifies the right Node.js version is in the environment
 $ node -v # should print `v14.21.3`
 ```
-Output:
+output:
 
 ![Alt text](/setup_img/node_version.png)
 
@@ -35,7 +35,7 @@ Output:
 # verifies the right npm version is in the environment
 $ npm -v # should print `6.14.18`
 ```
-Output:
+output:
 
 ![Alt text](/setup_img/npm_version.png)
 
@@ -43,7 +43,7 @@ Output:
 # install yarn
 $ npm install -g yarn
 ```
-Output:
+output:
 
 ![Alt text](/setup_img/install_yarn.png)
 
@@ -51,7 +51,7 @@ Output:
 # verifies the right yarn version is in the environment
 $ yarn -v # should print `v1.22.22`
 ```
-Output:
+output:
 
 ![Alt text](/setup_img/yarn_version.png)
 
@@ -61,7 +61,7 @@ Output:
 $ git clone https://github.com/win7/GEMNA_Frontend.git
 ```
 
-Output:
+output:
 
 ![Alt text](/setup_img/clone_frontend.png)
 
@@ -69,7 +69,7 @@ Output:
 # install dependencies
 $ yarn sc-setup
 ```
-Output:
+output:
 
 ![Alt text](/setup_img/yarn_setup.png)
 
@@ -77,6 +77,6 @@ Output:
 # serve with hot reload at localhost:3000
 $ yarn dev
 ```
-Output:
+output:
 
 ![Alt text](/setup_img/run_nuxt.png)

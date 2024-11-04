@@ -47,4 +47,4 @@ $ yarn start
 $ yarn run generate
 ```
 
-![Alt text](/assets/img/logo_2.png)
+![Alt text](/assets/img/photos/alex-guillaume-769172-unsplash.jpg)

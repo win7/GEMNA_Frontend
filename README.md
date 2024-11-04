@@ -37,7 +37,7 @@ $ npm -v # should print `6.14.18`
 ```
 Output:
 
-![Alt text](/setup_img/npm.version.png)
+![Alt text](/setup_img/npm_version.png)
 
 ``` bash
 # install yarn

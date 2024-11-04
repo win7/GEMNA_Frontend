@@ -80,3 +80,7 @@ $ yarn dev
 output:
 
 ![Alt text](/setup_img/run_nuxt.png)
+
+At the end, in the browser type: http://localhost:3000/wizard, the web application will be loaded there.
+
+![Alt text](/setup_img/gemna_index.png)

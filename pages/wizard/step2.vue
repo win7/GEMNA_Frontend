@@ -28,7 +28,7 @@
 				</div>
 				<div>
 					<label class="uk-form-label">
-						Data variation
+						Network variation
 					</label>
 					<div class="uk-form-controls">
 						<client-only>

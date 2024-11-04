@@ -37,11 +37,11 @@
 				Threshold (corr):
 			</span> {{ data.threshold_corr }}<br>
 			<span class="uk-text-muted uk-text-default">
+				Threshold (alpha):
+			</span> {{ data.alpha }}<br>
+			<span class="uk-text-muted uk-text-default">
 				Threshold (log2):
 			</span> {{ data.threshold_log2 }}<br>
-			<span class="uk-text-muted uk-text-default">
-				Alpha:
-			</span> {{ data.alpha }}<br>
 			
 			<br>
 			<span class="uk-text-muted uk-text-default">

@@ -27,6 +27,9 @@ $ yarn -v # should print `v1.22.22`
 
 ## Quick Setup
 ``` bash
+# clone repository
+$ git clone https://github.com/win7/GEMNA_Frontend.git
+
 # install dependencies
 $ yarn sc-setup
 
@@ -43,3 +46,5 @@ $ yarn start
 # generate static project
 $ yarn run generate
 ```
+
+![Alt text](/assets/img/logo_2.png)

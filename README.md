@@ -3,7 +3,7 @@ Based on Scutum Admin Template (Vue.js version with Nuxt)
 
 ## Install requirements (Ubuntu/Linux Mint)
 ``` bash
-# install requirements
+# install requirements (these requirements are needed to install Node.JS)
 $ apt install build-essential checkinstall libssl-dev
 ```
 

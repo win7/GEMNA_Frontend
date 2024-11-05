@@ -84,3 +84,6 @@ output:
 At the end, in the browser type: http://localhost:3000/wizard, the web application will be loaded there.
 
 ![Alt text](/setup_img/gemna_index.png)
+
+# User guide
+We include an [user guide](https://github.com/win7/GEMNA_Backend/blob/main/GEMNA_User_guide.pdf) to use the GEMNA web applicaction.

@@ -85,5 +85,19 @@ At the end, in the browser type: http://localhost:3000/wizard, the web applicati
 
 ![Alt text](/setup_img/gemna_index.png)
 
+# Frontend and backend integration
+Frontend and backend integration depends on the domain or IP of the backend. For example, if the backend is deployed on a server with an IP: **192.168.1.77** and on port: **8000**, then that IP and port must be setup in the [nuxt.config.js](https://github.com/win7/GEMNA_Frontend/blob/main/nuxt.config.js) file of the frontend.
+
+``` bash
+...
+axios: {
+		baseURL: "http://192.168.1.77:8000",
+		// progress: false,
+		// credentials: true,
+		// validateStatus: false
+	},
+...
+```
+
 # User guide
 We include an [user guide](https://github.com/win7/GEMNA_Backend/blob/main/GEMNA_User_guide.pdf) to use the GEMNA web applicaction.
